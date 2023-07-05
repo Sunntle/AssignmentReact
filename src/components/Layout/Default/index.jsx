@@ -9,7 +9,6 @@ function DefaultLayout({children}) {
     <div className='content'>
     {children}
     </div>
- 
    <footer> <Footer/></footer>
     </div>
   )

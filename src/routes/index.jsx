@@ -8,6 +8,11 @@ const publicRoutes = [
     layout: DefaultLayout
   },
   {
+    path: "/home",
+    component: React.lazy(() => import("../pages/Home")),
+    layout: DefaultLayout
+  },
+  {
     path: "/shop",
     component: React.lazy(() => import("../pages/Shop")),
     layout: DefaultLayout

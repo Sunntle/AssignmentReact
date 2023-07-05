@@ -25,17 +25,31 @@ function NewArrival() {
         <p className='text-muted'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui odit fugiat iste, nam mollitia rerum inventore!</p>
         </div>
         <Swiper
-        slidesPerView={4}
+        slidesPerView={1}
         spaceBetween={10}
         // pagination={{ clickable: true }}
         modules={[ Pagination]}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 40,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 50,
+          },
+        }}
         className="mySwiper"
       >
         <SwiperSlide>
         <div className='position-relative'>
         <img className='img-fluid' src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/9.jpg" alt="" />
         <div className='position-absolute badges'><span className='d-block mainColor'>New</span></div>
-        <div className='product-actions position-absolute'>
+        <div className='product-actions__mid position-absolute d-flex align-items-center justify-content-around'>
             <Button color='dark'><FontAwesomeIcon icon={faShoppingCart}/></Button>
             <Button color='dark' onClick={() => toggle('2')}><FontAwesomeIcon icon={faEye}/></Button>
             <Button color='dark'><FontAwesomeIcon icon={faHeart}/></Button>
@@ -44,7 +58,6 @@ function NewArrival() {
         </SwiperSlide>
         <SwiperSlide>
           <img className='img-fluid' src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/10.jpg" alt="" />
-          
         </SwiperSlide>
         <SwiperSlide><img className='img-fluid' src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/11.jpg" alt="" /></SwiperSlide>
         <SwiperSlide><img className='img-fluid' src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/12.jpg" alt="" /></SwiperSlide>

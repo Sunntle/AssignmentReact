@@ -1,14 +1,17 @@
 import React from 'react'
+import styles from './BreadcrumbStyle.module.scss'
 import { Link } from 'react-router-dom'
 import { BreadcrumbItem, Breadcrumb, Container } from 'reactstrap'
-import './BreadcrumbStyle.scss'
+import classNames from 'classnames/bind'
+const cx = classNames.bind(styles);
+
 function BreadcrumbComponent(props) {
   const url = window.location.pathname
   return (
-    <div className='wrap py-5'>
+    <div className={cx('wrap','py-5')}>
       <Container>
           <Breadcrumb>
-          <BreadcrumbItem>
+          <BreadcrumbItem className={cx('breadcrumb-item')}>
             <Link to='/' className='text-uppercase'>
               Home
             </Link>

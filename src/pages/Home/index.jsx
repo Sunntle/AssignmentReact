@@ -6,7 +6,6 @@ import NewArrival from "./NewArrival";
 import Sale from "./Sale";
 import Blog from "./Blog";
 
-
 function Home() {
   return (
       <>

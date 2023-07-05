@@ -14,7 +14,7 @@
 }
 .swiper-slide{
     &:hover{
-        .product-actions{
+        .product-actions__mid{
             animation: delayShow 0.5s forwards;
         }
     }
@@ -27,14 +27,15 @@
         font-weight: 600;
         letter-spacing: 0.5px;
     }
+    z-index: 1;
 }
-.product-actions{
+.product-actions__mid{
     top: 200%;
     left: 50%;
+    gap: 10px;
+    height: 38px;
     transform: translateY(-50%) translateX(-50%);
-    button ~ button { 
-        margin-left: 10px;
-    }
+    z-index: 2; 
 }
 
 @keyframes delayShow {
