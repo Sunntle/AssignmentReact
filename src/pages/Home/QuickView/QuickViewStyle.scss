@@ -1,0 +1,19 @@
+@import '../../../index.scss';
+.rating{
+    svg{
+        color: $primary-color;
+    }
+}
+.quantity{
+    gap: 10px;
+}
+.quantityBtn{
+    input{
+        width: 40px;
+        text-align: center;
+    }
+    svg{
+        cursor: pointer;
+        // color: $primary-color;
+    }
+}

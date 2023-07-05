@@ -1,0 +1,36 @@
+@import "../../../../node_modules/bootstrap/scss/bootstrap";
+.support{
+    &:hover img {
+        animation: shaky 0.3s; // Animation starts running on hover
+    }
+    &:not(&:last-child)::before{
+        position: absolute;
+        right: -14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0px;
+        background-color: $gray-400;
+        content: "";
+        height: 61px;
+        
+        @include media-breakpoint-up(md) {
+            width: 1px;
+        }
+        
+    }
+    
+}
+.caption{
+    color: $gray-700;
+}
+@keyframes shaky{
+    0%{
+        transform: rotate(-20deg);
+    }
+    50%{
+        transform: rotate(20deg);
+    }
+    100%{
+        transform: rotate(0deg);
+    }
+}

@@ -1,0 +1,26 @@
+@import "../../../index.scss";
+.swiper-button-prev,
+.swiper-button-next {
+  color: $primary-color;
+}
+.swiper-pagination-bullet-active {
+  background-color: $primary-color;
+}
+.caption {
+  top: 30%;
+  left: 12%;
+  right: 50%;
+
+  h6 {
+    color: $primary-color;
+  }
+  a {
+    letter-spacing: 2px;
+  }
+  .redirectShop {
+    font-size: 0.75rem;
+  }
+  @media (max-width: 420px) {
+    top: 10%;
+  }
+}

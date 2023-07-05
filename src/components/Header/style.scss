@@ -1,0 +1,72 @@
+@import "../../index.scss";
+.color-text-primary {
+  color: $primary-color;
+}
+.header__icon {
+  gap: 1rem;
+}
+.header__menu {
+  a {
+    position: relative;
+  }
+  .active::after {
+    position: absolute;
+    content: "";
+    width: calc(100% - 3rem);
+    height: 3px;
+    background-color: $primary-color;
+    left: 1rem;
+    bottom: 5px;
+    transition: all 0.5s;
+  }
+  a:not(.header__menu .active)::after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 3px;
+    background-color: $primary-color;
+    left: 50%;
+    bottom: 5px;
+    transition: all 0.5s;
+  }
+  a:not(.header__menu .active):not(.header__menu .menu-lv2 a):hover::after {
+    width: calc(100% - 3rem);
+    height: 3px;
+    background-color: $primary-color;
+    left: 1rem;
+    bottom: 5px;
+    transition: all 0.5s;
+  }
+  @media (min-width: 992px) {
+    .active::after {
+      width: calc(100% - 2rem);
+    }
+    a:not(.header__menu .active):not(.header__menu .menu-lv2 a):hover:after{
+      width: calc(100% - 2rem);
+    }
+  }
+}
+.header__logo {
+  max-width: 200px;
+}
+
+.menu-lv2 {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 9;
+  top: 30px;
+  left: 1rem;
+  transition: all 0.5s;
+}
+
+.menu-lv1:hover .menu-lv2 {
+  opacity: 1;
+  visibility: visible;
+  top: 45px;
+}
+.countProduct {
+  top: -0.9rem;
+  right: -0.9rem;
+  color: $primary-color;
+}
