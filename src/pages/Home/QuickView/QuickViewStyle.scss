@@ -1,56 +1,55 @@
-@import '../../../index.scss';
-.rating{
-    svg{
-        color: $main-color;
-    }
+@import "../../../index.scss";
+.rating {
+  svg {
+    color: $main-color;
+  }
 }
-.quantity{
-    gap: 10px;
+.quantity {
+  gap: 10px;
 }
-.quantityBtn{
-    input{
-        width: 40px;
-        text-align: center;
-    }
-    svg{
-        cursor: pointer;
-    }
+.quantityBtn {
+  input {
+    width: 40px;
+    text-align: center;
+  }
+  svg {
+    cursor: pointer;
+  }
 }
 $colors: (
   "blue": blue,
   "red": red,
   "pink": pink,
 );
-input[type="radio"]{
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 20px;
-    height: 20px;
-    outline: none;
-    margin-right: 5px; 
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  outline: none;
+  margin-right: 5px;
 }
-.colorContainer { 
-    @each $color, $value in $colors {
-        ##{$color} {
-            border : 10px solid $value;
-            content: '2';
-            &:checked{
-                background-color: $value;
-                border-color: $value;
-            }
-        }
+.colorContainer {
+  @each $color, $value in $colors {
+    ##{$color} {
+      border: 10px solid $value;
+      content: "2";
+      &:checked {
+        background-color: $value;
+        border-color: $value;
       }
+    }
+  }
 }
-.sizeContainer{
-    input[type="radio"]{
-        border-radius: 0!important;
-        &:checked{
-            border : 10px solid $main-color;
-
-        }
+.sizeContainer {
+  input[type="radio"] {
+    border-radius: 0 !important;
+    &:checked {
+      border: 12px solid $main-color;
     }
-    div.d-inline-flex ~ div.d-inline-flex{
-        margin-left: 10px;
-    }
+  }
+  div.d-inline-flex ~ div.d-inline-flex {
+    margin-left: 10px;
+  }
 }

@@ -1,12 +1,23 @@
+@import "../../../index.scss";
 header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 99;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 99;
 }
-.content{
-    margin-top: 132px;
-    @media (max-width: 768px) {
-        margin-top: 93px;
-    }
+.content {
+  margin-top: 132px;
+  @media (max-width: 768px) {
+    margin-top: 93px;
+  }
+}
+.wrapper {
+  .fixed-bottom {
+    right: 20px;
+    left: auto;
+    bottom: 20px;
+  }
+  .scrollIcon {
+    color: $primary-color;
+  }
 }

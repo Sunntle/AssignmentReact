@@ -1,71 +1,71 @@
-@import '../../../index.scss';
-.rating{
-    svg{
-        color: $main-color;
-    }
+@import "../../../index.scss";
+.rating {
+  svg {
+    color: $main-color;
+  }
 }
 .sidebar__search button {
-    right: 3%;
-  }
-  .list li.list-group-item {
-    min-width: 100px;
-  }
-  .shop__product__option .list {
-    display: none;
-  }
-  .shop__product__option .show {
-    display: block;
-    z-index: 99;
-  }
-  .accordion-button{
-    font-weight: 600;
-  }
-  .accordion-collapse{
-    transition: all 0.3s ease-in-out;
-  }
-  .react-select__control{
-    border: none;
-  }
-.seeMore{
+  right: 3%;
+}
+.list li.list-group-item {
+  min-width: 100px;
+}
+.shop__product__option .list {
+  display: none;
+}
+.shop__product__option .show {
+  display: block;
+  z-index: 99;
+}
+.accordion-button {
+  font-weight: 600;
+}
+.accordion-collapse {
+  transition: all 0.3s ease-in-out;
+}
+.react-select__control {
+  border: none;
+}
+.seeMore {
   transform: translateX(-50%);
 }
 .product-actions {
-  & > button{
+  & > button {
     opacity: 0;
-    background-color: $main-color
+    background-color: $main-color;
   }
-  button:nth-child(odd){
+  button:nth-child(odd) {
     width: 20%;
   }
-  button:nth-child(2){
+  button:nth-child(2) {
     width: 60%;
   }
 }
-.shop__product__item{
-  .product-img{
+.shop__product__item {
+  .product-img {
     overflow: hidden;
   }
-  &:hover{
-    .product-actions{
-      button:nth-child(1){
-        animation: delayShow forwards 0.4s;
+  &:hover {
+    .product-actions {
+      button:nth-child(1) {
+        animation: delayShowSecond forwards 0.4s;
       }
-      button:nth-child(2){
-        animation: delayShow forwards 0.5s;
+      button:nth-child(2) {
+        animation: delayShowSecond forwards 0.5s;
       }
-      button:nth-child(3){
-        animation: delayShow forwards 0.6s;
+      button:nth-child(3) {
+        animation: delayShowSecond forwards 0.6s;
       }
-  }
+    }
   }
 }
-@keyframes delayShow {
-  0%{
-      opacity: 0;
-      bottom: -20%;
+@keyframes delayShowSecond {
+  0% {
+    opacity: 0;
+    bottom: -20%;
   }
-  100%{
-      opacity: 1;
-      bottom: 0;
+  100% {
+    opacity: 1;
+    bottom: 0;
   }
 }

@@ -31,7 +31,7 @@ const Header = (props, ref) => {
             </Col>
             <Col lg="6" md="5">
               <div className="header__top__right text-end">
-                <Link href="#" className="text-decoration-none text-uppercase text-white px-2">
+                <Link to="/sign-in" className="text-decoration-none text-uppercase text-white px-2">
                   Sign in
                 </Link>
                 <Link href="#" className="text-decoration-none text-uppercase text-white px-2">
@@ -73,7 +73,9 @@ const Header = (props, ref) => {
                 Shop
               </NavLink>
               <div className="menu-lv1 position-relative">
-                <NavLink className=" fs-5 fw-semibold text-black nav-link page" activeclassname="active" to="/pages">Pages</NavLink>
+                <NavLink className=" fs-5 fw-semibold text-black nav-link page" activeclassname="active" to="/pages">
+                  Pages
+                </NavLink>
                 <Nav className="menu-lv2 bg-black rounded">
                   <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/blog">
                     Blog
