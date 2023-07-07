@@ -46,7 +46,7 @@ function SignIn() {
                   <Input id="username" name="username" placeholder="Username" type="text" />
                 </FormGroup>
                 <FormGroup>
-                  <Input id="examplePassword" name="password" placeholder="Password" type="password" />
+                  <Input id="password" name="password" placeholder="Password" type="password" />
                 </FormGroup>
                 <FormGroup className="text-start">
                   <Link to="/" className="text-decoration-none">
@@ -63,13 +63,13 @@ function SignIn() {
             <TabPane tabId="2" className="p-5">
               <Form>
                 <FormGroup>
-                  <Input id="username" name="username" placeholder="Username" type="text" />
+                  <Input id="usernameRes" name="username" placeholder="Username" type="text" />
                 </FormGroup>
                 <FormGroup>
-                  <Input id="examplePassword" name="password" placeholder="Password" type="password" />
+                  <Input id="passwordRes" name="password" placeholder="Password" type="password" />
                 </FormGroup>
                 <FormGroup>
-                  <Input id="exampleEmail" name="email" placeholder="Email" type="email" />
+                  <Input id="email" name="email" placeholder="Email" type="email" />
                 </FormGroup>
                 <FormGroup>
                   <Button type="submit" color="dark" className="py-2 px-3">

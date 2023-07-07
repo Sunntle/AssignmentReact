@@ -1,7 +1,8 @@
 import React from "react";
-import Header from "../../Header";
-import Footer from "../../Footer";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 import "../Default/DefaultLayout.scss";
+import ScrollToTop from "../../components/ScrollToTop";
 function NoBreadcrumb({ children }) {
   return (
     <div className="wrapper position-relative">
@@ -13,6 +14,7 @@ function NoBreadcrumb({ children }) {
         {" "}
         <Footer />
       </footer>
+      <ScrollToTop />
     </div>
   );
 }

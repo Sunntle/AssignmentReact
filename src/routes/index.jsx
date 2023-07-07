@@ -1,29 +1,41 @@
 import NotFound from "../components/NotFound";
 import React from "react";
-import { DefaultLayout, NotHeaderLayout, NoBreadcrumb } from "../components/Layout";
+import { DefaultLayout, NotHeaderLayout, NoBreadcrumb } from "../layout";
 const publicRoutes = [
   {
-    path: "/",
+    path: "",
     component: React.lazy(() => import("../pages/Home")),
     layout: NoBreadcrumb,
   },
   {
-    path: "/home",
+    path: "home",
     component: React.lazy(() => import("../pages/Home")),
     layout: NoBreadcrumb,
   },
   {
-    path: "/shop",
+    path: "shop/*",
     component: React.lazy(() => import("../pages/Shop")),
     layout: DefaultLayout,
+    routes: [
+      {
+        path: ":id",
+        component: React.lazy(() => import("../pages/ShopDetail")),
+        layout: NoBreadcrumb,
+      },
+    ],
   },
   {
-    path: "/pages",
+    path: "pages",
     component: React.lazy(() => import("../pages/Page")),
     layout: DefaultLayout,
   },
   {
-    path: "/sign-in",
+    path: "cart",
+    component: React.lazy(() => import("../pages/Cart")),
+    layout: DefaultLayout,
+  },
+  {
+    path: "sign-in",
     component: React.lazy(() => import("../pages/Sign-In")),
     layout: DefaultLayout,
   },

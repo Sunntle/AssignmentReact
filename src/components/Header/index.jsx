@@ -1,12 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Container, Col, Row, Nav, Input, Fade } from "reactstrap";
+import { Container, Col, Row, Nav, Input } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faHeart, faCartShopping, faBars } from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
 import Images from "../../assets/images/logo.png";
 const Header = (props, ref) => {
-  const localRef = useRef(null);
   useEffect(() => {
     const navsub = document.querySelectorAll(".navsub");
     const showNav = document.querySelector(".showNav");
@@ -105,22 +104,15 @@ const Header = (props, ref) => {
           </Col>
           <Col lg="3" className="d-none d-lg-block navsub">
             <div className="header__icon d-flex p-lg-0 px-3 py-2 justify-content-start justify-content-lg-end align-items-center">
-              <Fade innerRef={localRef}>
-                <Input type="text" placeholder="Tìm kiếm" />
-              </Fade>
+              <Input type="text" placeholder="Tìm kiếm" />
               <Link className="text-black fs-5">
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  onClick={() => {
-                    localRef.current.classList.toggle("show");
-                  }}
-                />
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
               </Link>
               <Link className="text-black fs-5">
                 <FontAwesomeIcon icon={faHeart} />
               </Link>
               <div className="cart d-flex justify-content-center align-items-center">
-                <Link className="text-black fs-5 position-relative">
+                <Link to={"/cart"} className="text-black fs-5 position-relative">
                   <FontAwesomeIcon icon={faCartShopping} />
                   <div className="position-absolute countProduct fs-6 fw-bolder">20</div>
                 </Link>

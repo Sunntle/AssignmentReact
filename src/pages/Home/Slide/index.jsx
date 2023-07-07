@@ -1,6 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {  Pagination, EffectFade, Autoplay } from "swiper";
+import { Pagination, EffectFade, Autoplay } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -13,14 +13,14 @@ import { Link } from "react-router-dom";
 function Slide() {
   return (
     <Swiper
-      modules={[ Pagination, EffectFade, Autoplay]}
+      modules={[Pagination, EffectFade, Autoplay]}
       spaceBetween={50}
       slidesPerView={1}
       loop={false}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
+      autoplay={{
+        delay: 3000,
+        disableOnInteraction: false,
+      }}
       effect="fade"
       pagination={{ clickable: true, dynamicBullets: true }}
     >

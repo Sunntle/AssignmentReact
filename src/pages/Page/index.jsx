@@ -1,9 +1,6 @@
-import React from 'react'
-import BreadcrumbComponent from '../../components/Breadcrumb'
+import React from "react";
 function Page() {
-  return (
-    <div><BreadcrumbComponent/></div>
-  )
+  return <div>2</div>;
 }
 
-export default Page
+export default Page;

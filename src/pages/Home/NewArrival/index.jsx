@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
+import { Pagination } from "swiper/modules";
 import { Container, Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faHeart, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,10 @@ import QuickView from "../QuickView";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./NewArrivalStyle.scss";
+import Product1 from "../../../assets/images/backpack.jpg";
+import Product2 from "../../../assets/images/glass.jpg";
+import Product3 from "../../../assets/images/hat.jpg";
+import Product4 from "../../../assets/images/shoes.jpg";
 function NewArrival() {
   const [modal, setModal] = useState({
     isOpen: false,
@@ -22,7 +26,8 @@ function NewArrival() {
         setModal((prev) => ({ isOpen: !prev.isOpen, data: id }));
       });
     } else {
-      console.log(2);
+      const view = document.documentElement.scrollTop;
+      document.querySelector("#newArrival").scrollTo({ top: view, behavior: "smooth" });
       setModal((prev) => ({ isOpen: !prev.isOpen, data: id }));
     }
   };
@@ -56,6 +61,7 @@ function NewArrival() {
         </p>
       </div>
       <Swiper
+        id="newArrival"
         slidesPerView={1}
         spaceBetween={10}
         // pagination={{ clickable: true }}
@@ -78,11 +84,7 @@ function NewArrival() {
       >
         <SwiperSlide>
           <div className="position-relative">
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/9.jpg"
-              alt=""
-            />
+            <img className="img-fluid" src={Product1} alt="" />
             <div className="position-absolute badges">
               <span className="d-block mainColor">New</span>
             </div>
@@ -90,7 +92,7 @@ function NewArrival() {
               <Button color="dark">
                 <FontAwesomeIcon icon={faShoppingCart} />
               </Button>
-              <Button color="dark" onClick={() => toggle("2")}>
+              <Button color="dark" onClick={() => toggle()}>
                 <FontAwesomeIcon icon={faEye} />
               </Button>
               <Button color="dark">
@@ -100,53 +102,19 @@ function NewArrival() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img
-            className="img-fluid"
-            src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/10.jpg"
-            alt=""
-          />
+          <img className="img-fluid" src={Product2} alt="" />
         </SwiperSlide>
         <SwiperSlide>
-          <img
-            className="img-fluid"
-            src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/11.jpg"
-            alt=""
-          />
+          <img className="img-fluid" src={Product3} alt="" />
         </SwiperSlide>
         <SwiperSlide>
-          <img
-            className="img-fluid"
-            src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/12.jpg"
-            alt=""
-          />
+          <img className="img-fluid" src={Product4} alt="" />
         </SwiperSlide>
         <SwiperSlide>
-          <img
-            className="img-fluid"
-            src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/9.jpg"
-            alt=""
-          />
+          <img className="img-fluid" src={Product1} alt="" />
         </SwiperSlide>
         <SwiperSlide>
-          <img
-            className="img-fluid"
-            src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/10.jpg"
-            alt=""
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            className="img-fluid"
-            src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/11.jpg"
-            alt=""
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            className="img-fluid"
-            src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/12.jpg"
-            alt=""
-          />
+          <img className="img-fluid" src={Product2} alt="" />
         </SwiperSlide>
       </Swiper>
       <QuickView modal={modal} toggle={toggle} />

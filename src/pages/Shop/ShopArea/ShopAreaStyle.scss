@@ -59,6 +59,17 @@
     }
   }
 }
+.page-item {
+  & .page-link {
+    background-color: transparent;
+    border: none;
+    color: $main-color;
+    &.active {
+      font-size: 18px;
+      color: $primary-color;
+    }
+  }
+}
 @keyframes delayShowSecond {
   0% {
     opacity: 0;

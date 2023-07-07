@@ -23,6 +23,9 @@ code {
   h2 {
     font-size: 1.325rem;
   }
+  h5 {
+    font-size: 1rem;
+  }
 }
 @media (max-width: 576px) {
   body {
@@ -30,6 +33,9 @@ code {
   }
   h2 {
     font-size: 1.2rem;
+  }
+  h5 {
+    font-size: 0.85rem;
   }
   h6 {
     font-size: 0.75rem;

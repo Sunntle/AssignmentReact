@@ -1,0 +1,34 @@
+@import "../../index.scss";
+.cart {
+  img {
+    max-width: 150px;
+  }
+  .table > :not(caption) > * > * {
+    padding: 1rem;
+  }
+  td {
+    vertical-align: middle;
+  }
+  .quantityBtn {
+    input {
+      width: 40px;
+      text-align: center;
+    }
+    svg {
+      cursor: pointer;
+    }
+  }
+  @media (max-width: 992px) {
+    width: 100%; /* Set a fixed width or maximum width for the table */
+    overflow-x: auto;
+    img {
+      max-width: 100px;
+    }
+  }
+}
+.cartIconEmpty {
+  font-size: 120px;
+  @media (max-width: 576px) {
+    font-size: 80px;
+  }
+}
