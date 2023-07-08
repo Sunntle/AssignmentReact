@@ -1,0 +1,19 @@
+@import "../../index.scss";
+.pagination {
+  justify-content: center;
+  .page-item {
+    padding: 0.25rem;
+    & .page-link {
+      width: 36px;
+      height: 36px;
+      background-color: transparent;
+      border-radius: 999px !important;
+      border: none;
+      color: $main-color;
+      box-shadow: 0 0 12px 0.8px rgba(0, 0, 0, 0.1);
+      &.active {
+        color: $primary-color;
+      }
+    }
+  }
+}

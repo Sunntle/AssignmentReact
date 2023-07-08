@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
-  Container,
-  Row,
+  Button,
   Col,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
+  Container,
   Form,
   FormGroup,
   Input,
-  Button,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  TabPane,
 } from "reactstrap";
 import "./SignInStyle.scss";
-import { Link } from "react-router-dom";
 function SignIn() {
   const [activeTab, setActiveTab] = useState("1");
 

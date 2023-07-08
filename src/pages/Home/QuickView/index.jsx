@@ -1,15 +1,12 @@
 import { faMinusCircle, faPlusCircle, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Row, Col, Input, FormGroup, Label } from "reactstrap";
-import "./QuickViewStyle.scss";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Button, Col, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
+import "./QuickViewStyle.scss";
 function QuickView(props) {
   const [value, setValue] = useState(1);
-  const { modal, toggle } = props;
-  const handleToggle = () => {
-    toggle();
-  };
+  const { modal, toggle, data } = props;
   const handleIncrement = () => {
     setValue((prevValue) => prevValue + 1);
   };
@@ -22,20 +19,16 @@ function QuickView(props) {
   };
   return (
     <div>
-      <Modal size="lg" keyboard isOpen={modal.isOpen} toggle={handleToggle} centered>
-        <ModalHeader toggle={handleToggle}></ModalHeader>
+      <Modal size="lg" keyboard isOpen={modal} toggle={() => toggle(null)} centered>
+        <ModalHeader toggle={() => toggle(null)}></ModalHeader>
         <ModalBody>
           <Row>
             <Col xs="12" md="5" className="mb-3">
-              <img
-                src="https://flone.jamstacktemplates.dev/assets/img/product/accessories/12.jpg"
-                alt="img"
-                className="img-fluid"
-              />
+              <img src={data.img} alt="img" className="img-fluid" />
             </Col>
             <Col xs="12" md="7">
-              <h2>Hat bitToKetCho II</h2>
-              <p className="py-3 m-0">22.00 $</p>
+              <h2>{data.name}</h2>
+              <p className="py-3 m-0">{data.price?.toLocaleString("vi", { style: "currency", currency: "VND" })}</p>
               <div className="rating">
                 <span>
                   <FontAwesomeIcon icon={faStar} />
@@ -102,7 +95,7 @@ function QuickView(props) {
           </Row>
         </ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={handleToggle}>
+          <Button color="secondary" onClick={() => toggle(null)}>
             Cancel
           </Button>
         </ModalFooter>

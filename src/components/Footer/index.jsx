@@ -1,10 +1,9 @@
-import React from "react";
-import { Container, Form, FormGroup, Input, Row, Col, List, Button } from "reactstrap";
-import Images from "../../assets/images/logo.png";
-import ImagesPayment from "../../assets/images/payment.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Images from "assets/images/logo.png";
+import ImagesPayment from "assets/images/payment.png";
 import { Link } from "react-router-dom";
+import { Button, Col, Container, Form, FormGroup, Input, List, Row } from "reactstrap";
 import "./styles.scss";
 function Footer() {
   return (

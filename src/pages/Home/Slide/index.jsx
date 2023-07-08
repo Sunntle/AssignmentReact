@@ -1,15 +1,14 @@
-import React from "react";
+import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, EffectFade, Autoplay } from "swiper/modules";
 
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import "swiper/css/effect-fade";
-import Slides from "../../../assets/images//hero-1.jpg";
-import Sildes2 from "../../../assets/images//hero-2.jpg";
-import "./SlideStyle.scss";
 import { Link } from "react-router-dom";
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import Slides from "assets/images//hero-1.jpg";
+import Sildes2 from "assets/images//hero-2.jpg";
+import "./SlideStyle.scss";
 function Slide() {
   return (
     <Swiper

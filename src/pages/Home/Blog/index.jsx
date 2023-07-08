@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { Container, Row, Col } from "reactstrap";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useEffect } from "react";
+import { Col, Container, Row } from "reactstrap";
 import { EffectCards } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/effect-cards";

@@ -1,5 +1,3 @@
-import React from "react";
-
 import ShopArea from "./ShopArea";
 function Shop() {
   return (

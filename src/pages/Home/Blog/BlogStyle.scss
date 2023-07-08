@@ -1,23 +1,23 @@
-@import '../../../index.scss';
-.swiper-slide{
-    img{
-        width: 100%;
-        object-fit: cover;
-        transition: all ease-in-out 0.5s;
-        &:hover{
-            scale: 1.1;
-        }
-    }
-}
-.title{
+@import "index.scss";
+.swiper-slide {
+  img {
+    width: 100%;
+    object-fit: cover;
     transition: all ease-in-out 0.5s;
-    &:hover{
-        color: $primary-color
+    &:hover {
+      scale: 1.1;
     }
+  }
 }
-.contentBlog{
-    display: none;
+.title {
+  transition: all ease-in-out 0.5s;
+  &:hover {
+    color: $primary-color;
+  }
 }
-.show{
-    display: block;
+.contentBlog {
+  display: none;
+}
+.show {
+  display: block;
 }

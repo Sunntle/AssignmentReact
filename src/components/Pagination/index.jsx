@@ -1,6 +1,5 @@
-import React from "react";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-
+import "./PaginationStyle.scss";
 function PaginationComponent({ curPage, totalPage, onPageChange }) {
   const handleClick = (page) => {
     onPageChange(page);
@@ -31,7 +30,7 @@ function PaginationComponent({ curPage, totalPage, onPageChange }) {
           </>
         ) : null}
         {pageItem.map((el) => el)}
-        {curPage != totalPage ? (
+        {curPage !== totalPage ? (
           <>
             <PaginationItem>
               <PaginationLink next onClick={() => handleClick(++curPage)} />

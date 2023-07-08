@@ -1,20 +1,18 @@
-import React from "react";
-
-import Slide from "./Slide";
+import Blog from "./Blog";
 import Feature from "./Feature";
 import NewArrival from "./NewArrival";
 import Sale from "./Sale";
-import Blog from "./Blog";
+import Slide from "./Slide";
 
 function Home() {
   return (
-      <>
-        <Slide />
-        <Feature/>
-        <NewArrival/>
-        <Sale/>
-        <Blog/>
-      </>
+    <>
+      <Slide />
+      <Feature />
+      <NewArrival />
+      <Sale />
+      <Blog />
+    </>
   );
 }
 

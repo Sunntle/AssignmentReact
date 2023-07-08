@@ -1,4 +1,4 @@
-@import "../../../index.scss";
+@import "index.scss";
 .rating {
   svg {
     color: $main-color;
@@ -22,6 +22,9 @@
 }
 .accordion-collapse {
   transition: all 0.3s ease-in-out;
+}
+.accordion-body {
+  cursor: pointer;
 }
 .react-select__control {
   border: none;
@@ -59,17 +62,7 @@
     }
   }
 }
-.page-item {
-  & .page-link {
-    background-color: transparent;
-    border: none;
-    color: $main-color;
-    &.active {
-      font-size: 18px;
-      color: $primary-color;
-    }
-  }
-}
+
 @keyframes delayShowSecond {
   0% {
     opacity: 0;

@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import { Col, Container, Row, Button, Input, FormGroup, Label } from "reactstrap";
 import { faMinusCircle, faPlusCircle, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Button, Col, Container, FormGroup, Input, Label, Row } from "reactstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
@@ -12,13 +11,12 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 // import required modules
-import { FreeMode, Thumbs } from "swiper/modules";
-import "./ShopDetailStyle.scss";
-import "../Home/QuickView/QuickViewStyle.scss";
 import { faFacebook, faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { FreeMode, Thumbs } from "swiper/modules";
+import "../Home/QuickView/QuickViewStyle.scss";
+import "./ShopDetailStyle.scss";
 function ShopDetail() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const params = useParams();
   const [value, setValue] = useState(1);
   const handleIncrement = () => {
     setValue((prevValue) => prevValue + 1);

@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Container, Col, Row, Nav, Input } from "reactstrap";
+import { faBars, faCartShopping, faHeart, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faHeart, faCartShopping, faBars } from "@fortawesome/free-solid-svg-icons";
+import Images from "assets/images/logo.png";
+import { useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { Col, Container, Input, Nav, Row } from "reactstrap";
 import "./style.scss";
-import Images from "../../assets/images/logo.png";
 const Header = (props, ref) => {
   useEffect(() => {
     const navsub = document.querySelectorAll(".navsub");

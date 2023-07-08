@@ -1,41 +1,23 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
-import { Container, Button } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faHeart, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import QuickView from "../QuickView";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { Button, Container } from "reactstrap";
 import "swiper/css";
 import "swiper/css/navigation";
+import { Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import QuickView from "../QuickView";
 import "./NewArrivalStyle.scss";
-import Product1 from "../../../assets/images/backpack.jpg";
-import Product2 from "../../../assets/images/glass.jpg";
-import Product3 from "../../../assets/images/hat.jpg";
-import Product4 from "../../../assets/images/shoes.jpg";
+import { fetchProduct } from "services";
 function NewArrival() {
-  const [modal, setModal] = useState({
-    isOpen: false,
-    data: null,
-  });
+  const [modal, setModal] = useState(false);
   const [product, setProduct] = useState({});
   const [data, setData] = useState([]);
-  const toggle = (id = null) => {
-    if (id != null) {
-      fetchDataByID(id).then(() => {
-        setModal((prev) => ({ isOpen: !prev.isOpen, data: id }));
-      });
-    } else {
-      const view = document.documentElement.scrollTop;
-      document.querySelector("#newArrival").scrollTo({ top: view, behavior: "smooth" });
-      setModal((prev) => ({ isOpen: !prev.isOpen, data: id }));
-    }
-  };
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/product/?_limit=6&_sort=date");
-        console.log(response.data);
+        const response = await fetchProduct(`?_limit=6&_sort=date`);
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -43,13 +25,15 @@ function NewArrival() {
     };
     fetchData();
   }, []);
-  const fetchDataByID = async (id) => {
-    try {
-      const res = await axios.get(`http://localhost:3000/product/${id}`);
-      console.log(res.data);
+  const toggle = async (id = null) => {
+    if (id != null) {
+      const res = await fetchProduct(`/${id}`);
       setProduct(res.data);
-    } catch (err) {
-      console.error("Error fetching data:", err);
+      setModal(true);
+    } else {
+      const view = document.documentElement.scrollTop;
+      document.querySelector("#newArrival").scrollTo({ top: view, behavior: "smooth" });
+      setModal(false);
     }
   };
   return (
@@ -82,42 +66,31 @@ function NewArrival() {
         }}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <div className="position-relative">
-            <img className="img-fluid" src={Product1} alt="" />
-            <div className="position-absolute badges">
-              <span className="d-block mainColor">New</span>
-            </div>
-            <div className="product-actions__mid position-absolute d-flex align-items-center justify-content-around">
-              <Button color="dark">
-                <FontAwesomeIcon icon={faShoppingCart} />
-              </Button>
-              <Button color="dark" onClick={() => toggle()}>
-                <FontAwesomeIcon icon={faEye} />
-              </Button>
-              <Button color="dark">
-                <FontAwesomeIcon icon={faHeart} />
-              </Button>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="img-fluid" src={Product2} alt="" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="img-fluid" src={Product3} alt="" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="img-fluid" src={Product4} alt="" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="img-fluid" src={Product1} alt="" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="img-fluid" src={Product2} alt="" />
-        </SwiperSlide>
+        {data.map((el) => {
+          return (
+            <SwiperSlide key={el.id}>
+              <div className="position-relative">
+                <img className="img-fluid" src={el.img} alt="" />
+                <div className="position-absolute badges">
+                  <span className="d-block mainColor">New</span>
+                </div>
+                <div className="product-actions__mid position-absolute d-flex align-items-center justify-content-around">
+                  <Button color="dark">
+                    <FontAwesomeIcon icon={faShoppingCart} />
+                  </Button>
+                  <Button color="dark" onClick={() => toggle(el.id)}>
+                    <FontAwesomeIcon icon={faEye} />
+                  </Button>
+                  <Button color="dark">
+                    <FontAwesomeIcon icon={faHeart} />
+                  </Button>
+                </div>
+              </div>
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
-      <QuickView modal={modal} toggle={toggle} />
+      <QuickView modal={modal} data={product} toggle={toggle} />
     </Container>
   );
 }
