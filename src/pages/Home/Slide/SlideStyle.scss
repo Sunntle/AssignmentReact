@@ -17,10 +17,17 @@
   a {
     letter-spacing: 2px;
   }
-  .redirectShop {
-    font-size: 0.75rem;
-  }
-  @media (max-width: 420px) {
-    top: 10%;
+  @media (max-width: 500px) {
+    top: 50%;
+    transform: translateY(-50%);
+    .buttonRedirect {
+      display: inline-flex;
+      align-items: center;
+      height: fit-content;
+      padding: 0.25rem 0.5rem !important;
+      .redirectShop {
+        font-size: 0.5rem;
+      }
+    }
   }
 }

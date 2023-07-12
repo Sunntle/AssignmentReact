@@ -1,0 +1,11 @@
+@import "index.scss";
+
+.wrap-your-order {
+  background-color: #f6f6f6;
+  .your-order__price {
+    color: $main-color;
+  }
+}
+.btn-confirm {
+  background: $main-color;
+}

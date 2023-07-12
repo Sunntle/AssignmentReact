@@ -10,10 +10,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import QuickView from "../QuickView";
 import "./NewArrivalStyle.scss";
 import { fetchProduct } from "services";
-function NewArrival() {
+function NewArrival({ setToast }) {
   const [modal, setModal] = useState(false);
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState(null);
   const [data, setData] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,19 +26,18 @@ function NewArrival() {
     };
     fetchData();
   }, []);
+
   const toggle = async (id = null) => {
     if (id != null) {
       const res = await fetchProduct(`/${id}`);
       setProduct(res.data);
       setModal(true);
     } else {
-      const view = document.documentElement.scrollTop;
-      document.querySelector("#newArrival").scrollTo({ top: view, behavior: "smooth" });
       setModal(false);
     }
   };
   return (
-    <Container>
+    <Container className="new-arrival">
       <div className="my-5">
         <h2 className="title position-relative d-inline-block pb-3 mb-3">New Arrival</h2>
         <p className="text-muted">
@@ -69,8 +69,8 @@ function NewArrival() {
         {data.map((el) => {
           return (
             <SwiperSlide key={el.id}>
-              <div className="position-relative">
-                <img className="img-fluid" src={el.img} alt="" />
+              <div className="position-relative shadow-sm">
+                <img className="img-fluid" src={el.allImg?.split(",")[0]} alt="" />
                 <div className="position-absolute badges">
                   <span className="d-block mainColor">New</span>
                 </div>
@@ -90,7 +90,7 @@ function NewArrival() {
           );
         })}
       </Swiper>
-      <QuickView modal={modal} data={product} toggle={toggle} />
+      {modal && <QuickView modal={modal} data={product} toggle={toggle} setToast={setToast} />}
     </Container>
   );
 }

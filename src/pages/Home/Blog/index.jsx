@@ -76,7 +76,7 @@ function Blog() {
               repudiandae modi. Numquam maxime exercitationem, nisi maiores laboriosam nostrum dolorum similique
               repudiandae! Ut doloremque fugit explicabo cum?
             </p>
-            <h4 className="fw-light fst-italic">By Elizabeth Cristonsel</h4>
+            <h4 className="fw-lighter fst-italic">By Elizabeth Cristonsel</h4>
           </div>
         </Col>
       </Row>

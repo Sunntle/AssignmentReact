@@ -2,6 +2,7 @@ import BreadcrumbComponent from "components/Breadcrumb";
 import Footer from "components/Footer";
 import Header from "components/Header";
 import ScrollToTop from "components/ScrollToTop";
+
 import "./DefaultLayout.scss";
 function DefaultLayout({ children }) {
   return (

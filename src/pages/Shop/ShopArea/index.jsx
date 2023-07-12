@@ -3,24 +3,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
-import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-  AccordionItem,
-  Button,
-  Col,
-  Container,
-  Form,
-  Input,
-  Label,
-  Row,
-} from "reactstrap";
+import { Button, Col, Container, Form, Input, Row } from "reactstrap";
 import "./ShopAreaStyle.scss";
-
+import "pages/Home/QuickView/QuickViewStyle.scss";
 import PaginationComponent from "components/Pagination";
 import { fetchProduct, fetchTypeProduct } from "services";
+import SideBarAccording from "../SideBar";
+
 function ShopArea() {
+  const options = [
+    { value: 0, label: "Default" },
+    { value: 1, label: "Low To High" },
+    { value: 2, label: "High To Low" },
+  ];
+  const accordingSideBar = ["categories", "filter price", "size", "color"];
   const [open, setOpen] = useState("0");
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,24 +25,38 @@ function ShopArea() {
   const [typeProduct, setTypeProduct] = useState([]);
   const [filter, setFilter] = useState(0);
   const [inputValue, setInputValue] = useState("");
+  const [order, setOrder] = useState(options[0]);
   const limit = 2;
+
   const fetchData = async (value = 0) => {
     try {
-      let response, res, resTypeProduct;
+      let response, res, resTypeProduct, stringResponse, stringRes;
       if (value !== 0 && typeof value == "number") {
-        response = await fetchProduct(`/idLoai/${value}`);
-        res = await fetchProduct(`/idLoai/${value}?_page=${currentPage}&_limit=${limit}`);
+        stringResponse = `/idLoai/${value}`;
+        stringRes = `/idLoai/${value}?_page=${currentPage}&_limit=${limit}`;
       } else if (value === 0) {
-        response = await fetchProduct();
-        res = await fetchProduct(`?_page=${currentPage}&_limit=${limit}`);
+        stringResponse = ``;
+        stringRes = `?_page=${currentPage}&_limit=${limit}`;
       } else if (value.includes("?q")) {
-        response = await fetchProduct(value);
-        res = await fetchProduct(`${value}&_page=${currentPage}&_limit=${limit}`);
+        stringResponse = value;
+        stringRes = `${value}&_page=${currentPage}&_limit=${limit}`; //?q=abc
       } else {
         const arrFilter = value.split("=");
-        response = await fetchProduct(`?price_${arrFilter[0]}=${arrFilter[1]}`);
-        res = await fetchProduct(`?_page=${currentPage}&_limit=${limit}&price_${arrFilter[0]}=${arrFilter[1]}`);
+        if (arrFilter[0] === "size" || arrFilter[0] === "color") {
+          stringResponse = `?${arrFilter[0]}_like=${arrFilter[1]}`; //?size_like=S//?color_like="red"
+          stringRes = `?_page=${currentPage}&_limit=${limit}&${arrFilter[0]}_like=${arrFilter[1]}`;
+        } else {
+          stringResponse = `?price_${arrFilter[0]}=${arrFilter[1]}`; //?price_gte//lte=500000
+          stringRes = `?_page=${currentPage}&_limit=${limit}&price_${arrFilter[0]}=${arrFilter[1]}`;
+        }
       }
+      if (order.value === 1) {
+        stringRes += `&_sort=price&_order=asc`;
+      } else if (order.value === 2) {
+        stringRes += `&_sort=price&_order=desc`;
+      }
+      response = await fetchProduct(stringResponse);
+      res = await fetchProduct(stringRes);
       resTypeProduct = await fetchTypeProduct();
       setTypeProduct(resTypeProduct.data);
       setTotalPages(Math.round(response.data.length / limit));
@@ -62,7 +72,7 @@ function ShopArea() {
   useEffect(() => {
     fetchData(filter);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, filter]);
+  }, [currentPage, filter, order]);
   const toggle = (id) => {
     if (open === id) {
       setOpen("0");
@@ -75,16 +85,59 @@ function ShopArea() {
   };
   useEffect(() => {
     const delaySearch = setTimeout(() => {
-      console.log(inputValue);
       handleClicked(`?q=${inputValue}`);
     }, 500);
     return () => clearTimeout(delaySearch);
   }, [inputValue]);
-  const options = [
-    { value: 0, label: "Default" },
-    { value: 1, label: "Low To High" },
-    { value: 2, label: "High To Low" },
-  ];
+
+  const renderContent = (el, index) => {
+    return (
+      <Col xs="12" sm="6" md="4" className="shop__product__item " key={index}>
+        <div className="position-relative product-img shadow-sm">
+          <img className="img-fluid" src={el.allImg?.split(",")[0]} alt="product" />
+          <div className="product-actions">
+            <Button className="position-absolute start-0 rounded-0 ">
+              <FontAwesomeIcon icon={faHeart} />
+            </Button>
+            <Button className="position-absolute start-50 rounded-0 seeMore">
+              <Link
+                to={{
+                  pathname: `${el.id}`,
+                }}
+                className="text-decoration-none text-white"
+              >
+                Detail
+              </Link>
+            </Button>
+            <Button className="position-absolute end-0  rounded-0 ">
+              <FontAwesomeIcon icon={faEye} />
+            </Button>
+          </div>
+        </div>
+        <div className="product-content py-2">
+          <h3 className="fs-5">{el.name}</h3>
+          <p className="my-2">{el.price.toLocaleString("vi", { style: "currency", currency: "VND" })}</p>
+          <div className="rating">
+            <span>
+              <FontAwesomeIcon icon={faStar} />
+            </span>
+            <span>
+              <FontAwesomeIcon icon={faStar} />
+            </span>
+            <span>
+              <FontAwesomeIcon icon={faStar} />
+            </span>
+            <span>
+              <FontAwesomeIcon icon={faStar} />
+            </span>
+            <span>
+              <FontAwesomeIcon icon={faStar} />
+            </span>
+          </div>
+        </div>
+      </Col>
+    );
+  };
   return (
     <Container className="my-5 py-5">
       <Row>
@@ -107,105 +160,25 @@ function ShopArea() {
               </Form>
             </div>
             <div className="sidebar__accordion">
-              <Accordion flush open={open} toggle={toggle}>
-                <AccordionItem>
-                  <AccordionHeader targetId="1">CATEGORIES</AccordionHeader>
-                  <AccordionBody className="text-muted text-start" onClick={() => handleClicked(0)} accordionId="1">
-                    All
-                  </AccordionBody>
-                  {typeProduct.map((el) => {
-                    return (
-                      <AccordionBody
-                        key={el.id}
-                        onClick={() => handleClicked(el.id)}
-                        className="text-muted text-start"
-                        accordionId="1"
-                      >
-                        {el.tenLoai}
-                      </AccordionBody>
-                    );
-                  })}
-                </AccordionItem>
-              </Accordion>
-              <Accordion flush open={open} toggle={toggle}>
-                <AccordionItem>
-                  <AccordionHeader targetId="2">FILTER PRICE</AccordionHeader>
-                  <AccordionBody className="text-muted text-start" accordionId="2">
-                    <Link
-                      className="text-muted text-decoration-none price"
-                      onClick={() => handleClicked("lte=500000")}
-                      data-price="0"
-                    >
-                      0 - 500000đ
-                    </Link>
-                  </AccordionBody>
-                  <AccordionBody className="text-muted text-start" accordionId="2">
-                    <Link
-                      className="text-muted text-decoration-none price"
-                      onClick={() => handleClicked("gte=500000")}
-                      data-price="1"
-                    >
-                      &gt;= 500000đ
-                    </Link>
-                  </AccordionBody>
-                </AccordionItem>
-              </Accordion>
-              <Accordion flush open={open} toggle={toggle}>
-                <AccordionItem>
-                  <AccordionHeader targetId="3">SIZE</AccordionHeader>
-                  <AccordionBody className="text-muted text-start" accordionId="3">
-                    <Link href="#" className="text-muted text-decoration-none size-s">
-                      S
-                    </Link>
-                  </AccordionBody>
-                  <AccordionBody className="text-muted text-start" accordionId="3">
-                    {" "}
-                    <Link href="#" className="text-muted text-decoration-none size-m">
-                      M
-                    </Link>
-                  </AccordionBody>
-                  <AccordionBody className="text-muted text-start" accordionId="3">
-                    {" "}
-                    <Link href="#" className="text-muted text-decoration-none size-l">
-                      L
-                    </Link>
-                  </AccordionBody>
-                  <AccordionBody className="text-muted text-start" accordionId="3">
-                    {" "}
-                    <Link href="#" className="text-muted text-decoration-none size-xl">
-                      XL
-                    </Link>
-                  </AccordionBody>
-                  <AccordionBody className="text-muted text-start" accordionId="3">
-                    {" "}
-                    <Link href="#" className="text-muted text-decoration-none size-2xl">
-                      2XL
-                    </Link>
-                  </AccordionBody>
-                </AccordionItem>
-              </Accordion>
-              <Accordion flush open={open} toggle={toggle}>
-                <AccordionItem>
-                  <AccordionHeader targetId="4">COLOR</AccordionHeader>
-                  <AccordionBody className="text-muted text-start" accordionId="4">
-                    <Label for="color-0">
-                      <Input
-                        style={{ width: 50 }}
-                        type="color"
-                        name="product__color"
-                        id="color-0"
-                        className="rounded-0 p-0"
-                      />
-                    </Label>
-                  </AccordionBody>
-                </AccordionItem>
-              </Accordion>
+              {accordingSideBar.map((el, index) => {
+                return (
+                  <SideBarAccording
+                    key={index}
+                    index={(++index).toString()}
+                    open={open}
+                    toggle={toggle}
+                    type={el}
+                    typeProduct={typeProduct}
+                    handleClicked={handleClicked}
+                  />
+                );
+              })}
             </div>
           </div>
         </Col>
         <Col xs="12" lg="9">
           <div className="shop__product__option my-lg-0 my-4">
-            <Row>
+            <Row className="align-items-center justify-content-center">
               <Col xs="6">
                 <p className="m-0 text-start">
                   Showing {data.length} of {countProduct} results
@@ -215,7 +188,8 @@ function ShopArea() {
                 <div className="d-inline-block">
                   <Select
                     options={options}
-                    defaultValue={options[0]}
+                    defaultValue={order}
+                    onChange={(value) => setOrder(value)}
                     theme={(theme) => ({
                       ...theme,
                       colors: {
@@ -232,49 +206,7 @@ function ShopArea() {
             </Row>
           </div>
           <div className="shop__product">
-            <Row id="shop__product__items">
-              {data.map((el, index) => {
-                return (
-                  <Col xs="12" sm="6" md="4" className="shop__product__item" key={index}>
-                    <div className="position-relative product-img">
-                      <img className="img-fluid" src={el.img} alt="product" />
-                      <div className="product-actions">
-                        <Button className="position-absolute start-0 rounded-0 ">
-                          <FontAwesomeIcon icon={faHeart} />
-                        </Button>
-                        <Button className="position-absolute start-50 border-end border-start rounded-0  seeMore">
-                          See Detail
-                        </Button>
-                        <Button className="position-absolute end-0  rounded-0 ">
-                          <FontAwesomeIcon icon={faEye} />
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="product-content py-2">
-                      <h3 className="fs-5">{el.name}</h3>
-                      <p className="my-2">{el.price.toLocaleString("vi", { style: "currency", currency: "VND" })}</p>
-                      <div className="rating">
-                        <span>
-                          <FontAwesomeIcon icon={faStar} />
-                        </span>
-                        <span>
-                          <FontAwesomeIcon icon={faStar} />
-                        </span>
-                        <span>
-                          <FontAwesomeIcon icon={faStar} />
-                        </span>
-                        <span>
-                          <FontAwesomeIcon icon={faStar} />
-                        </span>
-                        <span>
-                          <FontAwesomeIcon icon={faStar} />
-                        </span>
-                      </div>
-                    </div>
-                  </Col>
-                );
-              })}
-            </Row>
+            <Row id="shop__product__items">{data && data.map((el, index) => renderContent(el, index))}</Row>
             <PaginationComponent curPage={currentPage} totalPage={totalPages} onPageChange={handleSetCurPage} />
           </div>
         </Col>

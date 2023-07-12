@@ -9,7 +9,7 @@
 }
 .quantityBtn {
   input {
-    width: 40px;
+    width: 50px;
     text-align: center;
   }
   svg {
@@ -20,6 +20,9 @@ $colors: (
   "blue": blue,
   "red": red,
   "pink": pink,
+  "green": green,
+  "purple": purple,
+  "brown": brown,
 );
 input[type="radio"] {
   appearance: none;

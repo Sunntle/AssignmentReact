@@ -1,36 +1,38 @@
 @import "../../../../node_modules/bootstrap/scss/bootstrap";
-.support{
-    &:hover img {
-        animation: shaky 0.3s; // Animation starts running on hover
+.support {
+  &:hover img {
+    animation: shaky 0.3s; // Animation starts running on hover
+  }
+  @include media-breakpoint-up(lg) {
+    p {
+      margin: auto 3rem;
     }
-    &:not(&:last-child)::before{
-        position: absolute;
-        right: -14px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 0px;
-        background-color: $gray-400;
-        content: "";
-        height: 61px;
-        
-        @include media-breakpoint-up(md) {
-            width: 1px;
-        }
-        
-    }
-    
+  }
 }
-.caption{
-    color: $gray-700;
+.line::before {
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: $gray-400;
+  content: "";
+  height: 61px;
+  width: 0px;
+  @include media-breakpoint-up(md) {
+    width: 1px;
+  }
 }
-@keyframes shaky{
-    0%{
-        transform: rotate(-20deg);
-    }
-    50%{
-        transform: rotate(20deg);
-    }
-    100%{
-        transform: rotate(0deg);
-    }
+.caption {
+  color: $gray-700;
+}
+@keyframes shaky {
+  0% {
+    transform: rotate(-20deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }

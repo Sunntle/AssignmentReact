@@ -2,11 +2,19 @@ import { faMinusCircle, faPlusCircle, faStar } from "@fortawesome/free-solid-svg
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Col, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
+import { Button, Col, FormGroup, Input, Modal, ModalBody, ModalFooter, ModalHeader, Row, Form } from "reactstrap";
 import "./QuickViewStyle.scss";
+import { useDispatch } from "react-redux";
+import { addToCart } from "redux/cart/cartSlice";
+import { TOAST_MESSAGE_CONSTANT } from "components/Toast";
+import { Controller, useForm } from "react-hook-form";
+import InputForm from "components/Input";
+
 function QuickView(props) {
+  const { handleSubmit, control } = useForm();
   const [value, setValue] = useState(1);
-  const { modal, toggle, data } = props;
+  const { modal, toggle, data, setToast } = props;
+  const dispatch = useDispatch();
   const handleIncrement = () => {
     setValue((prevValue) => prevValue + 1);
   };
@@ -17,14 +25,20 @@ function QuickView(props) {
       return prevValue - 1;
     });
   };
+  const onSubmit = (dataForm) => {
+    const item = { ...data, ...dataForm, quantity: value };
+    dispatch(addToCart(item));
+    setToast(TOAST_MESSAGE_CONSTANT.add);
+  };
+
   return (
     <div>
-      <Modal size="lg" keyboard isOpen={modal} toggle={() => toggle(null)} centered>
+      <Modal scrollable size="lg" keyboard isOpen={modal} toggle={() => toggle(null)} centered>
         <ModalHeader toggle={() => toggle(null)}></ModalHeader>
         <ModalBody>
           <Row>
             <Col xs="12" md="5" className="mb-3">
-              <img src={data.img} alt="img" className="img-fluid" />
+              <img src={data.allImg?.split(",")[0]} alt="img" className="img-fluid" />
             </Col>
             <Col xs="12" md="7">
               <h2>{data.name}</h2>
@@ -51,43 +65,85 @@ function QuickView(props) {
                 iste ipsum ipsam obcaecati nihil sint autem sit, numquam et dolores? Odio totam quidem obcaecati
                 corporis.
               </div>
-              <FormGroup className="colorContainer">
-                <Label for="color">Color </Label>
-                <div>
-                  <Input id="blue" name="color" type="radio" value={"blue"} />
-                  <Input id="red" name="color" type="radio" value={"red"} />
-                  <Input id="pink" name="color" type="radio" value={"pink"} />
-                </div>
-              </FormGroup>
-              <FormGroup className="sizeContainer">
-                <Label for="size">Size </Label>
-                <div>
-                  <div className="d-inline-flex align-items-center">
-                    <Input id="s" name="size" type="radio" value={"s"} />
-                    <span>S</span>
+
+              <Form onSubmit={handleSubmit(onSubmit)}>
+                <FormGroup className="colorContainer">
+                  <div>
+                    <p className="m-0">Color</p>
+                    <Controller
+                      name={"colorSelected"}
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: true }}
+                      render={({
+                        field: { onChange, onBlur, value, name, ref },
+                        fieldState: { invalid, isTouched, isDirty, error },
+                        formState,
+                      }) =>
+                        data.allColor
+                          ?.split(",")
+                          .map((el, index) => (
+                            <InputForm
+                              key={el + index}
+                              id={el}
+                              value={el}
+                              name={name}
+                              type="radio"
+                              onBlur={onBlur}
+                              onChange={onChange}
+                            />
+                          ))
+                      }
+                    />
                   </div>
-                  <div className="d-inline-flex align-items-center">
-                    <Input id="m" name="size" type="radio" value={"m"} />
-                    <span>M</span>
+                </FormGroup>
+                <FormGroup className="sizeContainer">
+                  <div>
+                    <p className="m-0">Size</p>
+                    <Controller
+                      name="sizeSelected"
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: true }}
+                      render={({
+                        field: { onChange, onBlur, value, name, ref },
+                        fieldState: { invalid, isTouched, isDirty, error },
+                        formState,
+                      }) =>
+                        data.allSize?.split(",").map((el, index) => {
+                          return (
+                            <div key={el + index} className="d-inline-flex align-items-center">
+                              <InputForm
+                                id={el}
+                                value={el}
+                                name={name}
+                                type="radio"
+                                onBlur={onBlur}
+                                onChange={onChange}
+                              />
+                              <span className="text-uppercase">{el}</span>
+                            </div>
+                          );
+                        })
+                      }
+                    />
                   </div>
-                  <div className="d-inline-flex align-items-center">
-                    <Input id="l" name="size" type="radio" value={"l"} />
-                    <span>L</span>
+                </FormGroup>
+
+                <div className="quantity d-flex align-items-center">
+                  <div className="quantityBtn d-flex align-items-center justify-content-center ">
+                    <FontAwesomeIcon icon={faMinusCircle} onClick={handleDecrement} />
+                    <Input type="text" value={value} className="border-0 bg-transparent" disabled></Input>
+                    <FontAwesomeIcon icon={faPlusCircle} onClick={handleIncrement} />
+                  </div>
+                  <div className="cartBtn">
+                    <Button type="submit" className="btn-dark rounded-0 py-2 px-3">
+                      <span className="redirectShop">ADD TO CART</span>
+                    </Button>
                   </div>
                 </div>
-              </FormGroup>
-              <div className="quantity d-flex align-items-center">
-                <div className="quantityBtn d-flex align-items-center justify-content-center ">
-                  <FontAwesomeIcon icon={faMinusCircle} onClick={handleDecrement} />
-                  <Input type="text" value={value} className="border-0 bg-transparent" disabled></Input>
-                  <FontAwesomeIcon icon={faPlusCircle} onClick={handleIncrement} />
-                </div>
-                <div className="cartBtn">
-                  <Button className="btn-dark rounded-0 py-2 px-3">
-                    <span className="redirectShop">ADD TO CART</span>
-                  </Button>
-                </div>
-              </div>
+              </Form>
+
               <div className="wishlist my-3 d-inline-block border-bottom border-dark">
                 <Link className="text-dark text-decoration-none">+ Add to wish list</Link>
               </div>

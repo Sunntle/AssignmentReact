@@ -1,50 +1,52 @@
 @import "index.scss";
-.title {
-  &::before {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    width: 80px;
-    height: 2px;
-    content: "";
-    background-color: black;
-    margin: 0 auto;
-  }
-}
-.swiper-slide {
-  &:hover {
-    .product-actions__mid {
-      animation: delayShow 0.5s forwards;
+.new-arrival {
+  .title {
+    &::before {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      width: 80px;
+      height: 2px;
+      content: "";
+      background-color: black;
+      margin: 0 auto;
     }
   }
-}
-.badges {
-  top: 5%;
-  right: 5%;
-  span {
-    color: #5b2434;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+  .swiper-slide {
+    &:hover {
+      .product-actions__mid {
+        animation: delayShow 0.5s forwards;
+      }
+    }
   }
-  z-index: 1;
-}
-.product-actions__mid {
-  opacity: 0;
-  top: 100%;
-  left: 50%;
-  gap: 10px;
-  height: 38px;
-  transform: translateY(-50%) translateX(-50%);
-  z-index: 2;
-}
-
-@keyframes delayShow {
-  75% {
+  .badges {
+    top: 5%;
+    right: 5%;
+    span {
+      color: #5b2434;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    z-index: 1;
+  }
+  .product-actions__mid {
     opacity: 0;
+    top: 100%;
+    left: 50%;
+    gap: 10px;
+    height: 38px;
+    transform: translateY(-50%) translateX(-50%);
+    z-index: 2;
   }
-  100% {
-    opacity: 1;
-    top: 50%;
+
+  @keyframes delayShow {
+    75% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+      top: 50%;
+    }
   }
 }

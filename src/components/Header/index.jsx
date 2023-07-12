@@ -5,7 +5,9 @@ import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Col, Container, Input, Nav, Row } from "reactstrap";
 import "./style.scss";
+import { useSelector } from "react-redux";
 const Header = (props, ref) => {
+  const cart = useSelector((state) => state.cartReducer);
   useEffect(() => {
     const navsub = document.querySelectorAll(".navsub");
     const showNav = document.querySelector(".showNav");
@@ -26,7 +28,7 @@ const Header = (props, ref) => {
         <Container>
           <div className="text-white align-items-center p-2 d-none d-md-flex">
             <Col lg="6" md="7">
-              <p className="m-0">Miễn phí vận chuyển, bảo đảm đổi trả hoặc hoàn tiền trong 30 ngày...</p>
+              <p className="m-0">Free shipping, 30-day money-back or exchange guarantee...</p>
             </Col>
             <Col lg="6" md="5">
               <div className="header__top__right text-end">
@@ -104,7 +106,7 @@ const Header = (props, ref) => {
           </Col>
           <Col lg="3" className="d-none d-lg-block navsub">
             <div className="header__icon d-flex p-lg-0 px-3 py-2 justify-content-start justify-content-lg-end align-items-center">
-              <Input type="text" placeholder="Tìm kiếm" />
+              <Input type="text" placeholder="Search..." />
               <Link className="text-black fs-5">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </Link>
@@ -114,7 +116,9 @@ const Header = (props, ref) => {
               <div className="cart d-flex justify-content-center align-items-center">
                 <Link to={"/cart"} className="text-black fs-5 position-relative">
                   <FontAwesomeIcon icon={faCartShopping} />
-                  <div className="position-absolute countProduct fs-6 fw-bolder">20</div>
+                  <div className="position-absolute countProduct fs-6 fw-bolder">
+                    {cart.reduce((acc, cur) => acc + cur.quantity, 0)}
+                  </div>
                 </Link>
                 {/* <div className="price mx-2 fw-semibold">$25.00</div> */}
               </div>

@@ -9,7 +9,7 @@ function NoBreadcrumb({ children }) {
       <header>
         <Header />
       </header>
-      <div className="content">{children}</div>
+      <div className="content position-relative">{children}</div>
       <footer>
         {" "}
         <Footer />

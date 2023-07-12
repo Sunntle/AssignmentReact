@@ -1,6 +1,6 @@
 import NotFound from "../components/NotFound";
 import React from "react";
-import { DefaultLayout, NotHeaderLayout, NoBreadcrumb } from "../layout";
+import { DefaultLayout, NoBreadcrumb } from "../layout";
 const publicRoutes = [
   {
     path: "",
@@ -40,9 +40,14 @@ const publicRoutes = [
     layout: DefaultLayout,
   },
   {
+    path: "checkout",
+    component: React.lazy(() => import("../pages/Checkout")),
+    layout: DefaultLayout,
+  },
+  {
     path: "*",
     component: NotFound,
-    layout: NotHeaderLayout,
+    layout: NoBreadcrumb,
   },
 ];
 export default publicRoutes;

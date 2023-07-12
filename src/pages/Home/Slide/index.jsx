@@ -34,7 +34,7 @@ function Slide() {
             A specialist label creating luxury essentials. Ethically crafted with an unwavering commitment to
             exceptional quality.
           </p>
-          <Link href="#" className="btn btn-dark py-2 px-3">
+          <Link to="shop" className="btn btn-dark py-2 px-3 buttonRedirect">
             <span className="redirectShop">SHOP NOW</span>
           </Link>
         </div>
