@@ -19,7 +19,7 @@ import { fetchProduct } from "services";
 import { useDispatch } from "react-redux";
 import { addToCart } from "redux/cart/cartSlice";
 import { Controller, useForm } from "react-hook-form";
-import InputForm from "components/Input";
+import { InputLabel } from "components/Input";
 function ShopDetail() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const indexProduct = useParams();
@@ -143,7 +143,7 @@ function ShopDetail() {
                     data.allColor
                       ?.split(",")
                       .map((el, index) => (
-                        <InputForm
+                        <InputLabel
                           key={el + index}
                           id={el}
                           value={el}
@@ -173,7 +173,7 @@ function ShopDetail() {
                     data.allSize?.split(",").map((el, index) => {
                       return (
                         <div key={el + index} className="d-inline-flex align-items-center">
-                          <InputForm id={el} value={el} name={name} type="radio" onBlur={onBlur} onChange={onChange} />
+                          <InputLabel id={el} value={el} name={name} type="radio" onBlur={onBlur} onChange={onChange} />
                           <span className="text-uppercase">{el}</span>
                         </div>
                       );

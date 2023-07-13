@@ -51,7 +51,7 @@ const Header = (props, ref) => {
             </div>
           </Col>
           <Col xs="6" className="d-lg-none text-end">
-            <Link href="#" className="text-decoration-none text-dark showNav fs-3">
+            <Link href="#" className="text-decoration-none text-dark showNav fs-3 p-3">
               <FontAwesomeIcon icon={faBars} />
             </Link>
           </Col>
@@ -78,10 +78,10 @@ const Header = (props, ref) => {
                   Pages
                 </NavLink>
                 <Nav className="menu-lv2 bg-black rounded">
-                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/blog">
+                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="blog">
                     Blog
                   </NavLink>
-                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/contact">
+                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="contact">
                     Contact
                   </NavLink>
                 </Nav>
@@ -90,7 +90,7 @@ const Header = (props, ref) => {
                 className=" fs-5 fw-semibold text-black nav-link blog"
                 exact="true"
                 activeclassname="active"
-                to="/contact"
+                to="/blog"
               >
                 Blog
               </NavLink>

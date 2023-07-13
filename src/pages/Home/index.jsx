@@ -17,7 +17,7 @@ function Home() {
     return () => clearTimeout(delay);
   }, [toast]);
   return (
-    <div className="position-relative">
+    <div className="">
       <ToastMessage isOpen={toggleToast} message={toast} />
       <Slide />
       <Feature />

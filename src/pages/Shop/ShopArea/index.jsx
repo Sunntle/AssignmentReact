@@ -7,7 +7,7 @@ import { Button, Col, Container, Form, Input, Row } from "reactstrap";
 import "./ShopAreaStyle.scss";
 import "pages/Home/QuickView/QuickViewStyle.scss";
 import PaginationComponent from "components/Pagination";
-import { fetchProduct, fetchTypeProduct } from "services";
+import { fetchColorProduct, fetchProduct, fetchSizeProduct, fetchTypeProduct } from "services";
 import SideBarAccording from "../SideBar";
 
 function ShopArea() {
@@ -16,21 +16,40 @@ function ShopArea() {
     { value: 1, label: "Low To High" },
     { value: 2, label: "High To Low" },
   ];
-  const accordingSideBar = ["categories", "filter price", "size", "color"];
+
   const [open, setOpen] = useState("0");
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [countProduct, setCountProduct] = useState(0);
   const [typeProduct, setTypeProduct] = useState([]);
+  const [sizeProduct, setSizeProduct] = useState([]);
+  const [colorProduct, setColorProduct] = useState([]);
   const [filter, setFilter] = useState(0);
   const [inputValue, setInputValue] = useState("");
   const [order, setOrder] = useState(options[0]);
   const limit = 2;
-
+  const accordingSideBar = [
+    {
+      name: "categories",
+      data: typeProduct,
+    },
+    {
+      name: "filter price",
+      data: null,
+    },
+    {
+      name: "size",
+      data: sizeProduct,
+    },
+    {
+      name: "color",
+      data: colorProduct,
+    },
+  ];
   const fetchData = async (value = 0) => {
     try {
-      let response, res, resTypeProduct, stringResponse, stringRes;
+      let response, res, stringResponse, stringRes;
       if (value !== 0 && typeof value == "number") {
         stringResponse = `/idLoai/${value}`;
         stringRes = `/idLoai/${value}?_page=${currentPage}&_limit=${limit}`;
@@ -57,7 +76,11 @@ function ShopArea() {
       }
       response = await fetchProduct(stringResponse);
       res = await fetchProduct(stringRes);
-      resTypeProduct = await fetchTypeProduct();
+      const resTypeProduct = await fetchTypeProduct();
+      const resSizeProduct = await fetchSizeProduct();
+      const resColorProduct = await fetchColorProduct();
+      setColorProduct(resColorProduct.data);
+      setSizeProduct(resSizeProduct.data);
       setTypeProduct(resTypeProduct.data);
       setTotalPages(Math.round(response.data.length / limit));
       setCountProduct(response.data.length);
@@ -163,12 +186,12 @@ function ShopArea() {
               {accordingSideBar.map((el, index) => {
                 return (
                   <SideBarAccording
-                    key={index}
+                    key={el.name + index}
                     index={(++index).toString()}
                     open={open}
                     toggle={toggle}
-                    type={el}
-                    typeProduct={typeProduct}
+                    type={el.name}
+                    data={el.data}
                     handleClicked={handleClicked}
                   />
                 );

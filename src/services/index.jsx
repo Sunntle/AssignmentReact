@@ -9,3 +9,12 @@ export const fetchTypeProduct = async () => {
   const response = await axios.get(`http://localhost:3000/loai/`);
   return response;
 };
+
+export const fetchSizeProduct = async () => {
+  const response = await axios.get(`http://localhost:3000/size/`);
+  return response;
+};
+export const fetchColorProduct = async () => {
+  const response = await axios.get(`http://localhost:3000/color/`);
+  return response;
+};

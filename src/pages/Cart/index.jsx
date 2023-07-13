@@ -86,8 +86,8 @@ function Cart() {
                       <Link to="/" className="text-decoration-none text-dark fw-bolder">
                         <h5>{el.name}</h5>
                       </Link>
-                      <p className="my-3 text-capitalize">Color: {el.colorSelected}</p>
-                      <p className="text-capitalize">Size: {el.sizeSelected}</p>
+                      {el.colorSelected && <p className="my-3 text-capitalize">Color: {el.colorSelected}</p>}
+                      {el.sizeSelected && <p className="text-capitalize">Size: {el.sizeSelected}</p>}
                     </div>
                   </td>
                   <td className="price">{el.price.toLocaleString("vi", { style: "currency", currency: "VND" })}</td>

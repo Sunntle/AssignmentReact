@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, FormGroup, Input } from "reactstrap";
 
-function SideBarAccording({ index, open, toggle, type, typeProduct, handleClicked }) {
+function SideBarAccording({ index, open, toggle, type, data, handleClicked }) {
   const renderContent = (type) => {
     switch (type) {
       case "categories":
@@ -11,7 +11,7 @@ function SideBarAccording({ index, open, toggle, type, typeProduct, handleClicke
             <AccordionBody className="text-muted text-start" onClick={() => handleClicked(0)} accordionId={index}>
               All
             </AccordionBody>
-            {typeProduct.map((el) => {
+            {data?.map((el) => {
               return (
                 <AccordionBody
                   key={el.id}
@@ -43,29 +43,15 @@ function SideBarAccording({ index, open, toggle, type, typeProduct, handleClicke
       case "size":
         return (
           <>
-            <AccordionBody className="text-muted text-start" accordionId={index}>
-              <Link onClick={() => handleClicked("size=S")} className="text-muted text-decoration-none size-s">
-                S
-              </Link>
-            </AccordionBody>
-            <AccordionBody className="text-muted text-start" accordionId={index}>
-              {" "}
-              <Link onClick={() => handleClicked("size=M")} className="text-muted text-decoration-none size-m">
-                M
-              </Link>
-            </AccordionBody>
-            <AccordionBody className="text-muted text-start" accordionId={index}>
-              {" "}
-              <Link onClick={() => handleClicked("size=L")} className="text-muted text-decoration-none size-l">
-                L
-              </Link>
-            </AccordionBody>
-            <AccordionBody className="text-muted text-start" accordionId={index}>
-              {" "}
-              <Link onClick={() => handleClicked("size=XL")} className="text-muted text-decoration-none size-xl">
-                XL
-              </Link>
-            </AccordionBody>
+            {data?.map((el, i) => {
+              return (
+                <AccordionBody key={i + index} className="text-muted text-start" accordionId={index}>
+                  <Link onClick={() => handleClicked(`size=${el.size}`)} className="text-muted text-decoration-none">
+                    {el.size}
+                  </Link>
+                </AccordionBody>
+              );
+            })}
           </>
         );
       case "color":
@@ -74,21 +60,18 @@ function SideBarAccording({ index, open, toggle, type, typeProduct, handleClicke
             <AccordionBody className="text-muted text-start" accordionId={index}>
               <FormGroup className="colorContainer">
                 <div>
-                  <Input
-                    id="blue"
-                    name="color"
-                    type="radio"
-                    value={"blue"}
-                    onClick={() => handleClicked("color=blue")}
-                  />
-                  <Input id="red" name="color" type="radio" value={"red"} onClick={() => handleClicked("color=red")} />
-                  <Input
-                    id="pink"
-                    name="color"
-                    type="radio"
-                    value={"pink"}
-                    onClick={() => handleClicked("color=pink")}
-                  />
+                  {data?.map((el, i) => {
+                    return (
+                      <Input
+                        key={i}
+                        id={el.color}
+                        name="color"
+                        type="radio"
+                        value={el.color}
+                        onClick={() => handleClicked(`color=${el.color}`)}
+                      />
+                    );
+                  })}
                 </div>
               </FormGroup>
             </AccordionBody>

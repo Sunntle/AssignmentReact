@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "redux/cart/cartSlice";
 import { TOAST_MESSAGE_CONSTANT } from "components/Toast";
 import { Controller, useForm } from "react-hook-form";
-import InputForm from "components/Input";
+import { InputLabel } from "components/Input";
 
 function QuickView(props) {
   const { handleSubmit, control } = useForm();
@@ -67,53 +67,25 @@ function QuickView(props) {
               </div>
 
               <Form onSubmit={handleSubmit(onSubmit)}>
-                <FormGroup className="colorContainer">
-                  <div>
-                    <p className="m-0">Color</p>
-                    <Controller
-                      name={"colorSelected"}
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: true }}
-                      render={({
-                        field: { onChange, onBlur, value, name, ref },
-                        fieldState: { invalid, isTouched, isDirty, error },
-                        formState,
-                      }) =>
-                        data.allColor
-                          ?.split(",")
-                          .map((el, index) => (
-                            <InputForm
-                              key={el + index}
-                              id={el}
-                              value={el}
-                              name={name}
-                              type="radio"
-                              onBlur={onBlur}
-                              onChange={onChange}
-                            />
-                          ))
-                      }
-                    />
-                  </div>
-                </FormGroup>
-                <FormGroup className="sizeContainer">
-                  <div>
-                    <p className="m-0">Size</p>
-                    <Controller
-                      name="sizeSelected"
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: true }}
-                      render={({
-                        field: { onChange, onBlur, value, name, ref },
-                        fieldState: { invalid, isTouched, isDirty, error },
-                        formState,
-                      }) =>
-                        data.allSize?.split(",").map((el, index) => {
-                          return (
-                            <div key={el + index} className="d-inline-flex align-items-center">
-                              <InputForm
+                {data.allColor && (
+                  <FormGroup className="colorContainer">
+                    <div>
+                      <p className="m-0">Color</p>
+                      <Controller
+                        name={"colorSelected"}
+                        control={control}
+                        defaultValue=""
+                        rules={{ required: true }}
+                        render={({
+                          field: { onChange, onBlur, value, name, ref },
+                          fieldState: { invalid, isTouched, isDirty, error },
+                          formState,
+                        }) =>
+                          data.allColor
+                            ?.split(",")
+                            .map((el, index) => (
+                              <InputLabel
+                                key={el + index}
                                 id={el}
                                 value={el}
                                 name={name}
@@ -121,14 +93,46 @@ function QuickView(props) {
                                 onBlur={onBlur}
                                 onChange={onChange}
                               />
-                              <span className="text-uppercase">{el}</span>
-                            </div>
-                          );
-                        })
-                      }
-                    />
-                  </div>
-                </FormGroup>
+                            ))
+                        }
+                      />
+                    </div>
+                  </FormGroup>
+                )}
+                {data.allSize && (
+                  <FormGroup className="sizeContainer">
+                    <div>
+                      <p className="m-0">Size</p>
+                      <Controller
+                        name="sizeSelected"
+                        control={control}
+                        defaultValue=""
+                        rules={{ required: true }}
+                        render={({
+                          field: { onChange, onBlur, value, name, ref },
+                          fieldState: { invalid, isTouched, isDirty, error },
+                          formState,
+                        }) =>
+                          data.allSize?.split(",").map((el, index) => {
+                            return (
+                              <div key={el + index} className="d-inline-flex align-items-center">
+                                <InputLabel
+                                  id={el}
+                                  value={el}
+                                  name={name}
+                                  type="radio"
+                                  onBlur={onBlur}
+                                  onChange={onChange}
+                                />
+                                <span className="text-uppercase">{el}</span>
+                              </div>
+                            );
+                          })
+                        }
+                      />
+                    </div>
+                  </FormGroup>
+                )}
 
                 <div className="quantity d-flex align-items-center">
                   <div className="quantityBtn d-flex align-items-center justify-content-center ">
