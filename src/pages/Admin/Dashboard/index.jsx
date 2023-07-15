@@ -8,7 +8,7 @@ import { Pie } from "react-chartjs-2";
 function Dashboard() {
   ChartJS.register(ArcElement, Tooltip, Legend);
   const data = {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: ["Jacket", "Bottoms", "Top", "Sock", "Pants", "Hoodie"],
     datasets: [
       {
         label: "# of Votes",

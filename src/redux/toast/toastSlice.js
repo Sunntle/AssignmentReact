@@ -16,10 +16,7 @@ const toastSlice = createSlice({
       };
     },
     hideToast: (state, action) => {
-      return {
-        ...state,
-        isOpen: false,
-      };
+      return initialState;
     },
   },
 });
