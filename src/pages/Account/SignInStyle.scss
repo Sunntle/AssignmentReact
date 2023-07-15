@@ -2,7 +2,7 @@
 .signin {
   a.nav-link {
     color: #000;
-
+    cursor: pointer;
     h2 {
       font-weight: 700;
     }
@@ -13,7 +13,7 @@
   li {
     position: relative;
   }
-  li:nth-child(1)::after {
+  li:nth-child(1):not(.custom-scss):after {
     position: absolute;
     width: 2px;
     height: 20px;

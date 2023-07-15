@@ -1,11 +1,17 @@
 @import "index.scss";
-.swiper-slide {
-  img {
-    width: 100%;
-    object-fit: cover;
-    transition: all ease-in-out 0.5s;
-    &:hover {
-      scale: 1.1;
+.wrap-slide {
+  padding: 1.5rem;
+  @media (max-width: 576px) {
+    padding: 3rem;
+  }
+  .swiper-slide {
+    img {
+      width: 100%;
+      object-fit: cover;
+      transition: all ease-in-out 0.5s;
+      &:hover {
+        scale: 1.1;
+      }
     }
   }
 }

@@ -32,7 +32,7 @@ const Header = (props, ref) => {
             </Col>
             <Col lg="6" md="5">
               <div className="header__top__right text-end">
-                <Link to="/sign-in" className="text-decoration-none text-uppercase text-white px-2">
+                <Link to="/account" className="text-decoration-none text-uppercase text-white px-2">
                   Sign in
                 </Link>
                 <Link href="#" className="text-decoration-none text-uppercase text-white px-2">

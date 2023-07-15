@@ -6,7 +6,7 @@ import "./SaleStyle.scss";
 function Sale() {
   const [countdown, setCountdown] = useState(null);
   useEffect(() => {
-    const endTime = moment("2023-08-26 00:00:00"); // Replace with your desired end time
+    const endTime = moment("2023-08-26 00:00:00", "YYYY-MM-DD HH:mm:ss"); // Ensure the format matches
     const interval = setInterval(() => {
       const now = moment();
       const remainingTime = endTime.diff(now);
@@ -32,7 +32,7 @@ function Sale() {
             <h2>Deal of the day</h2>
             <div className="timer text-center">
               <span className="cdown">
-                {countdown && countdown.days()}
+                {countdown && countdown.asDays().toFixed(0)}
                 <p>days</p>
               </span>
               <span className="cdown">
@@ -48,7 +48,7 @@ function Sale() {
                 <p>secs</p>
               </span>
             </div>
-            <Link href="#" className="btn btn-dark py-2 px-3">
+            <Link to="/shop" className="btn btn-dark py-2 px-3">
               <span className="redirectShop">SHOP NOW</span>
             </Link>
           </Col>

@@ -7,11 +7,11 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "redux/store";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Spinner } from "reactstrap";
+import LoadingComponent from "components/Loading";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Suspense fallback={<Spinner color="danger">Loading...</Spinner>}>
+    <Suspense fallback={<LoadingComponent />}>
       <BrowserRouter>
         <Provider store={store}>
           <App />

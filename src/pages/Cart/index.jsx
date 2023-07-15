@@ -5,48 +5,38 @@ import { Button, Container, Input, Table } from "reactstrap";
 import "./CartStyle.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { removeAll, removeItem, updateCart } from "redux/cart/cartSlice";
-import ToastMessage from "components/Toast";
-import { useEffect, useState } from "react";
-import { TOAST_MESSAGE_CONSTANT } from "components/Toast";
+import { showToast } from "redux/toast/toastSlice";
 function Cart() {
   const cart = useSelector((state) => state.cartReducer);
   const dispatch = useDispatch();
-  const [toast, setToast] = useState({});
-  const [toggleToast, setToggleToast] = useState(false);
-
-  useEffect(() => {
-    if (Object.keys(toast).length > 1) setToggleToast(true);
-    const delay = setTimeout(() => {
-      setToggleToast(false);
-      setToast({});
-    }, 2000);
-    return () => clearTimeout(delay);
-  }, [toast]);
 
   const handleIncrement = ({ ...product }) => {
     product.quantity += 1;
     dispatch(updateCart(product));
-    setToast(TOAST_MESSAGE_CONSTANT.update);
+    const actionsToast = { type: "info", message: "Updated product successfully!" };
+    dispatch(showToast(actionsToast));
   };
 
   const handleDecrement = ({ ...product }) => {
     if (product.quantity < 2) return;
     product.quantity -= 1;
     dispatch(updateCart(product));
-    setToast(TOAST_MESSAGE_CONSTANT.update);
+    const actionsToast = { type: "info", message: "Updated product successfully!" };
+    dispatch(showToast(actionsToast));
   };
   const clearCart = () => {
     dispatch(removeAll());
-    setToast(TOAST_MESSAGE_CONSTANT.removeAll);
+    const actionsToast = { type: "warning", message: "Cart empty!" };
+    dispatch(showToast(actionsToast));
   };
   const handleRemoveItem = (product) => {
     dispatch(removeItem(product));
-    setToast(TOAST_MESSAGE_CONSTANT.remove);
+    const actionsToast = { type: "danger", message: "Deleted product successfully!" };
+    dispatch(showToast(actionsToast));
   };
   if (cart.length < 1)
     return (
       <Container className="cart py-5">
-        <ToastMessage isOpen={toggleToast} message={toast} />
         <div className="my-5">
           <h1>
             <FontAwesomeIcon icon={faCartShopping} className="cartIconEmpty" />
@@ -60,10 +50,9 @@ function Cart() {
     );
   return (
     <Container className="cart py-5">
-      <ToastMessage isOpen={toggleToast} message={toast} />
       <div className="my-5">
         <h3>Your cart items</h3>
-        <Table className="table-responsive">
+        <Table responsive>
           <thead>
             <tr>
               <th>Image</th>

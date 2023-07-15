@@ -1,6 +1,5 @@
 import React from "react";
 import { FormFeedback, Input, Label } from "reactstrap";
-
 function InputLabel(props) {
   const { id, value, name, type = "text", onBlur, onChange, label, placeholder, inputRef, error } = props;
   return (
@@ -19,7 +18,9 @@ function InputLabel(props) {
         invalid={!!error}
         ref={inputRef}
       ></Input>
-      {error !== undefined && <FormFeedback>Oh noes! You must fill {name} in this input</FormFeedback>}
+      {error !== undefined && (
+        <FormFeedback>{error.message ? error.message : `Oh noes! You must fill ${name} in this input`}</FormFeedback>
+      )}
     </>
   );
 }

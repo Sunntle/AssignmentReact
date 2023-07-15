@@ -1,7 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import publicRoutes from "./routes";
-import "./App.css";
-import { Fragment } from "react";
+import publicRoutes, { privateRoutes } from "./routes";
+import "./App.scss";
+import { Fragment, useEffect } from "react";
+import PrivateRoute from "utils/PrivateRoute";
+import { useDispatch, useSelector } from "react-redux";
+import { hideToast } from "redux/toast/toastSlice";
+import ToastMessage from "components/Toast";
 function App() {
   const assignLayout = (route) => {
     let Layout = route.layout;
@@ -12,8 +16,19 @@ function App() {
     }
     return Layout;
   };
+  const toast = useSelector((state) => state.toastReducer);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      dispatch(hideToast());
+    }, 2000);
+    return () => {
+      clearTimeout(delay);
+    };
+  }, [dispatch, toast.isOpen]);
   return (
-    <div className="App">
+    <div className="App position-relative">
+      <ToastMessage toast={toast} />
       <Routes>
         {publicRoutes.map((route, index) => {
           let Layout = assignLayout(route);
@@ -64,6 +79,27 @@ function App() {
               }
               key={index}
             />
+          );
+        })}
+        {privateRoutes.map((route, index) => {
+          return (
+            <Route key={index} path={route.path} element={<PrivateRoute />}>
+              {route.routes.map((nestedRoute, nestedIndex) => {
+                const Layout = assignLayout(nestedRoute);
+                return (
+                  <Route
+                    key={nestedIndex}
+                    path={nestedRoute.path}
+                    exact
+                    element={
+                      <Layout>
+                        <nestedRoute.component />
+                      </Layout>
+                    }
+                  />
+                );
+              })}
+            </Route>
           );
         })}
       </Routes>

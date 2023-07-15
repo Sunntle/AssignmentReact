@@ -6,14 +6,14 @@ import { Button, Col, FormGroup, Input, Modal, ModalBody, ModalFooter, ModalHead
 import "./QuickViewStyle.scss";
 import { useDispatch } from "react-redux";
 import { addToCart } from "redux/cart/cartSlice";
-import { TOAST_MESSAGE_CONSTANT } from "components/Toast";
 import { Controller, useForm } from "react-hook-form";
 import { InputLabel } from "components/Input";
+import { showToast } from "redux/toast/toastSlice";
 
 function QuickView(props) {
   const { handleSubmit, control } = useForm();
   const [value, setValue] = useState(1);
-  const { modal, toggle, data, setToast } = props;
+  const { modal, toggle, data } = props;
   const dispatch = useDispatch();
   const handleIncrement = () => {
     setValue((prevValue) => prevValue + 1);
@@ -28,7 +28,8 @@ function QuickView(props) {
   const onSubmit = (dataForm) => {
     const item = { ...data, ...dataForm, quantity: value };
     dispatch(addToCart(item));
-    setToast(TOAST_MESSAGE_CONSTANT.add);
+    const actionsToast = { type: "success", message: "Add to cart successfully" };
+    dispatch(showToast(actionsToast));
   };
 
   return (

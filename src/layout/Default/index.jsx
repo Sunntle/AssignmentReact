@@ -4,6 +4,7 @@ import Header from "components/Header";
 import ScrollToTop from "components/ScrollToTop";
 
 import "./DefaultLayout.scss";
+
 function DefaultLayout({ children }) {
   return (
     <div className="wrapper position-relative">

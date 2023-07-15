@@ -1,47 +1,47 @@
-import NotFound from "../components/NotFound";
-import React from "react";
-import { DefaultLayout, NoBreadcrumb } from "../layout";
+import NotFound from "../pages/NotFound";
+import { lazy } from "react";
+import { DefaultLayout, NoBreadcrumb, NotHeaderLayout } from "../layout";
 const publicRoutes = [
   {
     path: "",
-    component: React.lazy(() => import("../pages/Home")),
+    component: lazy(() => import("../pages/Home")),
     layout: NoBreadcrumb,
   },
   {
     path: "home",
-    component: React.lazy(() => import("../pages/Home")),
+    component: lazy(() => import("../pages/Home")),
     layout: NoBreadcrumb,
   },
   {
     path: "shop/*",
-    component: React.lazy(() => import("../pages/Shop")),
+    component: lazy(() => import("../pages/Shop")),
     layout: DefaultLayout,
     routes: [
       {
         path: ":id",
-        component: React.lazy(() => import("../pages/ShopDetail")),
+        component: lazy(() => import("../pages/ShopDetail")),
         layout: NoBreadcrumb,
       },
     ],
   },
   {
     path: "pages",
-    component: React.lazy(() => import("../pages/Page")),
+    component: lazy(() => import("../pages/Page")),
     layout: DefaultLayout,
   },
   {
     path: "cart",
-    component: React.lazy(() => import("../pages/Cart")),
+    component: lazy(() => import("../pages/Cart")),
     layout: DefaultLayout,
   },
   {
-    path: "sign-in",
-    component: React.lazy(() => import("../pages/Sign-In")),
+    path: "account",
+    component: lazy(() => import("../pages/Account")),
     layout: DefaultLayout,
   },
   {
     path: "checkout",
-    component: React.lazy(() => import("../pages/Checkout")),
+    component: lazy(() => import("../pages/Checkout")),
     layout: DefaultLayout,
   },
   {
@@ -50,4 +50,27 @@ const publicRoutes = [
     layout: NoBreadcrumb,
   },
 ];
+const privateRoutes = [
+  {
+    path: "admin/*",
+    routes: [
+      {
+        path: "",
+        component: lazy(() => import("../pages/Admin/Dashboard")),
+        layout: NotHeaderLayout,
+      },
+      {
+        path: "user",
+        component: lazy(() => import("../pages/Admin/User")),
+        layout: NotHeaderLayout,
+      },
+      {
+        path: "product",
+        component: lazy(() => import("../pages/Admin/Product")),
+        layout: NotHeaderLayout,
+      },
+    ],
+  },
+];
 export default publicRoutes;
+export { privateRoutes };

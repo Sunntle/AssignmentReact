@@ -20,35 +20,37 @@ function Blog() {
     <Container>
       <Row className="align-items-center justify-content-center">
         <Col xs="12" md="6" lg="4" className="p-5">
-          <Swiper
-            effect={"cards"}
-            grabCursor={true}
-            modules={[EffectCards]}
-            className="mySwiper"
-            onSlideChange={(slide) => handleShowContent(slide.activeIndex)}
-          >
-            <SwiperSlide>
-              <img
-                src="https://flone.jamstacktemplates.dev/assets/img/blog/blog-1.jpg"
-                alt="blog"
-                className="img-fluid"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://flone.jamstacktemplates.dev/assets/img/blog/blog-2.jpg"
-                alt="blog"
-                className="img-fluid"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="https://flone.jamstacktemplates.dev/assets/img/blog/blog-3.jpg"
-                alt="blog"
-                className="img-fluid"
-              />
-            </SwiperSlide>
-          </Swiper>
+          <div className="wrap-slide">
+            <Swiper
+              effect={"cards"}
+              grabCursor={true}
+              modules={[EffectCards]}
+              className="mySwiper"
+              onSlideChange={(slide) => handleShowContent(slide.activeIndex)}
+            >
+              <SwiperSlide>
+                <img
+                  src="https://flone.jamstacktemplates.dev/assets/img/image-slider/image-slider-1.jpg"
+                  alt="blog"
+                  className="img-fluid"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <img
+                  src="https://flone.jamstacktemplates.dev/assets/img/image-slider/image-slider-2.jpg"
+                  alt="blog"
+                  className="img-fluid"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <img
+                  src="https://flone.jamstacktemplates.dev/assets/img/image-slider/image-slider-3.jpg"
+                  alt="blog"
+                  className="img-fluid"
+                />
+              </SwiperSlide>
+            </Swiper>
+          </div>
         </Col>
         <Col xs="12" md="6" lg="8" className="px-4">
           <div className="contentBlog">

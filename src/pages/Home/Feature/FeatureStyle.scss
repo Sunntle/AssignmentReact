@@ -1,7 +1,7 @@
 @import "../../../../node_modules/bootstrap/scss/bootstrap";
 .support {
   &:hover img {
-    animation: shaky 0.3s; // Animation starts running on hover
+    animation: shaky 0.5s; // Animation starts running on hover
   }
   @include media-breakpoint-up(lg) {
     p {
@@ -28,11 +28,20 @@
 @keyframes shaky {
   0% {
     transform: rotate(-20deg);
+    scale: 1.2;
+  }
+  25% {
+    transform: rotate(20deg);
   }
   50% {
+    transform: rotate(-20deg);
+    scale: 1.1;
+  }
+  75% {
     transform: rotate(20deg);
   }
   100% {
     transform: rotate(0deg);
+    scale: 1;
   }
 }

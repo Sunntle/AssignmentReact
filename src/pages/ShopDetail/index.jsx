@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Col, Container, Form, FormGroup, Input, Row } from "reactstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
-import ToastMessage, { TOAST_MESSAGE_CONSTANT } from "components/Toast";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -20,23 +19,15 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "redux/cart/cartSlice";
 import { Controller, useForm } from "react-hook-form";
 import { InputLabel } from "components/Input";
+import { showToast } from "redux/toast/toastSlice";
 function ShopDetail() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const indexProduct = useParams();
   const [value, setValue] = useState(1);
   const [data, setData] = useState({});
-  const [toast, setToast] = useState({});
-  const [toggleToast, setToggleToast] = useState(false);
+
   const dispatch = useDispatch();
   const { handleSubmit, control } = useForm();
-  useEffect(() => {
-    if (Object.keys(toast).length > 1) setToggleToast(true);
-    const delay = setTimeout(() => {
-      setToggleToast(false);
-      setToast({});
-    }, 2000);
-    return () => clearTimeout(delay);
-  }, [toast]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,11 +55,11 @@ function ShopDetail() {
   const onSubmit = (dataForm) => {
     const action = addToCart({ ...data, ...dataForm, quantity: value });
     dispatch(action);
-    setToast(TOAST_MESSAGE_CONSTANT.add);
+    const actionsToast = { type: "success", message: "Add to cart successfully!" };
+    dispatch(showToast(actionsToast));
   };
   return (
     <Container className="py-5 wrap-shop-detail">
-      <ToastMessage isOpen={toggleToast} message={toast} />
       <Row className="my-5">
         <Col xs="12" sm="6">
           <Swiper

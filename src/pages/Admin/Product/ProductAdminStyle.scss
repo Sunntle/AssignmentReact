@@ -1,0 +1,14 @@
+@import "index.scss";
+.wrap-admin-product {
+  .title {
+    color: $main-color;
+    font-weight: 600;
+    text-shadow: 0 0 2px $main-color;
+  }
+  td {
+    vertical-align: middle;
+  }
+  button + button {
+    margin-left: 10px;
+  }
+}

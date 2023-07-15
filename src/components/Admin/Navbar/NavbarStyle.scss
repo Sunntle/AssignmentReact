@@ -1,0 +1,15 @@
+@import "index.scss";
+.navbar-admin {
+  height: 100vh;
+  a {
+    transition: all 0.3s ease-in-out;
+    color: rgb(33, 37, 41);
+    font-weight: 600;
+    &.active {
+      color: $main-color;
+    }
+    &:not(.active):hover {
+      color: $main-color;
+    }
+  }
+}
