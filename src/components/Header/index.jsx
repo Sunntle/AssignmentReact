@@ -1,13 +1,24 @@
-import { faBars, faCartShopping, faHeart, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faCartShopping,
+  faHeart,
+  faMagnifyingGlass,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Images from "assets/images/logo.png";
 import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Col, Container, Input, Nav, Row } from "reactstrap";
+import { Col, Container, Input, Nav, Row, UncontrolledTooltip } from "reactstrap";
 import "./style.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "redux/user/userSlice";
+import { showToast } from "redux/toast/toastSlice";
 const Header = (props, ref) => {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cartReducer);
+  const user = useSelector((state) => state.userReducer);
+  const isLogin = user.isAuthenticated;
   useEffect(() => {
     const navsub = document.querySelectorAll(".navsub");
     const showNav = document.querySelector(".showNav");
@@ -22,6 +33,37 @@ const Header = (props, ref) => {
       showNav.removeEventListener("click", handleClick);
     };
   }, []);
+  const handleLogout = () => {
+    localStorage.removeItem("idToken");
+    localStorage.removeItem("expiresAt");
+    dispatch(logOut());
+    dispatch(showToast({ type: "success", message: "Log out successfully!" }));
+  };
+  const handLinkAccount = () => {
+    if (isLogin)
+      return (
+        <>
+          <Link to="/account" className="text-decoration-none text-white">
+            <span className="px-2 logOut-icon">Hi, {user?.user?.username}</span>
+          </Link>
+          <FontAwesomeIcon
+            className="logOut-icon"
+            icon={faRightFromBracket}
+            onClick={handleLogout}
+            id="UncontrolledTooltipExample"
+          />
+          <UncontrolledTooltip placement="bottom" target="UncontrolledTooltipExample">
+            Log out
+          </UncontrolledTooltip>
+        </>
+      );
+    else
+      return (
+        <Link to="/account" className="text-decoration-none text-white px-2">
+          <span className="logOut-icon">Sign In</span>
+        </Link>
+      );
+  };
   return (
     <div className="bg-light">
       <div className="header__top bg-dark">
@@ -32,12 +74,9 @@ const Header = (props, ref) => {
             </Col>
             <Col lg="6" md="5">
               <div className="header__top__right text-end">
-                <Link to="/account" className="text-decoration-none text-uppercase text-white px-2">
-                  Sign in
-                </Link>
-                <Link href="#" className="text-decoration-none text-uppercase text-white px-2">
-                  FAQs
-                </Link>
+                {handLinkAccount()}
+
+                <Link className="text-decoration-none text-uppercase text-white px-2">FAQs</Link>
               </div>
             </Col>
           </div>
@@ -98,9 +137,9 @@ const Header = (props, ref) => {
                 className=" fs-5 fw-semibold text-black nav-link contact"
                 exact="true"
                 activeclassname="active"
-                to="/contact"
+                to="/account"
               >
-                Contact
+                Account
               </NavLink>
             </Nav>
           </Col>
@@ -120,7 +159,6 @@ const Header = (props, ref) => {
                     {cart.reduce((acc, cur) => acc + cur.quantity, 0)}
                   </div>
                 </Link>
-                {/* <div className="price mx-2 fw-semibold">$25.00</div> */}
               </div>
             </div>
           </Col>

@@ -1,11 +1,7 @@
-import React, { useEffect } from "react";
-import { FormFeedback, Label } from "reactstrap";
 import Select from "react-select";
+import { FormFeedback, Label } from "reactstrap";
 function InputSelect(props) {
   const { id, options, name, onBlur, onChange, label, placeholder, inputRef, error } = props;
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
   return (
     <>
       {label && <Label for={name}>{label}</Label>}

@@ -1,14 +1,26 @@
 import React, { useEffect } from "react";
 import { Toast, ToastBody, ToastHeader } from "reactstrap";
 import "./ToastStyle.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { hideToast } from "redux/toast/toastSlice";
 
-function ToastMessage({ toast }) {
+function ToastMessage() {
+  const toast = useSelector((state) => state.toastReducer);
+  const dispatch = useDispatch();
   useEffect(() => {
-    console.log(toast);
-  }, [toast]);
+    let delay;
+    if (toast.isOpen) {
+      delay = setTimeout(() => {
+        dispatch(hideToast());
+      }, 2000);
+    }
+    return () => {
+      clearTimeout(delay);
+    };
+  }, [dispatch, toast.isOpen]);
   return (
     <Toast isOpen={toast.isOpen} transition={{ timeout: 150 }} className="fixed-bottom">
-      <ToastHeader icon={toast.type}>Notification</ToastHeader>
+      <ToastHeader icon={toast.type}>{toast?.notification ?? "Notification"}</ToastHeader>
       <ToastBody>{toast.message}</ToastBody>
     </Toast>
   );

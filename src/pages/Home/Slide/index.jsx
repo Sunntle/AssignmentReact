@@ -39,14 +39,52 @@ function Slide() {
           </Link>
         </div>
       </SwiperSlide>
-      <SwiperSlide>
+      <SwiperSlide className="position-relative">
         <img className="img-fluid" src={Sildes2} alt="" />
+        <div className="position-absolute caption">
+          <h6>Winter Collection</h6>
+          <h2>
+            Fall - Winter Collections <span className="d-none d-sm-block">2030</span>
+          </h2>
+          <p className="d-none d-md-block">
+            Lorem iuunt vero id consequatur reiciendt molestiae magni vel necessitatibus sapiente explicabo veniam,
+            deserunt dolor earum dicta.
+          </p>
+          <Link to="shop" className="btn btn-dark py-2 px-3 buttonRedirect">
+            <span className="redirectShop">SHOP NOW</span>
+          </Link>
+        </div>
       </SwiperSlide>
-      <SwiperSlide>
+      <SwiperSlide className="position-relative">
         <img className="img-fluid" src={Slides} alt="" />
+        <div className="position-absolute caption">
+          <h6>Summer Collection</h6>
+          <h2>
+            Fall - Winter Collections <span className="d-none d-sm-block">2030</span>
+          </h2>
+          <p className="d-none d-md-block">
+            Lorem iuunt vero id magni vel necessitatibus sapiente explicabo veniam, deserunt dolor earum dicta.
+          </p>
+          <Link to="shop" className="btn btn-dark py-2 px-3 buttonRedirect">
+            <span className="redirectShop">SHOP NOW</span>
+          </Link>
+        </div>
       </SwiperSlide>
-      <SwiperSlide>
+      <SwiperSlide className="position-relative">
         <img className="img-fluid" src={Sildes2} alt="" />
+        <div className="position-absolute caption">
+          <h6>Summer Collection</h6>
+          <h2>
+            Fall - Winter Collections <span className="d-none d-sm-block">2030</span>
+          </h2>
+          <p className="d-none d-md-block">
+            Lorem iuunt vero id consequatur reiciendt molestiae magni vel necessitatibus sapiente explicabo veniam,
+            deserunt dolor earum dicta consequatur reiciendt molestiae magni.
+          </p>
+          <Link to="shop" className="btn btn-dark py-2 px-3 buttonRedirect">
+            <span className="redirectShop">SHOP NOW</span>
+          </Link>
+        </div>
       </SwiperSlide>
     </Swiper>
   );

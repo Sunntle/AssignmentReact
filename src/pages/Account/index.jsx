@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 import { Col, Container, Nav, NavItem, NavLink, Row, TabContent, TabPane } from "reactstrap";
 import "./SignInStyle.scss";
 
@@ -7,11 +6,6 @@ import LoginComponent from "./Login";
 import Register from "./Register";
 import ForgotPass from "./ForgotPass";
 function SignIn() {
-  // const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.form?.pathname || "/";
-  console.log(from);
-  // navigate(from, { replace: true });//browser history
   const [activeTab, setActiveTab] = useState("1");
 
   const toggleTab = (tab) => {

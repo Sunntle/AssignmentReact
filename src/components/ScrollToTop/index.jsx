@@ -8,9 +8,9 @@ function ScrollToTop() {
       const scrollTop = document.documentElement.scrollTop;
       const btnScroll = document.querySelector(".btnScroll");
       if (scrollTop > 500) {
-        btnScroll.classList.remove("d-none");
+        btnScroll?.classList.remove("d-none");
       } else {
-        btnScroll.classList.add("d-none");
+        btnScroll?.classList.add("d-none");
       }
     };
 

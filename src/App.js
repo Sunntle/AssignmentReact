@@ -3,10 +3,22 @@ import publicRoutes, { privateRoutes } from "./routes";
 import "./App.scss";
 import { Fragment, useEffect } from "react";
 import PrivateRoute from "utils/PrivateRoute";
-import { useDispatch, useSelector } from "react-redux";
-import { hideToast } from "redux/toast/toastSlice";
 import ToastMessage from "components/Toast";
+import { useDispatch } from "react-redux";
+import { isTokenExpired } from "utils/auth";
+import { fetchUserByIdToken } from "redux/user/userSlice";
+import { showToast } from "redux/toast/toastSlice";
+
 function App() {
+  const dispatch = useDispatch();
+  const idToken = localStorage.getItem("idToken");
+  useEffect(() => {
+    if (idToken && !isTokenExpired()) {
+      console.log(1);
+      dispatch(fetchUserByIdToken(idToken));
+      dispatch(showToast({ type: "info", message: "Welcome Back!", notification: "Login" }));
+    }
+  }, [dispatch, idToken]);
   const assignLayout = (route) => {
     let Layout = route.layout;
     if (route.layout) {
@@ -16,19 +28,23 @@ function App() {
     }
     return Layout;
   };
-  const toast = useSelector((state) => state.toastReducer);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      dispatch(hideToast());
-    }, 2000);
-    return () => {
-      clearTimeout(delay);
-    };
-  }, [dispatch, toast.isOpen]);
+  const renderRoute = (Layout, Page, path, key, exact) => {
+    return (
+      <Route
+        key={key}
+        element={
+          <Layout>
+            <Page />
+          </Layout>
+        }
+        exact={exact ?? false}
+        path={path}
+      />
+    );
+  };
   return (
     <div className="App position-relative">
-      <ToastMessage toast={toast} />
+      <ToastMessage />
       <Routes>
         {publicRoutes.map((route, index) => {
           let Layout = assignLayout(route);
@@ -39,28 +55,10 @@ function App() {
                 path={route.path}
                 element={
                   <Routes>
-                    <Route
-                      path="/"
-                      element={
-                        <Layout>
-                          <Page />
-                        </Layout>
-                      }
-                      exact
-                    />
+                    {renderRoute(Layout, Page, "/", null, true)}
                     {route.routes.map((nestedRoute, nestedIndex) => {
                       Layout = assignLayout(nestedRoute);
-                      return (
-                        <Route
-                          key={nestedIndex}
-                          path={nestedRoute.path}
-                          element={
-                            <Layout>
-                              <nestedRoute.component />
-                            </Layout>
-                          }
-                        />
-                      );
+                      return renderRoute(Layout, nestedRoute.component, nestedRoute.path, nestedIndex, false);
                     })}
                   </Routes>
                 }
@@ -69,36 +67,27 @@ function App() {
             );
           }
           // Render non-nested route
-          return (
-            <Route
-              path={route.path}
-              element={
-                <Layout>
-                  <Page />
-                </Layout>
-              }
-              key={index}
-            />
-          );
+          return renderRoute(Layout, Page, route.path, index, false);
         })}
+
         {privateRoutes.map((route, index) => {
+          if (!route.routes) {
+            const Layout = assignLayout(route);
+            const Page = route.component;
+            return (
+              <Route key={index} element={<PrivateRoute allowedRoles={["0", "1"]} />}>
+                {renderRoute(Layout, Page, route.path, null, false)}
+              </Route>
+            );
+          }
           return (
-            <Route key={index} path={route.path} element={<PrivateRoute />}>
-              {route.routes.map((nestedRoute, nestedIndex) => {
-                const Layout = assignLayout(nestedRoute);
-                return (
-                  <Route
-                    key={nestedIndex}
-                    path={nestedRoute.path}
-                    exact
-                    element={
-                      <Layout>
-                        <nestedRoute.component />
-                      </Layout>
-                    }
-                  />
-                );
-              })}
+            <Route key={index} path={route.path} element={<PrivateRoute allowedRoles={["1"]} />}>
+              {route?.routes &&
+                route.routes.map((nestedRoute, nestedIndex) => {
+                  const Layout = assignLayout(nestedRoute);
+                  const Page = nestedRoute.component;
+                  return renderRoute(Layout, Page, nestedRoute.path, nestedIndex, true);
+                })}
             </Route>
           );
         })}

@@ -19,7 +19,7 @@ function NewArrival({ setToast }) {
     const fetchData = async () => {
       try {
         const response = await fetchProduct(`?_limit=6&_sort=date`);
-        setData(response.data);
+        setData(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -30,7 +30,7 @@ function NewArrival({ setToast }) {
   const toggle = async (id = null) => {
     if (id != null) {
       const res = await fetchProduct(`/${id}`);
-      setProduct(res.data);
+      setProduct(res);
       setModal(true);
     } else {
       setModal(false);
@@ -40,7 +40,7 @@ function NewArrival({ setToast }) {
     <Container className="new-arrival">
       <div className="my-5">
         <h2 className="title position-relative d-inline-block pb-3 mb-3">New Arrival</h2>
-        <p className="text-muted">
+        <p className="text-muted w-50 mx-auto">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui odit fugiat iste, nam mollitia rerum inventore!
         </p>
       </div>
@@ -48,7 +48,7 @@ function NewArrival({ setToast }) {
         id="newArrival"
         slidesPerView={1}
         spaceBetween={10}
-        // pagination={{ clickable: true }}
+        pagination={{ clickable: true }}
         modules={[Pagination]}
         breakpoints={{
           640: {
@@ -66,29 +66,30 @@ function NewArrival({ setToast }) {
         }}
         className="mySwiper"
       >
-        {data.map((el) => {
-          return (
-            <SwiperSlide key={el.id}>
-              <div className="position-relative shadow-sm">
-                <img className="img-fluid" src={el.allImg?.split(",")[0]} alt="" />
-                <div className="position-absolute badges">
-                  <span className="d-block mainColor">New</span>
+        {data &&
+          data?.map((el) => {
+            return (
+              <SwiperSlide key={el.id} className="shadow-sm">
+                <div className="position-relative shadow-sm">
+                  <img className="img-fluid" src={el.allImg?.split(",")[0]} alt="" />
+                  <div className="position-absolute badges">
+                    <span className="d-block mainColor">New</span>
+                  </div>
+                  <div className="product-actions__mid position-absolute d-flex align-items-center justify-content-around">
+                    <Button color="dark">
+                      <FontAwesomeIcon icon={faShoppingCart} />
+                    </Button>
+                    <Button color="dark" onClick={() => toggle(el.id)}>
+                      <FontAwesomeIcon icon={faEye} />
+                    </Button>
+                    <Button color="dark">
+                      <FontAwesomeIcon icon={faHeart} />
+                    </Button>
+                  </div>
                 </div>
-                <div className="product-actions__mid position-absolute d-flex align-items-center justify-content-around">
-                  <Button color="dark">
-                    <FontAwesomeIcon icon={faShoppingCart} />
-                  </Button>
-                  <Button color="dark" onClick={() => toggle(el.id)}>
-                    <FontAwesomeIcon icon={faEye} />
-                  </Button>
-                  <Button color="dark">
-                    <FontAwesomeIcon icon={faHeart} />
-                  </Button>
-                </div>
-              </div>
-            </SwiperSlide>
-          );
-        })}
+              </SwiperSlide>
+            );
+          })}
       </Swiper>
       {modal && <QuickView modal={modal} data={product} toggle={toggle} setToast={setToast} />}
     </Container>

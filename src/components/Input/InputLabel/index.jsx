@@ -1,7 +1,20 @@
 import React from "react";
 import { FormFeedback, Input, Label } from "reactstrap";
 function InputLabel(props) {
-  const { id, value, name, type = "text", onBlur, onChange, label, placeholder, inputRef, error } = props;
+  const {
+    id,
+    value,
+    name,
+    type = "text",
+    onBlur,
+    onChange,
+    label,
+    placeholder,
+    inputRef,
+    error,
+    data,
+    // defaultValue,
+  } = props;
   return (
     <>
       {label && <Label for={name}>{label}</Label>}
@@ -9,7 +22,7 @@ function InputLabel(props) {
         id={id}
         name={name}
         type={type}
-        value={value}
+        value={value ?? data}
         placeholder={placeholder}
         onChange={(e) => {
           onChange(e.target.value);
@@ -17,6 +30,7 @@ function InputLabel(props) {
         onBlur={onBlur}
         invalid={!!error}
         ref={inputRef}
+        // checked={type === "radio" && defaultValue === data}
       ></Input>
       {error !== undefined && (
         <FormFeedback>{error.message ? error.message : `Oh noes! You must fill ${name} in this input`}</FormFeedback>

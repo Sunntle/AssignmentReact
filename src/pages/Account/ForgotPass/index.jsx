@@ -1,12 +1,40 @@
 import { InputLabel } from "components/Input";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Button, FormGroup, Form } from "reactstrap";
+import { Button, FormGroup, Form, Spinner } from "reactstrap";
+import { forgotPass } from "services";
 function ForgotPass({ toggleTab }) {
+  const [notification, SetNotification] = useState(null);
+  const [loading, SetLoading] = useState(false);
   const { handleSubmit, control } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    SetLoading(true);
+    try {
+      const res = await forgotPass(data.emailForgot);
+      if (res) {
+        const message = {
+          status: 0,
+          message: "A new password has been sent to your email",
+        };
+        SetNotification(message);
+      } else {
+        const message = {
+          status: 1,
+          message: "Something's wrong!",
+        };
+        SetNotification(message);
+      }
+    } catch (error) {
+      console.error(error);
+      const message = {
+        status: 1,
+        message: "An error occurred!",
+      };
+      SetNotification(message);
+    } finally {
+      SetLoading(false);
+    }
   };
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -40,9 +68,15 @@ function ForgotPass({ toggleTab }) {
           )}
         />
       </FormGroup>
-      <FormGroup className="d-flex justify-content-between pt-4">
+      {notification &&
+        (notification.status === 0 ? (
+          <p className="text-start text-success my-3">{notification.message}</p>
+        ) : (
+          <p className="text-start text-danger my-3">{notification.message}</p>
+        ))}
+      <FormGroup className="d-flex justify-content-between mt-4">
         <Button type="submit" className="btn-dark py-2 px-3">
-          Confirm
+          {loading ? <Spinner size="sm" /> : "Confirm"}
         </Button>
         <Link onClick={() => toggleTab("1")} className="btn btn-secondary py-2 px-3">
           Back

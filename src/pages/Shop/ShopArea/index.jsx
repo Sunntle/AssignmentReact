@@ -79,12 +79,12 @@ function ShopArea() {
       const resTypeProduct = await fetchTypeProduct();
       const resSizeProduct = await fetchSizeProduct();
       const resColorProduct = await fetchColorProduct();
-      setColorProduct(resColorProduct.data);
-      setSizeProduct(resSizeProduct.data);
-      setTypeProduct(resTypeProduct.data);
-      setTotalPages(Math.round(response.data.length / limit));
-      setCountProduct(response.data.length);
-      setData(res.data);
+      setColorProduct(resColorProduct);
+      setSizeProduct(resSizeProduct);
+      setTypeProduct(resTypeProduct);
+      setTotalPages(Math.round(response.length / limit));
+      setCountProduct(response.length);
+      setData(res);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

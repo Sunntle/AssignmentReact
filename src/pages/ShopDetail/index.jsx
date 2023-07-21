@@ -33,7 +33,7 @@ function ShopDetail() {
     const fetchData = async () => {
       try {
         const res = await fetchProduct(`/${indexProduct.id}`);
-        setData(res.data);
+        setData(res);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -118,61 +118,72 @@ function ShopDetail() {
             iste ipsum ipsam obcaecati nihil sint autem sit, numquam et dolores? Odio totam quidem obcaecati corporis.
           </div>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <FormGroup className="colorContainer">
-              <div>
-                <p className="m-0">Color</p>
-                <Controller
-                  name={"colorSelected"}
-                  control={control}
-                  defaultValue=""
-                  rules={{ required: true }}
-                  render={({
-                    field: { onChange, onBlur, value, name, ref },
-                    fieldState: { invalid, isTouched, isDirty, error },
-                    formState,
-                  }) =>
-                    data.allColor
-                      ?.split(",")
-                      .map((el, index) => (
-                        <InputLabel
-                          key={el + index}
-                          id={el}
-                          value={el}
-                          name={name}
-                          type="radio"
-                          onBlur={onBlur}
-                          onChange={onChange}
-                        />
-                      ))
-                  }
-                />
-              </div>
-            </FormGroup>
-            <FormGroup className="sizeContainer">
-              <div>
-                <p className="m-0">Size</p>
-                <Controller
-                  name="sizeSelected"
-                  control={control}
-                  defaultValue=""
-                  rules={{ required: true }}
-                  render={({
-                    field: { onChange, onBlur, value, name, ref },
-                    fieldState: { invalid, isTouched, isDirty, error },
-                    formState,
-                  }) =>
-                    data.allSize?.split(",").map((el, index) => {
-                      return (
-                        <div key={el + index} className="d-inline-flex align-items-center">
-                          <InputLabel id={el} value={el} name={name} type="radio" onBlur={onBlur} onChange={onChange} />
-                          <span className="text-uppercase">{el}</span>
-                        </div>
-                      );
-                    })
-                  }
-                />
-              </div>
-            </FormGroup>
+            {data.allColor && (
+              <FormGroup className="colorContainer">
+                <div>
+                  <p className="m-0">Color</p>
+                  <Controller
+                    name={"colorSelected"}
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: true }}
+                    render={({
+                      field: { onChange, onBlur, value, name, ref },
+                      fieldState: { invalid, isTouched, isDirty, error },
+                      formState,
+                    }) =>
+                      data.allColor
+                        ?.split(",")
+                        .map((el, index) => (
+                          <InputLabel
+                            key={el + index}
+                            id={el}
+                            value={el}
+                            name={name}
+                            type="radio"
+                            onBlur={onBlur}
+                            onChange={onChange}
+                          />
+                        ))
+                    }
+                  />
+                </div>
+              </FormGroup>
+            )}
+            {data.allSize && (
+              <FormGroup className="sizeContainer">
+                <div>
+                  <p className="m-0">Size</p>
+                  <Controller
+                    name="sizeSelected"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: true }}
+                    render={({
+                      field: { onChange, onBlur, value, name, ref },
+                      fieldState: { invalid, isTouched, isDirty, error },
+                      formState,
+                    }) =>
+                      data.allSize?.split(",").map((el, index) => {
+                        return (
+                          <div key={el + index} className="d-inline-flex align-items-center">
+                            <InputLabel
+                              id={el}
+                              value={el}
+                              name={name}
+                              type="radio"
+                              onBlur={onBlur}
+                              onChange={onChange}
+                            />
+                            <span className="text-uppercase">{el}</span>
+                          </div>
+                        );
+                      })
+                    }
+                  />
+                </div>
+              </FormGroup>
+            )}
 
             <div className="quantity d-flex align-items-center">
               <div className="quantityBtn d-flex align-items-center justify-content-center ">
@@ -191,8 +202,8 @@ function ShopDetail() {
             <Link className="text-dark text-decoration-none">+ Add to wish list</Link>
           </div>
           <div className="social d-flex">
-            <FontAwesomeIcon icon={faFacebook} color="blue" className="fs-3" />
-            <FontAwesomeIcon icon={faTwitter} color="blue" className="fs-3" />
+            <FontAwesomeIcon icon={faFacebook} className="fs-3" />
+            <FontAwesomeIcon icon={faTwitter} className="fs-3" />
             <FontAwesomeIcon icon={faLinkedin} className="fs-3" />
           </div>
         </Col>

@@ -1,12 +1,46 @@
 import { InputLabel } from "components/Input";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, Form, FormGroup } from "reactstrap";
+import { Button, Form, FormGroup, Spinner } from "reactstrap";
+import { registerUser } from "services";
 
 function Register() {
-  const { handleSubmit: handleSubmit2, control: control2 } = useForm();
-  const onSubmitRegister = (data) => {
-    console.log(data);
+  const { handleSubmit: handleSubmit2, control: control2, reset } = useForm();
+  const [loading, SetLoading] = useState(false);
+  const [notification, SetNotification] = useState(null);
+  const onSubmitRegister = async (data) => {
+    SetLoading(true);
+    try {
+      const userInfo = {
+        username: data.usernameRegister,
+        password: data.passwordRegister,
+        email: data.email,
+      };
+      const res = await registerUser(userInfo);
+      if (res) {
+        const message = {
+          status: 0,
+          message: "Register successfully",
+        };
+        SetNotification(message);
+        reset();
+      } else {
+        const message = {
+          status: 1,
+          message: "Username already used",
+        };
+        SetNotification(message);
+      }
+    } catch (error) {
+      console.error(error);
+      const message = {
+        status: 1,
+        message: "An error occurred!",
+      };
+      SetNotification(message);
+    } finally {
+      SetLoading(false);
+    }
   };
   return (
     <Form onSubmit={handleSubmit2(onSubmitRegister)}>
@@ -29,6 +63,7 @@ function Register() {
               placeholder="Username"
               inputRef={ref}
               error={error}
+              data={value}
             />
           )}
         />
@@ -53,6 +88,7 @@ function Register() {
               placeholder="Password"
               inputRef={ref}
               error={error}
+              data={value}
             />
           )}
         />
@@ -83,13 +119,20 @@ function Register() {
               placeholder="Email"
               inputRef={ref}
               error={error}
+              data={value}
             />
           )}
         />
       </FormGroup>
+      {notification &&
+        (notification.status === 0 ? (
+          <p className="text-start text-success my-3">{notification.message}</p>
+        ) : (
+          <p className="text-start text-danger my-3">{notification.message}</p>
+        ))}
       <FormGroup>
         <Button type="submit" color="dark" className="py-2 px-3">
-          Register
+          {loading ? <Spinner size="sm" /> : "Register"}
         </Button>
       </FormGroup>
     </Form>

@@ -1,9 +1,18 @@
-@import "../../index.scss";
+@import "index.scss";
 .color-text-primary {
   color: $primary-color;
 }
 .header__icon {
   gap: 1rem;
+}
+.header__top__right {
+  .logOut-icon {
+    transition: all 0.3s;
+    cursor: pointer;
+    &:hover {
+      color: $primary-color;
+    }
+  }
 }
 .header__menu {
   a {
@@ -41,7 +50,7 @@
     .active::after {
       width: calc(100% - 2rem);
     }
-    a:not(.header__menu .active):not(.header__menu .menu-lv2 a):hover:after{
+    a:not(.header__menu .active):not(.header__menu .menu-lv2 a):hover:after {
       width: calc(100% - 2rem);
     }
   }

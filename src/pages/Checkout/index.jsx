@@ -4,11 +4,52 @@ import "./CheckoutStyle.scss";
 import { Controller, useForm } from "react-hook-form";
 import { InputLabel, InputSelect } from "components/Input";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder, createPayment } from "services";
+import { useNavigate } from "react-router-dom";
+import { removeAll } from "redux/cart/cartSlice";
 
 function Checkout() {
   const { handleSubmit, control, watch } = useForm();
   const [province, SetProvince] = useState([]);
   const [district, SetDistrict] = useState([]);
+  const cart = useSelector((state) => state.cartReducer);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const optionsPayment = [
+    {
+      value: "COD",
+      label: "Cash on delivery",
+    },
+    {
+      value: "NCB",
+      label: "NCB Bank",
+    },
+    {
+      value: "VNPAYQR",
+      label: "VNPAY QR",
+    },
+    {
+      value: "ATM",
+      label: "ATM CARD",
+    },
+    {
+      value: "VISA",
+      label: "VISA",
+    },
+    {
+      value: "AGRIBANK",
+      label: "AGRIBANK Bank",
+    },
+    {
+      value: "BIDV",
+      label: "BIDV Bank",
+    },
+    {
+      value: "VIETCOMBANK",
+      label: "VIETCOMBANK Bank",
+    },
+  ];
   useEffect(() => {
     const fetchProvince = async () => {
       const response = await axios.get("https://provinces.open-api.vn/api/p/");
@@ -44,8 +85,41 @@ function Checkout() {
       fetchDistrict(watchedValue.value);
     }
   }, [watchedValue]);
-  const onSubmit = (data) => {
-    console.log(data);
+
+  const onSubmit = async (data) => {
+    const items = cart.reduce((acc, cur) => {
+      const item = { id: cur.id, size: cur.sizeSelected, color: cur.colorSelected, quantity: cur.quantity };
+      acc.push(item);
+      return acc;
+    }, []);
+    const total = cart.reduce((acc, cur) => {
+      return acc + cur.quantity * cur.price;
+    }, 0);
+    const infoOrder = {
+      item: items,
+      total: total,
+      name: `${data.firstName} ${data.lastName} `,
+      address: `${data.StreetAddress} ${data.District.label} ${data.Province.label}`,
+      payment_id: data.paymentMethod.value,
+    };
+    const res = await createOrder(infoOrder);
+    if (res) {
+      if (data.paymentMethod === "COD") {
+        dispatch(removeAll());
+        navigate("/bill", { state: res });
+      } else {
+        const dataPayment = {
+          amount: total.toString() ?? "0",
+          orderDescription: `${data.firstName} ${data.lastName} pay ID Order ${res}`,
+          orderType: "fashion",
+          bankCode: data.paymentMethod.value,
+          language: null,
+          order_id: res,
+        };
+        const paymenResponse = await createPayment(dataPayment);
+        window.location.href = paymenResponse;
+      }
+    }
   };
   return (
     <Container className="my-5 py-5">
@@ -214,21 +288,70 @@ function Checkout() {
                 <h4>Product</h4>
                 <h4>Total</h4>
               </div>
-              <div className="d-flex justify-content-between border-bottom py-4">
-                <p className="m-0">Product name here</p>
-                <p className="m-0">12.29$</p>
+              <div className="border-bottom py-4">
+                {cart.map((el, index) => {
+                  return (
+                    <div className="d-flex" key={index}>
+                      <Col xs="6" className="text-start">
+                        <p className="m-0">
+                          {el.name} - <span className="text-capitalize">{el.colorSelected}</span> - {el.sizeSelected} -
+                          X{el.quantity}
+                        </p>
+                      </Col>
+                      <Col xs="6" className="text-end">
+                        <p className="m-0">
+                          {(el.price * el.quantity).toLocaleString("vi", { style: "currency", currency: "VND" })}
+                        </p>
+                      </Col>
+                    </div>
+                  );
+                })}
               </div>
               <div className="d-flex justify-content-between border-bottom py-4">
                 <h6>Shipping</h6>
                 <h6>Free shipping</h6>
               </div>
-              <div className="d-flex justify-content-between py-3">
-                <h4>Total</h4>
-                <h4 className="your-order__price">12.29$</h4>
+              <div className="d-flex justify-content-between align-items-center py-3">
+                <h4 className="m-0">Total</h4>
+                <h4 className="your-order__price m-0">
+                  {cart
+                    .reduce((acc, cur) => {
+                      return acc + cur.price * cur.quantity;
+                    }, 0)
+                    .toLocaleString("vi", { style: "currency", currency: "VND" })}
+                </h4>
               </div>
+              <h4 className="mt-3">Payment method: </h4>
+              <FormGroup>
+                <Controller
+                  name="paymentMethod"
+                  control={control}
+                  defaultValue={optionsPayment[0]}
+                  rules={{ required: true }}
+                  render={({
+                    field: { onChange, onBlur, value, name, ref },
+                    fieldState: { invalid, isTouched, isDirty, error },
+                    formState,
+                  }) => (
+                    <>
+                      <InputSelect
+                        id={name}
+                        name={name}
+                        options={optionsPayment}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        error={error}
+                        inputRef={ref}
+                        placeholder="Selecte payment method "
+                      />
+                    </>
+                  )}
+                />
+              </FormGroup>
             </div>
+
             <Button type="submit" className="w-100 text-uppercase my-3 py-2 px-auto text-white btn-confirm rounded-5">
-              place order
+              Place order
             </Button>
           </Col>
         </Row>
