@@ -7,12 +7,12 @@ function NotHeaderLayout({ children }) {
     <Container fluid className="position-relative">
       <ToastMessage />
       <Row className="wrap-admin">
-        <Col xs="2" className="position-relative shadow">
+        <Col xs="4" lg="2" className="position-relative shadow">
           <div className="wrap-navbar-admin sticky-top">
             <NavbarAdmin />
           </div>
         </Col>
-        <Col xs="10" className="px-5 pb-5">
+        <Col xs="8" lg="10" className="px-5 pb-5">
           {children}
         </Col>
       </Row>

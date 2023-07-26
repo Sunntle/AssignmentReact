@@ -11,13 +11,16 @@ function Bill() {
   const [status, SetStatus] = useState(0);
   const location = useLocation();
 
+  //handleGetDataSearch
   const handleGetDataSearch = useCallback(
     (string) => {
       const queryParams = new URLSearchParams(location.search);
-      return queryParams.get(string).split(" ").at(-1);
+      return queryParams.get(string)?.split(" ").at(-1);
     },
     [location.search]
   );
+
+  //handle get idOrder
   const handleIdOrder = () => {
     let paramValue;
     if (location.state !== null) {
@@ -29,18 +32,23 @@ function Bill() {
   };
   const id = handleIdOrder();
 
+  //update status of transaction
   useEffect(() => {
     const updateStatus = async () => {
       let responseStatus = handleGetDataSearch("vnp_ResponseCode");
-      let statusValue = responseStatus === 0 ? 1 : 2;
-      const data = {
-        status: statusValue,
-      };
-      const res = await updateStatusTransaction(id, data);
-      SetStatus(+res);
+      if (responseStatus) {
+        let statusValue = responseStatus === 0 ? 1 : 2;
+        const data = {
+          status: statusValue,
+        };
+        const res = await updateStatusTransaction(id, data);
+        SetStatus(+res);
+      }
     };
     updateStatus();
   }, [handleGetDataSearch, id]);
+
+  //fetchdata from idOrder
   useEffect(() => {
     const fetchOrderData = async (id) => {
       const response = await fetchOrder(`/${id}`);
@@ -91,10 +99,12 @@ function Bill() {
           </div>
           <div className="py-3 px-2 text-start">
             <p className="m-0">
-              {location.state !== null ? "COD" : handleGetDataSearch("vnp_CardType")} -
-              {status === 0 ? "Success" : "Fail"}
+              {location.state !== null ? "COD" : handleGetDataSearch("vnp_CardType")}
+              {location.state == null && (status === 0 ? "- Success" : "- Fail")}
             </p>
-            <p className="text-muted m-0">{location.state !== null ? "COD" : handleGetDataSearch("vnp_BankCode")}</p>
+            <p className="text-muted m-0">
+              {location.state !== null ? "Cash on delivery" : handleGetDataSearch("vnp_BankCode")}
+            </p>
           </div>
         </Col>
         <Col xs="12" md="6">
@@ -111,7 +121,7 @@ function Bill() {
                       <img
                         style={{ maxWidth: "120px" }}
                         className="img-fluid"
-                        src={el.product.allImg.split(",")[0]}
+                        src={el.product.allImg?.split(",")[0]}
                         alt="#"
                       />
                     </td>

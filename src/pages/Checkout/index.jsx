@@ -104,7 +104,7 @@ function Checkout() {
     };
     const res = await createOrder(infoOrder);
     if (res) {
-      if (data.paymentMethod === "COD") {
+      if (data.paymentMethod.value === "COD") {
         dispatch(removeAll());
         navigate("/bill", { state: res });
       } else {

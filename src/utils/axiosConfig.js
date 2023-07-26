@@ -3,7 +3,6 @@ const instance = axios.create({
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-    accept: "application/json",
   },
   baseURL: process.env.REACT_APP_API_URL,
   withCredentials: true,

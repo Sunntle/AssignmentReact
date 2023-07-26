@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBurger, faComment, faHouse, faPenNib, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 import "./NavbarStyle.scss";
 import { Link, NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 function NavbarAdmin() {
+  const user = useSelector((state) => state.userReducer);
   return (
     <div className="navbar-admin">
       <Navbar className="my-3">
@@ -20,8 +22,8 @@ function NavbarAdmin() {
           style={{ maxWidth: "80px" }}
           alt="img"
         />
-        <div className="d-flex flex-column align-items-start">
-          Hi, Jacke Queen
+        <div className="d-flex flex-column align-items-start me-4">
+          Hi, {user?.user?.name}
           <Link to="/" className="text-decoration-none">
             <FontAwesomeIcon icon={faRightFromBracket} className="pe-2" />
             Log out

@@ -11,4 +11,17 @@
   button + button {
     margin-left: 10px;
   }
+  .css-1fdsijx-ValueContainer {
+    min-width: 88px;
+    @media (max-width: 576px) {
+      min-width: 50px;
+    }
+  }
+  input.search.form-control {
+    padding: 0.5rem 0.75rem;
+    &:focus {
+      border-color: $main-color;
+      box-shadow: none;
+    }
+  }
 }

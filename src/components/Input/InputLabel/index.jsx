@@ -1,5 +1,6 @@
 import React from "react";
 import { FormFeedback, Input, Label } from "reactstrap";
+import "./InputLabelStyle.scss";
 function InputLabel(props) {
   const {
     id,
@@ -13,7 +14,7 @@ function InputLabel(props) {
     inputRef,
     error,
     data,
-    // defaultValue,
+    isMulti,
   } = props;
   return (
     <>
@@ -22,15 +23,20 @@ function InputLabel(props) {
         id={id}
         name={name}
         type={type}
-        value={value ?? data}
+        value={isMulti ? undefined : value ?? data}
         placeholder={placeholder}
         onChange={(e) => {
-          onChange(e.target.value);
+          if (type === "file" && isMulti) {
+            const file = Array.from(e.target.files);
+            onChange(file);
+          } else {
+            onChange(e.target.value);
+          }
         }}
         onBlur={onBlur}
         invalid={!!error}
         ref={inputRef}
-        // checked={type === "radio" && defaultValue === data}
+        multiple={isMulti}
       ></Input>
       {error !== undefined && (
         <FormFeedback>{error.message ? error.message : `Oh noes! You must fill ${name} in this input`}</FormFeedback>

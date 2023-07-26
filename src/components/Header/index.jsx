@@ -133,14 +133,16 @@ const Header = (props, ref) => {
               >
                 Blog
               </NavLink>
-              <NavLink
-                className=" fs-5 fw-semibold text-black nav-link contact"
-                exact="true"
-                activeclassname="active"
-                to="/account"
-              >
-                Account
-              </NavLink>
+              <div className="menu-lv1 position-relative">
+                <NavLink className=" fs-5 fw-semibold text-black nav-link page" activeclassname="active" to="/account">
+                  Account
+                </NavLink>
+                <Nav className="menu-lv2 bg-black rounded">
+                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/admin">
+                    Admin
+                  </NavLink>
+                </Nav>
+              </div>
             </Nav>
           </Col>
           <Col lg="3" className="d-none d-lg-block navsub">

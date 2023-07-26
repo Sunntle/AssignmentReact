@@ -1,0 +1,8 @@
+@import "index.scss";
+input.form-control {
+  padding: 0.5rem 0.75rem;
+  &:focus {
+    border-color: $main-color;
+    box-shadow: none;
+  }
+}

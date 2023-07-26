@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Progress, Row, Table } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBurger, faComment, faPenNib, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-
+import { fetchOrder, fetchProduct, fetchTypeProduct, fetchUser } from "services";
+import moment from "moment";
 function Dashboard() {
+  const [allData, SetData] = useState(null);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const request = [fetchProduct("?_sort=sold"), fetchOrder("?_sort=create_at"), fetchTypeProduct(), fetchUser()];
+        const res = await Promise.all(request);
+        if (res) {
+          const [product, order, typeProduct, user] = res;
+          SetData({ product, order, typeProduct, user });
+        }
+      } catch (err) {
+        console.log(`Error: ${err}`);
+      }
+    };
+    getData();
+  }, []);
+  console.log(allData);
   ChartJS.register(ArcElement, Tooltip, Legend);
   const data = {
     labels: ["Jacket", "Bottoms", "Top", "Sock", "Pants", "Hoodie"],
     datasets: [
       {
-        label: "# of Votes",
+        label: "Count",
         data: [12, 19, 3, 5, 2, 3],
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -41,7 +59,7 @@ function Dashboard() {
           <div className="text-start ps-3">
             <h6>Customer</h6>
             <span>
-              <b>200 User</b>
+              <b>{allData?.user.length} User</b>
             </span>
           </div>
         </Col>
@@ -51,7 +69,7 @@ function Dashboard() {
           <div className="text-start ps-3">
             <h6>Product</h6>
             <span>
-              <b>100 Items</b>
+              <b>{allData?.product.length} Items</b>
             </span>
           </div>
         </Col>
@@ -59,18 +77,18 @@ function Dashboard() {
           <FontAwesomeIcon icon={faComment} size="xl" className="border border-4 rounded-circle p-3 m-2" />
 
           <div className="text-start ps-3">
-            <h6>Comment</h6>
+            <h6>Order</h6>
             <span>
-              <b>20 Comment</b>
+              <b>{allData?.order.length} Orders</b>
             </span>
           </div>
         </Col>
         <Col xs="12" md="6" lg="3" className="border rounded d-flex align-items-center   bg-info">
           <FontAwesomeIcon icon={faPenNib} size="xl" className="border border-4 rounded-circle p-3 m-2" />
           <div className="text-start ps-3">
-            <h6>Posts</h6>
+            <h6>Type Product</h6>
             <span>
-              <b>10 Posts</b>
+              <b>{allData?.typeProduct.length} items</b>
             </span>
           </div>
         </Col>
@@ -85,67 +103,31 @@ function Dashboard() {
             <Table hover bordered responsive>
               <thead className="table-light">
                 <tr>
-                  <th scope="col">Product</th>
-                  <th scope="col">Price</th>
+                  <th scope="col">Order code</th>
+                  <th scope="col">Total</th>
                   <th scope="col">Date</th>
                   <th scope="col">State</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Glossy Tee</td>
-                  <td>200</td>
-                  <td>2023-02-15</td>
-                  <td className="text-success">Completed</td>
-                </tr>
-                <tr>
-                  <td>Glossy Tee</td>
-                  <td>200</td>
-                  <td>2023-02-15</td>
-                  <td className="text-warning">Pending</td>
-                </tr>
-                <tr>
-                  <td>Glossy Tee</td>
-                  <td>200</td>
-                  <td>2023-02-15</td>
-                  <td className="text-danger">Cancelled</td>
-                </tr>
-                <tr>
-                  <td>Glossy Tee</td>
-                  <td>200</td>
-                  <td>2023-02-15</td>
-                  <td className="text-success">Completed</td>
-                </tr>
-                <tr>
-                  <td>Glossy Tee</td>
-                  <td>200</td>
-                  <td>2023-02-15</td>
-                  <td className="text-warning">Pending</td>
-                </tr>
-                <tr>
-                  <td>Glossy Tee</td>
-                  <td>200</td>
-                  <td>2023-02-15</td>
-                  <td className="text-success">Completed</td>
-                </tr>
-                <tr>
-                  <td>Glossy Tee</td>
-                  <td>200</td>
-                  <td>2023-02-15</td>
-                  <td className="text-warning">Pending</td>
-                </tr>
-                <tr>
-                  <td>Glossy Tee</td>
-                  <td>200</td>
-                  <td>2023-02-15</td>
-                  <td className="text-success">Completed</td>
-                </tr>
-                <tr>
-                  <td>Glossy Tee</td>
-                  <td>200</td>
-                  <td>2023-02-15</td>
-                  <td className="text-success">Completed</td>
-                </tr>
+                {allData?.order.map((el, index) => {
+                  return (
+                    index < 8 && (
+                      <tr key={index}>
+                        <td>{el.id}</td>
+                        <td>{el.total}</td>
+                        <td>{moment(new Date(el.create_at)).format("DD-MM-YYYY")}</td>
+                        {el.status === 0 ? (
+                          <td className="text-success">Completed</td>
+                        ) : el.status === 1 ? (
+                          <td className="text-warning">Pending</td>
+                        ) : (
+                          <td className="text-danger">Cancle</td>
+                        )}
+                      </tr>
+                    )
+                  );
+                })}
               </tbody>
             </Table>
           </div>
@@ -164,51 +146,32 @@ function Dashboard() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Glossy Tee</td>
-              <td>200</td>
-              <td>$400.00</td>
-              <td>
-                <div className="d-flex justify-content-center align-items-center">
-                  <Col xs="8">
-                    <Progress value={20} color="danger" style={{ height: "3px" }}></Progress>
-                  </Col>
-                  <Col xs="4" className="text-center text-muted">
-                    20
-                  </Col>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Glossy Tee</td>
-              <td>200</td>
-              <td>$400.00</td>
-              <td>
-                <div className="d-flex justify-content-center align-items-center">
-                  <Col xs="8">
-                    <Progress value={86} color="success" style={{ height: "3px" }}></Progress>
-                  </Col>
-                  <Col xs="4" className="text-center text-muted">
-                    86
-                  </Col>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Glossy Tee</td>
-              <td>200</td>
-              <td>$400.00</td>
-              <td>
-                <div className="d-flex justify-content-center align-items-center">
-                  <Col xs="8">
-                    <Progress value={35} color="warning" style={{ height: "3px" }}></Progress>
-                  </Col>
-                  <Col xs="4" className="text-center text-muted">
-                    35
-                  </Col>
-                </div>
-              </td>
-            </tr>
+            {allData?.product.map((el, index) => {
+              const value = Math.ceil(Math.random() * 100);
+              return (
+                index < 6 && (
+                  <tr key={index}>
+                    <td>{el.name}</td>
+                    <td>{el.sold}</td>
+                    <td>{el.price.toLocaleString("vi", { style: "currency", currency: "VND" })}</td>
+                    <td>
+                      <div className="d-flex justify-content-center align-items-center">
+                        <Col xs="8">
+                          <Progress
+                            value={value}
+                            color={index % 3 === 0 ? "danger" : index % 2 === 0 ? "success" : "warning"}
+                            style={{ height: "3px" }}
+                          ></Progress>
+                        </Col>
+                        <Col xs="4" className="text-center text-muted">
+                          {value}
+                        </Col>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              );
+            })}
           </tbody>
         </Table>
       </Row>

@@ -14,7 +14,6 @@ function App() {
   const idToken = localStorage.getItem("idToken");
   useEffect(() => {
     if (idToken && !isTokenExpired()) {
-      console.log(1);
       dispatch(fetchUserByIdToken(idToken));
       dispatch(showToast({ type: "info", message: "Welcome Back!", notification: "Login" }));
     }
