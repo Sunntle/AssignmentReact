@@ -71,7 +71,7 @@ function NewArrival({ setToast }) {
             return (
               <SwiperSlide key={el.id} className="shadow-sm">
                 <div className="position-relative shadow-sm">
-                  <img className="img-fluid" src={el.allImg?.split(",")[0]} alt="" />
+                  <img className="img-fluid" src={el.allImg?.split(";")[0]} alt="" />
                   <div className="position-absolute badges">
                     <span className="d-block mainColor">New</span>
                   </div>

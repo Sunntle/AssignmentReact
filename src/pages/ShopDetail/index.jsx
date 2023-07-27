@@ -67,7 +67,7 @@ function ShopDetail() {
             modules={[FreeMode, Thumbs]}
             className="mySwiper2"
           >
-            {data.allImg?.split(",").map((el, index) => {
+            {data.allImg?.split(";").map((el, index) => {
               return (
                 <SwiperSlide key={index}>
                   <img alt="img" className="img-fluid" src={el} />
@@ -84,7 +84,7 @@ function ShopDetail() {
             modules={[FreeMode, Thumbs]}
             className="mySwiper"
           >
-            {data.allImg?.split(",").map((el, index) => {
+            {data.allImg?.split(";").map((el, index) => {
               return (
                 <SwiperSlide key={index}>
                   <img alt="img" src={el} />

@@ -117,7 +117,7 @@ function ShopArea() {
     return (
       <Col xs="12" sm="6" md="4" className="shop__product__item " key={index}>
         <div className="position-relative product-img shadow-sm">
-          <img className="img-fluid" src={el.allImg?.split(",")[0]} alt="product" />
+          <img className="img-fluid" src={el.allImg?.split(";")[0]} alt="product" />
           <div className="product-actions">
             <Button className="position-absolute start-0 rounded-0 ">
               <FontAwesomeIcon icon={faHeart} />
