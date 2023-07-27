@@ -118,3 +118,15 @@ export const deleteProduct = async (product_id) => {
     console.error("Error deleting product:", error);
   }
 };
+export const deleteUser = async (user_id) => {
+  try {
+    const reqDeleteOrderItems = await axios.delete(`/checkout/${user_id}`);
+    if (reqDeleteOrderItems) {
+      const res = await axios.delete(`/user/${user_id}`);
+      if (res) return "All delete requests completed successfully.";
+      return;
+    }
+  } catch (error) {
+    console.error("Error deleting product:", error);
+  }
+};

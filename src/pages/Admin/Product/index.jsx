@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { deleteProduct, fetchColorProduct, fetchProduct, fetchSizeProduct, fetchTypeProduct } from "services";
 import PaginationComponent from "components/Pagination";
 import Select from "react-select";
-import ModalManageProduct from "./ModalManageProduct";
+import ProductManagement from "./ProductManagement";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { showToast } from "redux/toast/toastSlice";
@@ -98,18 +98,6 @@ function ProductAdmin() {
     return () => clearTimeout(delaySearch);
   }, [inputValue]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchProduct(`?_limit=6&_sort=date`);
-        setData(response);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
   //toggle fetchForm edit Product
   const toggle = async (id, action) => {
     if (id !== undefined) {
@@ -187,7 +175,7 @@ function ProductAdmin() {
             return (
               <tr key={index}>
                 <td style={{ maxWidth: "100px" }}>
-                  <img className="img-fluid" src={el.allImg?.split(",")[0]} alt="img" />
+                  <img className="img-fluid" src={el.allImg?.split(";")[0]} alt="img" />
                 </td>
                 <td>{el.name}</td>
                 <td>{el.price}</td>
@@ -211,7 +199,7 @@ function ProductAdmin() {
       </p>
       <PaginationComponent curPage={currentPage} totalPage={totalPages} onPageChange={handleSetCurPage} />
       {modal && (
-        <ModalManageProduct
+        <ProductManagement
           modal={modal}
           data={product}
           size={sizeProduct}

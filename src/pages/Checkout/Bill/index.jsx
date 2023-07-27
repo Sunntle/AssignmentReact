@@ -35,7 +35,7 @@ function Bill() {
   //update status of transaction
   useEffect(() => {
     const updateStatus = async () => {
-      let responseStatus = handleGetDataSearch("vnp_ResponseCode");
+      let responseStatus = +handleGetDataSearch("vnp_ResponseCode");
       if (responseStatus) {
         let statusValue = responseStatus === 0 ? 1 : 2;
         const data = {

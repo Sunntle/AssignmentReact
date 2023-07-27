@@ -1,12 +1,12 @@
 import { InputLabel, InputSelect } from "components/Input";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Button, Form, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from "reactstrap";
 import { showToast } from "redux/toast/toastSlice";
 import { createNewProduct, updateProduct } from "services";
-function ModalManageProduct({ modal, data, toggle, size, color, type }) {
+function ProductManagement({ modal, data, toggle, size, color, type }) {
   const [formattedType, SetFormattedType] = useState([]);
   const [formattedSize, SetFormattedSize] = useState([]);
   const [formattedColor, SetFormattedColor] = useState([]);
@@ -14,9 +14,9 @@ function ModalManageProduct({ modal, data, toggle, size, color, type }) {
   const { handleSubmit, control, setValue } = useForm();
   const dispatch = useDispatch();
   //checkAction edit-true or add-false
-  const checkAction = () => {
+  const checkAction = useCallback(() => {
     return Object.keys(data).length > 1;
-  };
+  }, [data]);
   //format data
   useEffect(() => {
     const handleData = () => {
@@ -38,7 +38,7 @@ function ModalManageProduct({ modal, data, toggle, size, color, type }) {
 
   //handle data product when action is edit
   useEffect(() => {
-    if (Object.keys(data).length > 1) {
+    if (checkAction()) {
       setValue("name", data.name);
       setValue("price", data.price);
       setValue("sold", data.sold);
@@ -65,7 +65,7 @@ function ModalManageProduct({ modal, data, toggle, size, color, type }) {
       setValue("ColorProduct", "");
       setValue("Image", "");
     }
-  }, [data, formattedType, formattedSize, formattedColor, setValue]);
+  }, [data, formattedType, formattedSize, formattedColor, setValue, checkAction]);
 
   const onSubmit = async (dataForm) => {
     SetLoading(true);
@@ -86,19 +86,9 @@ function ModalManageProduct({ modal, data, toggle, size, color, type }) {
           toggle();
         }
       } else {
-        //action is edit
-        // const oldSize = size.filter((el) => data.allSize.split(",").includes(el.size));
-        // const oldColor = color.filter((el) => data.allColor.split(",").includes(el.color));
-        // //remove
-        // const removeSize = oldSize.filter((obj1) => !SizeProduct.some((obj2) => obj2.value === obj1.size_id));
-        // const removeColor = oldColor.filter((obj1) => !ColorProduct.some((obj2) => obj2.value === obj1.color_id));
-        // //add
-        // const addSize = SizeProduct.filter((obj1) => !oldSize.some((obj2) => obj2.size_id === obj1.value));
-        // const addColor = ColorProduct.filter((obj1) => !oldColor.some((obj2) => obj2.color_id === obj1.value));
+        //when action is eit
         const dataProductUpdate = {
           ...dataProduct,
-          // sizeChange: { removeSize, addSize },
-          // colorChange: { removeColor, addColor },
           id: data.id,
         };
         const res = await updateProduct(dataProductUpdate);
@@ -318,7 +308,7 @@ function ModalManageProduct({ modal, data, toggle, size, color, type }) {
             />
           </FormGroup>
           <div className="d-flex" style={{ gap: "10px" }}>
-            {data?.allImg?.split(",").map((el, index) => {
+            {data?.allImg?.split(";").map((el, index) => {
               return (
                 <a href={el} target="blank" key={index}>
                   <img style={{ maxWidth: "120px" }} className="img-fluid" src={el} alt="Img" />
@@ -340,4 +330,4 @@ function ModalManageProduct({ modal, data, toggle, size, color, type }) {
   );
 }
 
-export default ModalManageProduct;
+export default ProductManagement;

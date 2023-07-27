@@ -1,6 +1,7 @@
 @import "index.scss";
 .new-arrival {
   .title {
+    color: $main-color;
     &::before {
       position: absolute;
       bottom: 0;
@@ -9,7 +10,7 @@
       width: 80px;
       height: 2px;
       content: "";
-      background-color: black;
+      background-color: $main-color;
       margin: 0 auto;
     }
   }

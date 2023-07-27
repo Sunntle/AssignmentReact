@@ -117,10 +117,10 @@ const Header = (props, ref) => {
                   Pages
                 </NavLink>
                 <Nav className="menu-lv2 bg-black rounded">
-                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="blog">
-                    Blog
+                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/policy">
+                    Policy
                   </NavLink>
-                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="contact">
+                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/contact">
                     Contact
                   </NavLink>
                 </Nav>
@@ -129,17 +129,27 @@ const Header = (props, ref) => {
                 className=" fs-5 fw-semibold text-black nav-link blog"
                 exact="true"
                 activeclassname="active"
-                to="/blog"
+                to="/about"
               >
-                Blog
+                About
               </NavLink>
               <div className="menu-lv1 position-relative">
                 <NavLink className=" fs-5 fw-semibold text-black nav-link page" activeclassname="active" to="/account">
                   Account
                 </NavLink>
                 <Nav className="menu-lv2 bg-black rounded">
-                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/admin">
-                    Admin
+                  {isLogin && user.user.role === 1 && (
+                    <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/admin">
+                      Admin
+                    </NavLink>
+                  )}
+                  <NavLink
+                    className="text-light nav-link text-nowrap"
+                    exact="true"
+                    activeclassname="active"
+                    to="/orders"
+                  >
+                    Orders
                   </NavLink>
                 </Nav>
               </div>

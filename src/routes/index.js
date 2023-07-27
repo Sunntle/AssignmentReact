@@ -2,6 +2,8 @@ import NotFound from "../pages/NotFound";
 import { lazy } from "react";
 import { DefaultLayout, NoBreadcrumb, NotHeaderLayout } from "../layout";
 import Page from "pages/Page";
+import AboutPage from "pages/About";
+import ContactPage from "pages/Contact";
 import Unauthorized from "pages/Unauthorized";
 const publicRoutes = [
   {
@@ -39,6 +41,16 @@ const publicRoutes = [
   {
     path: "account",
     component: lazy(() => import("../pages/Account")),
+    layout: DefaultLayout,
+  },
+  {
+    path: "about",
+    component: AboutPage,
+    layout: DefaultLayout,
+  },
+  {
+    path: "contact",
+    component: ContactPage,
     layout: DefaultLayout,
   },
   {
@@ -82,6 +94,11 @@ const privateRoutes = [
     path: "bill",
     component: lazy(() => import("../pages/Checkout/Bill")),
     layout: NoBreadcrumb,
+  },
+  {
+    path: "orders",
+    component: lazy(() => import("../pages/Orders")),
+    layout: DefaultLayout,
   },
 ];
 export default publicRoutes;

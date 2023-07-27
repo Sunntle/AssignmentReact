@@ -104,8 +104,8 @@ function Checkout() {
     };
     const res = await createOrder(infoOrder);
     if (res) {
+      dispatch(removeAll());
       if (data.paymentMethod.value === "COD") {
-        dispatch(removeAll());
         navigate("/bill", { state: res });
       } else {
         const dataPayment = {
@@ -342,6 +342,7 @@ function Checkout() {
                         onChange={onChange}
                         error={error}
                         inputRef={ref}
+                        data={value}
                         placeholder="Selecte payment method "
                       />
                     </>
