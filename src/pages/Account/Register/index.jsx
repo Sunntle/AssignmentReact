@@ -17,17 +17,17 @@ function Register() {
         email: data.email,
       };
       const res = await registerUser(userInfo);
-      if (res) {
+      if (res && !res.error) {
         const message = {
           status: 0,
           message: "Register successfully",
         };
         SetNotification(message);
         reset();
-      } else {
+      } else if (res && res.error) {
         const message = {
           status: 1,
-          message: "Username already used",
+          message: res.error,
         };
         SetNotification(message);
       }

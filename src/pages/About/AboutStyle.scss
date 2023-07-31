@@ -1,0 +1,40 @@
+@import "index.scss";
+.about-wrap {
+  .title {
+    &::before {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      width: 150px;
+      height: 3px;
+      content: "";
+      background-color: black;
+      margin: 0 auto;
+    }
+  }
+  .funfact-content {
+    background-color: #f3f2ee;
+    margin: 6rem 0 4rem 0;
+    .count {
+      font-size: 2.75rem;
+      color: $main-color;
+      @media (max-width: 500px) {
+        font-size: 2rem;
+      }
+    }
+    svg {
+      color: #9191a6;
+    }
+  }
+  .team-area {
+    .title {
+      &::before {
+        width: 80px;
+      }
+    }
+    .team-content {
+      background-color: #f7f7f7;
+    }
+  }
+}

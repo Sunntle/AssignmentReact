@@ -7,18 +7,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Images from "assets/images/logo.png";
-import { useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Col, Container, Input, Nav, Row, UncontrolledTooltip } from "reactstrap";
 import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "redux/user/userSlice";
 import { showToast } from "redux/toast/toastSlice";
 const Header = (props, ref) => {
+  const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cartReducer);
   const user = useSelector((state) => state.userReducer);
   const isLogin = user.isAuthenticated;
+  const navigate = useNavigate();
   useEffect(() => {
     const navsub = document.querySelectorAll(".navsub");
     const showNav = document.querySelector(".showNav");
@@ -38,8 +40,13 @@ const Header = (props, ref) => {
     localStorage.removeItem("expiresAt");
     dispatch(logOut());
     dispatch(showToast({ type: "success", message: "Log out successfully!" }));
+    navigate("/");
   };
-  const handLinkAccount = () => {
+  const handleSearch = () => {
+    navigate("/shop", { state: { kw: search } });
+    setSearch("");
+  };
+  const handleLinkAccount = () => {
     if (isLogin)
       return (
         <>
@@ -74,7 +81,7 @@ const Header = (props, ref) => {
             </Col>
             <Col lg="6" md="5">
               <div className="header__top__right text-end">
-                {handLinkAccount()}
+                {handleLinkAccount()}
 
                 <Link className="text-decoration-none text-uppercase text-white px-2">FAQs</Link>
               </div>
@@ -117,10 +124,10 @@ const Header = (props, ref) => {
                   Pages
                 </NavLink>
                 <Nav className="menu-lv2 bg-black rounded">
-                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/policy">
+                  <NavLink className=" text-light nav-link" exact="true" to="/policy">
                     Policy
                   </NavLink>
-                  <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/contact">
+                  <NavLink className=" text-light nav-link" exact="true" to="/contact">
                     Contact
                   </NavLink>
                 </Nav>
@@ -139,16 +146,11 @@ const Header = (props, ref) => {
                 </NavLink>
                 <Nav className="menu-lv2 bg-black rounded">
                   {isLogin && user.user.role === 1 && (
-                    <NavLink className=" text-light nav-link" exact="true" activeclassname="active" to="/admin">
+                    <NavLink className=" text-light nav-link" exact="true" to="/admin">
                       Admin
                     </NavLink>
                   )}
-                  <NavLink
-                    className="text-light nav-link text-nowrap"
-                    exact="true"
-                    activeclassname="active"
-                    to="/orders"
-                  >
+                  <NavLink className="text-light nav-link text-nowrap" exact="true" to="/orders">
                     Orders
                   </NavLink>
                 </Nav>
@@ -157,13 +159,13 @@ const Header = (props, ref) => {
           </Col>
           <Col lg="3" className="d-none d-lg-block navsub">
             <div className="header__icon d-flex p-lg-0 px-3 py-2 justify-content-start justify-content-lg-end align-items-center">
-              <Input type="text" placeholder="Search..." />
-              <Link className="text-black fs-5">
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
-              </Link>
-              <Link className="text-black fs-5">
-                <FontAwesomeIcon icon={faHeart} />
-              </Link>
+              <Input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+              <FontAwesomeIcon
+                className="text-black fs-5 search-icon"
+                icon={faMagnifyingGlass}
+                onClick={handleSearch}
+              />
+              <FontAwesomeIcon className="text-black fs-5" icon={faHeart} />
               <div className="cart d-flex justify-content-center align-items-center">
                 <Link to={"/cart"} className="text-black fs-5 position-relative">
                   <FontAwesomeIcon icon={faCartShopping} />

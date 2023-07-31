@@ -1,7 +1,8 @@
 import Select from "react-select";
 import { FormFeedback, Label } from "reactstrap";
 function InputSelect(props) {
-  const { id, options, name, onBlur, onChange, label, placeholder, inputRef, error, data, isMulti } = props;
+  const { id, options, name, onBlur, onChange, label, placeholder, inputRef, error, data, isMulti, anotherAction } =
+    props;
   return (
     <>
       {label && <Label for={name}>{label}</Label>}
@@ -9,7 +10,10 @@ function InputSelect(props) {
         id={id}
         options={options}
         value={data}
-        onChange={(value) => onChange(value)}
+        onChange={(value) => {
+          if (anotherAction) anotherAction(value, id);
+          return onChange(value);
+        }}
         onBlur={(data) => onBlur(data)}
         theme={(theme) => ({
           ...theme,

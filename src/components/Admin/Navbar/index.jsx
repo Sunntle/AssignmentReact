@@ -49,15 +49,9 @@ function NavbarAdmin() {
         </NavLink>
       </Navbar>
       <Navbar className="my-3">
-        <NavLink to="/admin/comment" exact="true" className="  text-decoration-none fs-5" activeclassname="active">
+        <NavLink to="/admin/orders" exact="true" className="  text-decoration-none fs-5" activeclassname="active">
           <FontAwesomeIcon className="pe-3" icon={faComment} />
-          Comment
-        </NavLink>
-      </Navbar>
-      <Navbar className="my-3">
-        <NavLink to="/admin/posts" exact="true" className="  text-decoration-none fs-5" activeclassname="active">
-          <FontAwesomeIcon className="pe-3" icon={faPenNib} />
-          Posts
+          Orders
         </NavLink>
       </Navbar>
     </div>

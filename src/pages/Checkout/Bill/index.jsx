@@ -121,7 +121,7 @@ function Bill() {
                       <img
                         style={{ maxWidth: "120px" }}
                         className="img-fluid"
-                        src={el.product.allImg?.split(",")[0]}
+                        src={el.product.allImg?.split(";")[0]}
                         alt="#"
                       />
                     </td>

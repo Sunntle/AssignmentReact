@@ -75,7 +75,7 @@ function Cart() {
               return (
                 <tr key={index}>
                   <td>
-                    <img className="img-fluid" src={el.allImg?.split(",")[0]} alt="img" />
+                    <img className="img-fluid" src={el.allImg?.split(";")[0]} alt="img" />
                   </td>
                   <td>
                     <div className="d-inline-block">

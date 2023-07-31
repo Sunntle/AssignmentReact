@@ -1,8 +1,12 @@
 import NavbarAdmin from "components/Admin/Navbar";
 import ToastMessage from "components/Toast";
+import { useEffect } from "react";
 import { Col, Container, Row } from "reactstrap";
 
 function NotHeaderLayout({ children }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
   return (
     <Container fluid className="position-relative">
       <ToastMessage />

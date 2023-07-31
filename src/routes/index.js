@@ -83,6 +83,11 @@ const privateRoutes = [
         component: lazy(() => import("../pages/Admin/Product")),
         layout: NotHeaderLayout,
       },
+      {
+        path: "orders",
+        component: lazy(() => import("../pages/Admin/Orders")),
+        layout: NotHeaderLayout,
+      },
     ],
   },
   {

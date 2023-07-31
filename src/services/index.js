@@ -60,7 +60,6 @@ export const createNewProduct = async (data) => {
   Image.forEach((file, index) => {
     formData.append("Image", file);
   });
-
   const res = await axios.post(`/product`, { ...rest });
   if (res) {
     formData.append("product_id", res);
@@ -98,10 +97,11 @@ export const updateProduct = async (data) => {
     if (response) return "All update requests completed successfully.";
     return;
   }
-
-  // return response;
 };
-
+export const updateUser = async (user) => {
+  const res = axios.put(`/user/${user.id}`, { ...user });
+  return res;
+};
 export const deleteProduct = async (product_id) => {
   try {
     const requests = [
@@ -120,12 +120,18 @@ export const deleteProduct = async (product_id) => {
 };
 export const deleteUser = async (user_id) => {
   try {
-    const reqDeleteOrderItems = await axios.delete(`/checkout/${user_id}`);
-    if (reqDeleteOrderItems) {
-      const res = await axios.delete(`/user/${user_id}`);
-      if (res) return "All delete requests completed successfully.";
-      return;
-    }
+    const res = await axios.delete(`/user/${user_id}`);
+    if (res) return "All delete requests completed successfully.";
+    return "Something's wrong";
+  } catch (error) {
+    console.error("Error deleting product:", error);
+  }
+};
+export const deleteOrder = async (order_id) => {
+  try {
+    const res = await axios.delete(`/checkout/order_details/${order_id}`);
+    if (res) return "All delete requests completed successfully.";
+    return;
   } catch (error) {
     console.error("Error deleting product:", error);
   }

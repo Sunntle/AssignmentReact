@@ -23,7 +23,6 @@ function Dashboard() {
     };
     getData();
   }, []);
-  console.log(allData);
   ChartJS.register(ArcElement, Tooltip, Legend);
   const data = {
     labels: ["Jacket", "Bottoms", "Top", "Sock", "Pants", "Hoodie"],

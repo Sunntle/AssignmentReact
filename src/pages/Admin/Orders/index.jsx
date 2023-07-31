@@ -1,25 +1,33 @@
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PaginationComponent from "components/Pagination";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
-
-import { Button, Col, Container, Form, Input, Row, Table } from "reactstrap";
+import { Button, Col, Container, Form, FormGroup, Input, Row, Table } from "reactstrap";
 import { showToast } from "redux/toast/toastSlice";
-import { deleteUser, fetchUser } from "services";
-import UserManagement from "./UserManagement";
-import LoadingComponent from "components/Loading";
+import { deleteOrder, fetchOrder, updateStatusTransaction } from "services";
 
-function UserAdmin() {
+import { Controller, useForm } from "react-hook-form";
+import { InputSelect } from "components/Input";
+import DetailOrder from "pages/Orders/Detail";
+import "./OrderStyle.scss";
+import LoadingComponent from "components/Loading";
+function OrdersAdmin() {
   const options = [
-    { value: 0, label: "Default" },
-    { value: 1, label: "A-Z" },
-    { value: 2, label: "Z-A" },
+    {
+      label: "Default",
+      value: 0,
+    },
+    {
+      label: "Old",
+      value: 1,
+    },
   ];
   const [data, setData] = useState([]);
   const [modal, setModal] = useState(false);
-  const [user, SetUser] = useState({});
+  const [item, setItem] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [countProduct, setCountProduct] = useState(0);
@@ -27,12 +35,21 @@ function UserAdmin() {
   const [inputValue, setInputValue] = useState("");
   const [order, setOrder] = useState(options[0]);
   const [loading, setLoading] = useState(true);
-  const limit = 4;
+  const limit = 8;
   const dispatch = useDispatch();
+  const { control } = useForm();
+  const optionsStatus = [
+    { label: "Success", value: 0 },
+    { label: "Pending", value: 1 },
+    { label: "Fail", value: 2 },
+  ];
   const fetchData = async (value = 0) => {
     try {
       let response, res, stringResponse, stringRes;
-      if (value === 0) {
+      if (value !== 0 && typeof value == "number") {
+        stringResponse = `/idLoai/${value}`;
+        stringRes = `/idLoai/${value}?_page=${currentPage}&_limit=${limit}`;
+      } else if (value === 0) {
         stringResponse = ``;
         stringRes = `?_page=${currentPage}&_limit=${limit}`;
       } else if (value.includes("?q")) {
@@ -40,12 +57,13 @@ function UserAdmin() {
         stringRes = `${value}&_page=${currentPage}&_limit=${limit}`; //?q=abc
       }
       if (order.value === 1) {
-        stringRes += `&_sort=name&_order=asc`;
-      } else if (order.value === 2) {
-        stringRes += `&_sort=name&_order=desc`;
+        stringRes += `&_sort=create_at&_order=asc`;
+      } else {
+        stringRes += `&_sort=create_at&_order=desc`;
       }
-      response = await fetchUser(stringResponse);
-      res = await fetchUser(stringRes);
+
+      response = await fetchOrder(stringResponse);
+      res = await fetchOrder(stringRes);
       setTotalPages(Math.ceil(response.length / limit));
       setCountProduct(response.length);
       setData(res);
@@ -78,38 +96,37 @@ function UserAdmin() {
     return () => clearTimeout(delaySearch);
   }, [inputValue]);
 
+  const updateStatus = async (status, id) => {
+    const res = await updateStatusTransaction(id, {
+      status: status.value,
+    });
+    if (res) {
+      dispatch(showToast({ type: "success", message: "Update successfully" }));
+    } else {
+      dispatch(showToast({ type: "danger", message: "Something's wrong" }));
+    }
+  };
   //toggle fetchForm edit Product
-  const toggle = async (id, action) => {
-    if (id !== undefined) {
-      if (action === "edit") {
-        const res = await fetchUser(`/${id}`);
-        SetUser(res);
-      }
+  const toggle = async (id = null) => {
+    if (id != null) {
+      const res = await fetchOrder(`/order_items/${id}`);
+      setItem(res);
       setModal(true);
     } else {
-      SetUser({});
-      fetchData(filter);
       setModal(false);
     }
   };
-  const handleDelete = async (id) => {
-    const res = await deleteUser(id);
-    if (res) {
-      dispatch(showToast({ type: "success", message: res }));
-      fetchData(filter);
-    } else {
-      dispatch(showToast({ type: "danger", message: res }));
-    }
+  const handleDelete = async (order_id) => {
+    const res = await deleteOrder(order_id);
+    dispatch(showToast({ type: "success", message: res }));
+    fetchData(filter);
   };
   return loading ? (
     <LoadingComponent />
   ) : (
-    <Container fluid className="pt-5 wrap-admin-product">
+    <Container fluid className="pt-5 wrap-admin-orders wrap-admin-product">
       <div className="d-flex align-items-center justify-content-between pb-5">
-        <h2 className="title m-0">List User</h2>
-        <Button color="success" outline onClick={() => toggle(null, "add")}>
-          Add new
-        </Button>
+        <h2 className="title m-0">List Orders</h2>
       </div>
       <Row className="align-items-center justify-content-center py-3">
         <Col xs="6">
@@ -145,14 +162,15 @@ function UserAdmin() {
           </div>
         </Col>
       </Row>
-      <Table responsive hover>
+      <Table hover>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Phone</th>
+            <th>#Order</th>
+            <th>User</th>
+            <th>Total</th>
+            <th>Date</th>
+            <th>Payment</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -160,11 +178,42 @@ function UserAdmin() {
           {data?.map((el, index) => {
             return (
               <tr key={index}>
-                <td>{el.name || "None"}</td>
-                <td>{el.username}</td>
-                <td>{el.email}</td>
-                <td>{el.role === 1 ? "Admin" : "User"}</td>
-                <td>{el.phone || "none"}</td>
+                <td>{el.id}</td>
+                <td>{el.user_id}</td>
+                <td>{el.total}</td>
+                <td>{moment(el.date).format("DD-MM-YYYY")}</td>
+                <td>{el.payment_id}</td>
+                <td>
+                  <Form>
+                    <FormGroup>
+                      <Controller
+                        name={`status +${index}`}
+                        control={control}
+                        defaultValue={
+                          el.status === 1 ? optionsStatus[1] : el.status === 2 ? optionsStatus[2] : optionsStatus[0]
+                        }
+                        rules={{ required: true }}
+                        render={({
+                          field: { onChange, onBlur, value, name, ref },
+                          fieldState: { invalid, isTouched, isDirty, error },
+                          formState,
+                        }) => (
+                          <InputSelect
+                            id={el.id}
+                            name={name}
+                            options={optionsStatus}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            anotherAction={updateStatus}
+                            error={error}
+                            inputRef={ref}
+                            data={value}
+                          />
+                        )}
+                      />
+                    </FormGroup>
+                  </Form>
+                </td>
                 <td>
                   <Button outline color="info" onClick={() => toggle(el.id, "edit")}>
                     <FontAwesomeIcon icon={faPenToSquare} />
@@ -182,9 +231,9 @@ function UserAdmin() {
         Showing {data?.length} of {countProduct} results
       </p>
       <PaginationComponent curPage={currentPage} totalPage={totalPages} onPageChange={handleSetCurPage} />
-      {modal && <UserManagement modal={modal} data={user} toggle={toggle} />}
+      {modal && <DetailOrder modal={modal} data={item} toggle={toggle} />}
     </Container>
   );
 }
 
-export default UserAdmin;
+export default OrdersAdmin;

@@ -1,9 +1,10 @@
+import { Container } from "reactstrap";
 import ShopArea from "./ShopArea";
 function Shop() {
   return (
-    <div>
+    <Container className="my-5 py-5">
       <ShopArea />
-    </div>
+    </Container>
   );
 }
 

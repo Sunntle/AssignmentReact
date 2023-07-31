@@ -18,7 +18,7 @@
   a {
     position: relative;
   }
-  .active:after {
+  .active:not(.header__menu .menu-lv2 a):after {
     position: absolute;
     content: "";
     width: calc(100% - 3rem);
@@ -47,13 +47,16 @@
     transition: all 0.5s;
   }
   @media (min-width: 992px) {
-    .active::after {
+    .active:not(.header__menu .menu-lv2 a)::after {
       width: calc(100% - 2rem);
     }
     a:not(.header__menu .active):not(.header__menu .menu-lv2 a):hover:after {
       width: calc(100% - 2rem);
     }
   }
+}
+.search-icon {
+  cursor: pointer;
 }
 .header__logo {
   max-width: 200px;

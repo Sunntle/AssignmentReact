@@ -39,7 +39,7 @@ function QuickView(props) {
         <ModalBody>
           <Row>
             <Col xs="12" md="5" className="mb-3">
-              <img src={data.allImg?.split(",")[0]} alt="img" className="img-fluid" />
+              <img src={data.allImg?.split(";")[0]} alt="img" className="img-fluid" />
             </Col>
             <Col xs="12" md="7">
               <h2>{data.name}</h2>

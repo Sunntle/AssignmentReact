@@ -7,17 +7,22 @@ import { hideToast } from "redux/toast/toastSlice";
 function ToastMessage() {
   const toast = useSelector((state) => state.toastReducer);
   const dispatch = useDispatch();
+
   useEffect(() => {
     let delay;
     if (toast.isOpen) {
+      console.log("Mount");
       delay = setTimeout(() => {
         dispatch(hideToast());
-      }, 2000);
+        console.log("unMount");
+      }, 1500);
     }
+
     return () => {
       clearTimeout(delay);
     };
   }, [dispatch, toast.isOpen]);
+
   return (
     <Toast isOpen={toast.isOpen} transition={{ timeout: 150 }} className="fixed-bottom">
       <ToastHeader icon={toast.type}>{toast?.notification ?? "Notification"}</ToastHeader>
@@ -25,4 +30,5 @@ function ToastMessage() {
     </Toast>
   );
 }
+
 export default ToastMessage;

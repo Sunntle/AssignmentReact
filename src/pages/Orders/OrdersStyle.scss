@@ -1,0 +1,39 @@
+@import "index.scss";
+.orders-user-wrap {
+  a {
+    text-decoration: none;
+  }
+  .nav-tabs {
+    gap: 20px;
+    background-color: #dee2e6;
+    border-radius: 10px;
+  }
+  .nav-item {
+    .btn {
+      background: none;
+      color: #000;
+      border: none;
+      padding: 0.375rem 2rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease-in-out;
+      h5 {
+        margin: 0;
+      }
+      &.active {
+        background-color: #fff;
+        box-shadow: 0 1rem 3rem rgba(#000, 0.175);
+      }
+    }
+  }
+  .accordion-header {
+    .d-flex {
+      gap: 3rem;
+    }
+  }
+  .filter-options {
+    @media (min-width: 767px) {
+      top: 0;
+      right: 0;
+    }
+  }
+}

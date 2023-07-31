@@ -5,8 +5,12 @@ import ScrollToTop from "components/ScrollToTop";
 
 import "./DefaultLayout.scss";
 import ToastMessage from "components/Toast";
+import { useEffect } from "react";
 
 function DefaultLayout({ children }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
   return (
     <div className="wrapper position-relative">
       <ToastMessage />

@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Button, Form, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from "reactstrap";
+import { showToast } from "redux/toast/toastSlice";
+import { registerUser, updateUser } from "services";
 
 function UserManagement({ modal, data, toggle }) {
   const optionsRole = [
@@ -32,20 +34,42 @@ function UserManagement({ modal, data, toggle }) {
     } else {
       setValue("name", "");
       setValue("username", "");
+      setValue("password", "");
       setValue("email", "");
       setValue("role", "");
       setValue("phone", "");
       setValue("address", "");
     }
   }, [data, setValue, checkAction]);
-  const onSubmit = (dataForm) => {
-    console.log(dataForm);
+  const onSubmit = async (dataForm) => {
+    SetLoading(true);
+    try {
+      const { role, ...rest } = dataForm;
+      let res;
+      if (!checkAction()) {
+        res = await registerUser({ ...rest, role: role.value });
+      } else {
+        res = await updateUser({ ...rest, role: role.value, id: data.id });
+      }
+      if (res && !res.error) {
+        dispatch(
+          showToast({ type: "success", message: !checkAction() ? "Register successfully" : "Update successfully" })
+        );
+        toggle();
+      } else if (res && res.error) {
+        dispatch(showToast({ type: "danger", message: res.error }));
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      SetLoading(false);
+    }
   };
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Modal scrollable size="lg" keyboard isOpen={modal} toggle={() => toggle()} centered>
-        <ModalHeader toggle={() => toggle()}>Product Information</ModalHeader>
+        <ModalHeader toggle={() => toggle()}>User Information</ModalHeader>
         <ModalBody>
           <FormGroup>
             <Controller
@@ -86,7 +110,7 @@ function UserManagement({ modal, data, toggle }) {
                   type="text"
                   onBlur={onBlur}
                   onChange={onChange}
-                  label="User name"
+                  label="Username"
                   error={error}
                   value={value}
                   inputRef={ref}
@@ -94,11 +118,43 @@ function UserManagement({ modal, data, toggle }) {
               )}
             />
           </FormGroup>
+          {!checkAction() && (
+            <FormGroup>
+              <Controller
+                name="password"
+                control={control}
+                rules={{ required: true }}
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <InputLabel
+                    id={name}
+                    name={name}
+                    type="password"
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    label="Password"
+                    error={error}
+                    value={value}
+                    inputRef={ref}
+                  />
+                )}
+              />
+            </FormGroup>
+          )}
           <FormGroup>
             <Controller
               name="email"
               control={control}
-              rules={{ required: true }}
+              rules={{
+                required: "Please enter your email",
+                pattern: {
+                  value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+                  message: "Please enter a correct email format",
+                },
+              }}
               render={({
                 field: { onChange, onBlur, value, name, ref },
                 fieldState: { invalid, isTouched, isDirty, error },
@@ -138,7 +194,7 @@ function UserManagement({ modal, data, toggle }) {
                   error={error}
                   inputRef={ref}
                   data={value}
-                  placeholder="What district do you live in?"
+                  placeholder="Choose a role for the user"
                 />
               )}
             />
@@ -147,7 +203,13 @@ function UserManagement({ modal, data, toggle }) {
             <Controller
               name="phone"
               control={control}
-              rules={{ required: true }}
+              rules={{
+                required: true,
+                pattern: {
+                  value: /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/,
+                  message: "Phone number must be 10 characters",
+                },
+              }}
               render={({
                 field: { onChange, onBlur, value, name, ref },
                 fieldState: { invalid, isTouched, isDirty, error },

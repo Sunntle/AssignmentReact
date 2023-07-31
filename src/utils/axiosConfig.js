@@ -25,7 +25,7 @@ instance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       console.log("Unauthorized");
     } else {
-      console.log("An error occurred");
+      return error.response.data;
     }
   }
 );

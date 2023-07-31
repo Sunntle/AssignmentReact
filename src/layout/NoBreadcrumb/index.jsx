@@ -3,8 +3,12 @@ import Header from "components/Header";
 import ScrollToTop from "components/ScrollToTop";
 import "../Default/DefaultLayout.scss";
 import ToastMessage from "components/Toast";
+import { useEffect } from "react";
 
 function NoBreadcrumb({ children }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
   return (
     <div className="wrapper position-relative">
       <ToastMessage />

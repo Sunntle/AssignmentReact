@@ -10,6 +10,7 @@ import ProductManagement from "./ProductManagement";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { showToast } from "redux/toast/toastSlice";
+import LoadingComponent from "components/Loading";
 function ProductAdmin() {
   const options = [
     { value: 0, label: "Default" },
@@ -28,6 +29,7 @@ function ProductAdmin() {
   const [filter, setFilter] = useState(0);
   const [inputValue, setInputValue] = useState("");
   const [order, setOrder] = useState(options[0]);
+  const [loading, setLoading] = useState(true);
   const limit = 4;
   const dispatch = useDispatch();
   const fetchData = async (value = 0) => {
@@ -73,6 +75,8 @@ function ProductAdmin() {
       setData(res);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -117,7 +121,9 @@ function ProductAdmin() {
     dispatch(showToast({ type: "success", message: res }));
     fetchData(filter);
   };
-  return (
+  return loading ? (
+    <LoadingComponent />
+  ) : (
     <Container fluid className="pt-5 wrap-admin-product">
       <div className="d-flex align-items-center justify-content-between pb-5">
         <h2 className="title m-0">List Product</h2>
