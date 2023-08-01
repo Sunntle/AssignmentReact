@@ -30,6 +30,7 @@ function OrdersPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [allData, setAllData] = useState([]);
+
   const limit = 3;
   const fetchAllData = async (value) => {
     try {
@@ -90,6 +91,7 @@ function OrdersPage() {
     fetchAllData(activeTab);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, filter, activeTab]);
+
   return (
     <Container className="orders-user-wrap text-start my-5 py-5">
       {loading ? (

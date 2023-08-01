@@ -46,15 +46,16 @@ function UserManagement({ modal, data, toggle }) {
     try {
       const { role, ...rest } = dataForm;
       let res;
+      let message;
       if (!checkAction()) {
         res = await registerUser({ ...rest, role: role.value });
+        if (res) message = "Register successfully";
       } else {
         res = await updateUser({ ...rest, role: role.value, id: data.id });
+        if (res) message = "Update successfully";
       }
       if (res && !res.error) {
-        dispatch(
-          showToast({ type: "success", message: !checkAction() ? "Register successfully" : "Update successfully" })
-        );
+        dispatch(showToast({ type: "success", message: message }));
         toggle();
       } else if (res && res.error) {
         dispatch(showToast({ type: "danger", message: res.error }));

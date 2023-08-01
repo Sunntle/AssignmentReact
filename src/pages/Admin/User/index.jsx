@@ -73,7 +73,7 @@ function UserAdmin() {
   //handleSearch
   useEffect(() => {
     const delaySearch = setTimeout(() => {
-      handleClicked(`?q=${inputValue}`);
+      handleClicked(`?q=${inputValue.trim()}`);
     }, 500);
     return () => clearTimeout(delaySearch);
   }, [inputValue]);
@@ -145,39 +145,43 @@ function UserAdmin() {
           </div>
         </Col>
       </Row>
-      <Table responsive hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Phone</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody className="text-center">
-          {data?.map((el, index) => {
-            return (
-              <tr key={index}>
-                <td>{el.name || "None"}</td>
-                <td>{el.username}</td>
-                <td>{el.email}</td>
-                <td>{el.role === 1 ? "Admin" : "User"}</td>
-                <td>{el.phone || "none"}</td>
-                <td>
-                  <Button outline color="info" onClick={() => toggle(el.id, "edit")}>
-                    <FontAwesomeIcon icon={faPenToSquare} />
-                  </Button>
-                  <Button outline color="danger" onClick={() => handleDelete(el.id)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </Button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+      {data.length > 0 ? (
+        <Table responsive hover>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Phone</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody className="text-center">
+            {data?.map((el, index) => {
+              return (
+                <tr key={index}>
+                  <td>{el.name || "None"}</td>
+                  <td>{el.username}</td>
+                  <td>{el.email}</td>
+                  <td>{el.role === 1 ? "Admin" : "User"}</td>
+                  <td>{el.phone || "none"}</td>
+                  <td>
+                    <Button outline color="info" onClick={() => toggle(el.id, "edit")}>
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </Button>
+                    <Button outline color="danger" onClick={() => handleDelete(el.id)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      ) : (
+        <p>No user match ...</p>
+      )}
       <p className="m-0 text-start">
         Showing {data?.length} of {countProduct} results
       </p>

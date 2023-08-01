@@ -43,7 +43,7 @@ const Header = (props, ref) => {
     navigate("/");
   };
   const handleSearch = () => {
-    navigate("/shop", { state: { kw: search } });
+    navigate("/shop", { state: { kw: search.trim() } });
     setSearch("");
   };
   const handleLinkAccount = () => {

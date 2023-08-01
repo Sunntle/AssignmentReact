@@ -11,7 +11,11 @@ import { InputLabel } from "components/Input";
 import { showToast } from "redux/toast/toastSlice";
 
 function QuickView(props) {
-  const { handleSubmit, control } = useForm();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
   const [value, setValue] = useState(1);
   const { modal, toggle, data } = props;
   const dispatch = useDispatch();
@@ -76,7 +80,7 @@ function QuickView(props) {
                         name={"colorSelected"}
                         control={control}
                         defaultValue=""
-                        rules={{ required: true }}
+                        rules={{ required: "You have to choose 1 color" }}
                         render={({
                           field: { onChange, onBlur, value, name, ref },
                           fieldState: { invalid, isTouched, isDirty, error },
@@ -97,6 +101,9 @@ function QuickView(props) {
                             ))
                         }
                       />
+                      {errors?.colorSelected && (
+                        <p className="text-danger m-0 fw-lighter text fst-italic">{errors.colorSelected.message}</p>
+                      )}
                     </div>
                   </FormGroup>
                 )}
@@ -108,7 +115,7 @@ function QuickView(props) {
                         name="sizeSelected"
                         control={control}
                         defaultValue=""
-                        rules={{ required: true }}
+                        rules={{ required: "You have to choose 1 size" }}
                         render={({
                           field: { onChange, onBlur, value, name, ref },
                           fieldState: { invalid, isTouched, isDirty, error },
@@ -131,6 +138,9 @@ function QuickView(props) {
                           })
                         }
                       />
+                      {errors?.sizeSelected && (
+                        <p className="text-danger m-0 fw-lighter text fst-italic">{errors.sizeSelected.message}</p>
+                      )}
                     </div>
                   </FormGroup>
                 )}

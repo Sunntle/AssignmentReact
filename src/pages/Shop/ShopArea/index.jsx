@@ -113,7 +113,7 @@ function ShopArea() {
   };
   useEffect(() => {
     const delaySearch = setTimeout(() => {
-      handleClicked(`?q=${inputValue}`);
+      handleClicked(`?q=${inputValue.trim()}`);
     }, 500);
     return () => clearTimeout(delaySearch);
   }, [inputValue]);

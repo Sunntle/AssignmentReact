@@ -28,7 +28,11 @@ function ShopDetail() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const { handleSubmit, control } = useForm();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,7 +136,7 @@ function ShopDetail() {
                       name={"colorSelected"}
                       control={control}
                       defaultValue=""
-                      rules={{ required: true }}
+                      rules={{ required: "You have to choose 1 color" }}
                       render={({
                         field: { onChange, onBlur, value, name, ref },
                         fieldState: { invalid, isTouched, isDirty, error },
@@ -153,6 +157,9 @@ function ShopDetail() {
                           ))
                       }
                     />
+                    {errors?.colorSelected && (
+                      <p className="text-danger m-0 fw-lighter text fst-italic">{errors.colorSelected.message}</p>
+                    )}
                   </div>
                 </FormGroup>
               )}
@@ -164,7 +171,7 @@ function ShopDetail() {
                       name="sizeSelected"
                       control={control}
                       defaultValue=""
-                      rules={{ required: true }}
+                      rules={{ required: "You have to choose 1 size" }}
                       render={({
                         field: { onChange, onBlur, value, name, ref },
                         fieldState: { invalid, isTouched, isDirty, error },
@@ -187,6 +194,9 @@ function ShopDetail() {
                         })
                       }
                     />
+                    {errors?.sizeSelected && (
+                      <p className="text-danger m-0 fw-lighter text fst-italic">{errors.sizeSelected.message}</p>
+                    )}
                   </div>
                 </FormGroup>
               )}

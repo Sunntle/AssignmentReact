@@ -70,7 +70,7 @@ function AboutPage() {
         <Row className="text-start ">
           {springs.map((el, index) => {
             return (
-              <Col md="4" lg="4">
+              <Col md="4" lg="4" key={index}>
                 <animated.div style={el} className="mb-3">
                   <h3>{items[index].title}</h3>
                   <p className="text-muted my-3">{items[index].description}</p>

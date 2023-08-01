@@ -84,18 +84,32 @@ export const updateStatusTransaction = async (id, data) => {
 };
 //product
 export const updateProduct = async (data) => {
+  const { Image, size, color, ...rest } = data;
   //non-image
   const requestsDeleteOldData = [axios.delete(`/product_sizes/${data.id}`), axios.delete(`/product_colors/${data.id}`)];
   const responseDelete = await Promise.all(requestsDeleteOldData);
   if (responseDelete) {
     const requestsAddData = [
-      axios.post(`/product_sizes`, { size_id: data.size, product_id: data.id }),
-      axios.post(`/product_colors`, { color_id: data.color, product_id: data.id }),
-      axios.put(`/product/${data.id}`, { ...data }),
+      axios.post(`/product_sizes`, { size_id: size, product_id: data.id }),
+      axios.post(`/product_colors`, { color_id: color, product_id: data.id }),
+      axios.put(`/product/${data.id}`, { ...rest }),
     ];
     const response = await Promise.all(requestsAddData);
+    if (Image) {
+      const formData = new FormData();
+      formData.append("product_id", data.id);
+      await Promise.all(
+        Image.map((file) => {
+          formData.append("Image", file);
+          return axios.post("/images", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+        })
+      );
+    }
     if (response) return "All update requests completed successfully.";
-    return;
   }
 };
 export const updateUser = async (user) => {

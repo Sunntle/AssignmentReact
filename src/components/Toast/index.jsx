@@ -7,17 +7,13 @@ import { hideToast } from "redux/toast/toastSlice";
 function ToastMessage() {
   const toast = useSelector((state) => state.toastReducer);
   const dispatch = useDispatch();
-
   useEffect(() => {
     let delay;
     if (toast.isOpen) {
-      console.log("Mount");
       delay = setTimeout(() => {
         dispatch(hideToast());
-        console.log("unMount");
       }, 1500);
     }
-
     return () => {
       clearTimeout(delay);
     };

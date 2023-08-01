@@ -39,7 +39,7 @@
     transition: all 0.5s;
   }
   a:not(.header__menu .active):not(.header__menu .menu-lv2 a):hover::after {
-    width: calc(100% - 3rem);
+    width: calc(100% - 4rem);
     height: 3px;
     background-color: $primary-color;
     left: 1rem;
