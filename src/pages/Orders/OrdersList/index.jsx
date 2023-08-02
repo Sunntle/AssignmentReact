@@ -4,7 +4,7 @@ import { Button, Table } from "reactstrap";
 import { fetchOrder } from "services";
 import DetailOrder from "../Detail";
 
-function OrderList({ orders }) {
+function OrderList({ orders, cancleOrders, cancle }) {
   const [modal, setModal] = useState(false);
   const [product, setProduct] = useState(null);
   const toggle = async (id = null) => {
@@ -52,6 +52,11 @@ function OrderList({ orders }) {
                   <Button color="dark" onClick={() => toggle(el.id)}>
                     Detail
                   </Button>
+                  {cancle && (
+                    <Button color="danger" onClick={() => cancleOrders(el.id)}>
+                      Cancle
+                    </Button>
+                  )}
                 </td>
               </tr>
             );

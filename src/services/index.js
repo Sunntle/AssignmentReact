@@ -98,18 +98,17 @@ export const updateProduct = async (data) => {
     if (Image) {
       const formData = new FormData();
       formData.append("product_id", data.id);
-      await Promise.all(
-        Image.map((file) => {
-          formData.append("Image", file);
-          return axios.post("/images", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
-        })
-      );
+      Image.forEach((file) => {
+        formData.append("Image", file);
+      });
+      const res = await axios.post("/images", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response && res) return "All update requests completed successfully.";
     }
-    if (response) return "All update requests completed successfully.";
+    if (response && !Image) return "All update requests completed successfully.";
   }
 };
 export const updateUser = async (user) => {
@@ -122,9 +121,10 @@ export const deleteProduct = async (product_id) => {
       axios.delete(`/product_sizes/${product_id}`),
       axios.delete(`/product_colors/${product_id}`),
       axios.delete(`/checkout/order_items/${product_id}`),
-      axios.delete(`/images/${product_id}`),
+      axios.delete(`/images`, { params: { idSp: product_id } }),
     ];
     await Promise.all(requests);
+    console.log(2);
     const res = await axios.delete(`/product/${product_id}`);
     if (res) return "All delete requests completed successfully.";
     return;
@@ -144,6 +144,20 @@ export const deleteUser = async (user_id) => {
 export const deleteOrder = async (order_id) => {
   try {
     const res = await axios.delete(`/checkout/order_details/${order_id}`);
+    if (res) return "All delete requests completed successfully.";
+    return;
+  } catch (error) {
+    console.error("Error deleting product:", error);
+  }
+};
+export const deleteImg = async (img, product_id) => {
+  try {
+    const res = await axios.delete(`/images/deleteOne`, {
+      params: {
+        img: img,
+        idSp: product_id,
+      },
+    });
     if (res) return "All delete requests completed successfully.";
     return;
   } catch (error) {

@@ -100,7 +100,16 @@ function Bill() {
           <div className="py-3 px-2 text-start">
             <p className="m-0">
               {location.state !== null ? "COD" : handleGetDataSearch("vnp_CardType")}
-              {location.state == null && (status === 0 ? "- Success" : "- Fail")}
+              {location.state == null &&
+                (status === 0 ? (
+                  <>
+                    - <span className="text-success">Success</span>
+                  </>
+                ) : (
+                  <>
+                    - <span className="text-danger">Fail</span>
+                  </>
+                ))}
             </p>
             <p className="text-muted m-0">
               {location.state !== null ? "Cash on delivery" : handleGetDataSearch("vnp_BankCode")}

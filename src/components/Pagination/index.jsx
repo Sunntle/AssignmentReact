@@ -4,8 +4,17 @@ function PaginationComponent({ curPage, totalPage, onPageChange }) {
   const handleClick = (page) => {
     onPageChange(page);
   };
+  // Hạn chế hiển thị chỉ 5 trang xung quanh trang hiện tại (nếu có đủ trang)
   const pageItem = [];
-  for (let index = 1; index <= totalPage; index++) {
+  const maxPageToShow = 5;
+  let startPage = Math.max(1, curPage - Math.floor(maxPageToShow / 2));
+  let endPage = Math.min(totalPage, startPage + maxPageToShow - 1);
+
+  if (endPage - startPage < maxPageToShow - 1) {
+    // Nếu số trang hiển thị ít hơn 5, cố gắng cân bằng vị trí của trang đầu và trang cuối
+    startPage = Math.max(1, endPage - maxPageToShow + 1);
+  }
+  for (let index = startPage; index <= endPage; index++) {
     const isActive = index === curPage;
     pageItem.push(
       <PaginationItem key={index}>

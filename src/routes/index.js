@@ -5,6 +5,10 @@ import Page from "pages/Page";
 import AboutPage from "pages/About";
 import ContactPage from "pages/Contact";
 import Unauthorized from "pages/Unauthorized";
+import UserAdmin from "pages/Admin/User";
+import ProductAdmin from "pages/Admin/Product";
+import OrdersAdmin from "pages/Admin/Orders";
+
 const publicRoutes = [
   {
     path: "",
@@ -75,17 +79,17 @@ const privateRoutes = [
       },
       {
         path: "user",
-        component: lazy(() => import("../pages/Admin/User")),
+        component: UserAdmin,
         layout: NotHeaderLayout,
       },
       {
         path: "product",
-        component: lazy(() => import("../pages/Admin/Product")),
+        component: ProductAdmin,
         layout: NotHeaderLayout,
       },
       {
         path: "orders",
-        component: lazy(() => import("../pages/Admin/Orders")),
+        component: OrdersAdmin,
         layout: NotHeaderLayout,
       },
     ],

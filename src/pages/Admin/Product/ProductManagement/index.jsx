@@ -1,11 +1,14 @@
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { InputLabel, InputSelect } from "components/Input";
 import moment from "moment";
 import React, { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { Button, Form, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from "reactstrap";
+import { Button, Col, Form, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Row, Spinner } from "reactstrap";
 import { showToast } from "redux/toast/toastSlice";
-import { createNewProduct, updateProduct } from "services";
+import { createNewProduct, deleteImg, updateProduct } from "services";
+import "./ProductManagmentStyle.scss";
 function ProductManagement({ modal, data, toggle, size, color, type }) {
   const [formattedType, SetFormattedType] = useState([]);
   const [formattedSize, SetFormattedSize] = useState([]);
@@ -101,6 +104,12 @@ function ProductManagement({ modal, data, toggle, size, color, type }) {
       SetLoading(false);
       toggle();
     }
+  };
+
+  const handleRemoveImg = async (img, data) => {
+    const res = await deleteImg(img, data.id);
+    if (res) toggle(data.id, "edit");
+    dispatch(showToast({ type: "success", message: "Delete requests completed successfully" }));
   };
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -307,15 +316,24 @@ function ProductManagement({ modal, data, toggle, size, color, type }) {
               )}
             />
           </FormGroup>
-          <div className="d-flex" style={{ gap: "10px" }}>
+          <Row className=" flep-wrap">
             {data?.allImg?.split(";").map((el, index) => {
               return (
-                <a href={el} target="blank" key={index}>
-                  <img style={{ maxWidth: "120px" }} className="img-fluid" src={el} alt="Img" />
-                </a>
+                <Col xs="3" key={index} className="text-center position-relative wrap-img">
+                  <a href={el} target="blank">
+                    <img className="img-fluid" src={el} alt="Img" />
+                  </a>
+                  <Button
+                    color="danger"
+                    className="border-0 position-absolute top-50 start-50 btnRemove"
+                    onClick={() => handleRemoveImg(el, data)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </Button>
+                </Col>
               );
             })}
-          </div>
+          </Row>
         </ModalBody>
         <ModalFooter>
           <Button outline color="success" type="submit" onClick={handleSubmit(onSubmit)}>

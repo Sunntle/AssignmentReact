@@ -30,6 +30,7 @@ function ProductAdmin() {
   const [inputValue, setInputValue] = useState("");
   const [order, setOrder] = useState(options[0]);
   const [loading, setLoading] = useState(true);
+
   const limit = 4;
   const dispatch = useDispatch();
   const fetchData = async (value = 0) => {

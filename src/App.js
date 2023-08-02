@@ -3,7 +3,6 @@ import publicRoutes, { privateRoutes } from "./routes";
 import "./App.scss";
 import { Fragment, useEffect } from "react";
 import PrivateRoute from "utils/PrivateRoute";
-import ToastMessage from "components/Toast";
 import { useDispatch } from "react-redux";
 import { isTokenExpired } from "utils/auth";
 import { fetchUserByIdToken } from "redux/user/userSlice";
@@ -43,7 +42,6 @@ function App() {
   };
   return (
     <div className="App position-relative">
-      <ToastMessage />
       <Routes>
         {publicRoutes.map((route, index) => {
           let Layout = assignLayout(route);

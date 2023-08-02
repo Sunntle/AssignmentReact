@@ -206,7 +206,7 @@ function ShopArea() {
         </div>
       </Col>
       <Col xs="12" lg="9">
-        <div className="shop__product__option my-lg-0 my-4">
+        <div className="shop__product__option my-lg-2 my-4">
           <Row className="align-items-center justify-content-center">
             <Col xs="6">
               <p className="m-0 text-start">

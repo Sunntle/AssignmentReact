@@ -4,9 +4,11 @@ import Select from "react-select";
 
 import "./OrdersStyle.scss";
 import OrderList from "./OrdersList";
-import { fetchOrder } from "services";
+import { fetchOrder, updateStatusTransaction } from "services";
 import PaginationComponent from "components/Pagination";
 import LoadingComponent from "components/Loading";
+import { useDispatch } from "react-redux";
+import { showToast } from "redux/toast/toastSlice";
 
 function OrdersPage() {
   const options = [
@@ -30,7 +32,7 @@ function OrdersPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [allData, setAllData] = useState([]);
-
+  const dispatch = useDispatch();
   const limit = 3;
   const fetchAllData = async (value) => {
     try {
@@ -91,7 +93,14 @@ function OrdersPage() {
     fetchAllData(activeTab);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, filter, activeTab]);
-
+  const cancleOrders = async (id) => {
+    const data = {
+      status: 2,
+    };
+    const res = await updateStatusTransaction(id, data);
+    if (res) dispatch(showToast({ type: "success", message: "Cancle order successfully" }));
+    fetchAllData(activeTab);
+  };
   return (
     <Container className="orders-user-wrap text-start my-5 py-5">
       {loading ? (
@@ -130,7 +139,11 @@ function OrdersPage() {
                   {data.length > 0 ? <OrderList orders={data} /> : "You don't have any orders yet"}
                 </TabPane>
                 <TabPane tabId="2" className="py-3">
-                  {data.length > 0 ? <OrderList orders={data} /> : "You don't have any orders yet"}
+                  {data.length > 0 ? (
+                    <OrderList orders={data} cancleOrders={cancleOrders} cancle={true} />
+                  ) : (
+                    "You don't have any orders yet"
+                  )}
                 </TabPane>
                 <TabPane tabId="3" className="py-3">
                   {data.length > 0 ? <OrderList orders={data} /> : "You don't have any orders yet"}
