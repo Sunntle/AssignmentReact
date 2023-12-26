@@ -11,7 +11,7 @@ function SideBarAccording({ index, open, toggle, type, data, handleClicked }) {
             <AccordionBody className="text-muted text-start" onClick={() => handleClicked(0)} accordionId={index}>
               All
             </AccordionBody>
-            {data?.map((el) => {
+            {Array.isArray(data) && data?.map((el) => {
               return (
                 <AccordionBody
                   key={el.id}
@@ -43,7 +43,7 @@ function SideBarAccording({ index, open, toggle, type, data, handleClicked }) {
       case "size":
         return (
           <>
-            {data?.map((el, i) => {
+            {Array.isArray(data) && data?.map((el, i) => {
               return (
                 <AccordionBody key={i + index} className="text-muted text-start" accordionId={index}>
                   <Link onClick={() => handleClicked(`size=${el.size}`)} className="text-muted text-decoration-none">
@@ -60,7 +60,7 @@ function SideBarAccording({ index, open, toggle, type, data, handleClicked }) {
             <AccordionBody className="text-muted text-start" accordionId={index}>
               <FormGroup className="colorContainer">
                 <div>
-                  {data?.map((el, i) => {
+                  {Array.isArray(data) && data?.map((el, i) => {
                     return (
                       <Input
                         key={i}

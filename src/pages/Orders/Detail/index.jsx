@@ -18,7 +18,7 @@ function DetailOrder({ toggle, modal, data }) {
             </tr>
           </thead>
           <tbody>
-            {data?.map((el, index) => {
+            {Array.isArray(data) && data?.map((el, index) => {
               return (
                 <tr key={index}>
                   <td className="align-middle">

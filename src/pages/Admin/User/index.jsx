@@ -158,7 +158,7 @@ function UserAdmin() {
             </tr>
           </thead>
           <tbody className="text-center">
-            {data?.map((el, index) => {
+            {Array.isArray(data) && data?.map((el, index) => {
               return (
                 <tr key={index}>
                   <td>{el.name || "None"}</td>

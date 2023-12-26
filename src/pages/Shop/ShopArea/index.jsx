@@ -237,8 +237,8 @@ function ShopArea() {
         </div>
         <div className="shop__product">
           <Row id="shop__product__items">
-            {data?.length > 0 ? (
-              data.map((el, index) => renderContent(el, index))
+            {Array.isArray(data) && data?.length > 0 ? (
+              data?.map((el, index) => renderContent(el, index))
             ) : (
               <h5 className="text-center mt-5 pt-5">No products match...</h5>
             )}

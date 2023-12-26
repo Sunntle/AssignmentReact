@@ -178,7 +178,7 @@ function ProductAdmin() {
           </tr>
         </thead>
         <tbody className="text-center">
-          {data?.map((el, index) => {
+          {Array.isArray(data) && data?.map((el, index) => {
             return (
               <tr key={index}>
                 <td style={{ maxWidth: "100px" }}>

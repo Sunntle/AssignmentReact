@@ -66,7 +66,7 @@ function NewArrival({ setToast }) {
         }}
         className="mySwiper"
       >
-        {data &&
+        {Array.isArray(data) && data && data.length > 0 &&
           data?.map((el) => {
             return (
               <SwiperSlide key={el.id} className="shadow-sm">
