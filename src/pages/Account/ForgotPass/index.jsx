@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button, FormGroup, Form, Spinner } from "reactstrap";
-import { forgotPass } from "services";
+import { forgotPass } from "api";
 function ForgotPass({ toggleTab }) {
   const [notification, SetNotification] = useState(null);
   const [loading, SetLoading] = useState(false);

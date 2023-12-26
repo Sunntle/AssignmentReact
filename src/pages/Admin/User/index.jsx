@@ -7,7 +7,7 @@ import Select from "react-select";
 
 import { Button, Col, Container, Form, Input, Row, Table } from "reactstrap";
 import { showToast } from "redux/toast/toastSlice";
-import { deleteUser, fetchUser } from "services";
+import { deleteUser, fetchUser } from "api";
 import UserManagement from "./UserManagement";
 import LoadingComponent from "components/Loading";
 

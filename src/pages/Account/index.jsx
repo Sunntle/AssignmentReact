@@ -15,7 +15,7 @@ function SignIn() {
   };
 
   return (
-    <Container className="my-5 py-5 signin">
+    <Container className=" signin">
       <Row>
         <Col xs="12" md="7" className="mx-auto">
           <Nav className="justify-content-center mb-4">

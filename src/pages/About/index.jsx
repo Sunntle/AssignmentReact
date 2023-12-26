@@ -7,27 +7,27 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { useSpring, animated, useSprings } from "@react-spring/web";
+const items = [
+  {
+    title: "Our Vision",
+    description:
+      "Clothing26 provide how all this mistaken idea of denounc pleasure and sing pain was born an will give you a ete account of the system, and expound the actual teangs the eat explorer of the truth.",
+    delay: 0,
+  },
+  {
+    title: "Our Mission",
+    description:
+      "Clothing26 provide how all this mistaken idea of denounc pleasure and sing pain was born an will give you a ete account of the system, and expound the actual teangs the eat explorer of the truth.",
+    delay: 130,
+  },
+  {
+    title: "Our Goal",
+    description:
+      "Clothing26 provide how all this mistaken idea of denounc pleasure and sing pain was born an will give you a ete account of the system, and expound the actual teangs the eat explorer of the truth.",
+    delay: 180,
+  },
+];
 function AboutPage() {
-  const items = [
-    {
-      title: "Our Vision",
-      description:
-        "Clothing26 provide how all this mistaken idea of denounc pleasure and sing pain was born an will give you a ete account of the system, and expound the actual teangs the eat explorer of the truth.",
-      delay: 0,
-    },
-    {
-      title: "Our Mission",
-      description:
-        "Clothing26 provide how all this mistaken idea of denounc pleasure and sing pain was born an will give you a ete account of the system, and expound the actual teangs the eat explorer of the truth.",
-      delay: 130,
-    },
-    {
-      title: "Our Goal",
-      description:
-        "Clothing26 provide how all this mistaken idea of denounc pleasure and sing pain was born an will give you a ete account of the system, and expound the actual teangs the eat explorer of the truth.",
-      delay: 180,
-    },
-  ];
   const useCountAnimation = (targetValue) => {
     const props = useSpring({
       from: { count: 0 },
@@ -57,7 +57,7 @@ function AboutPage() {
   });
   return (
     <div className="about-wrap">
-      <Container className="welcome-content mt-5 mb-4 pt-5 pb-4">
+      <Container className="welcome-content mt-3 mb-4 pb-4">
         <animated.div style={fade} className="pb-5">
           <h5 className="text-muted m-0">Who we are</h5>
           <h2 className="title position-relative py-3">Welcome To Clothing26</h2>
@@ -95,7 +95,7 @@ function AboutPage() {
                 <FontAwesomeIcon size="2xl" icon={faTrophy} />
               </div>
               <animated.h2 className="count my-3">{useCountAnimation(1000)}</animated.h2>
-              <p className="fs-5">Project Done</p>
+              <p className="fs-5">User Register</p>
             </Col>
             <Col sm="6" md="6" lg="3">
               <div>

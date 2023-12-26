@@ -9,7 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import QuickView from "../QuickView";
 import "./NewArrivalStyle.scss";
-import { fetchProduct } from "services";
+import { fetchProduct } from "api";
 function NewArrival({ setToast }) {
   const [modal, setModal] = useState(false);
   const [product, setProduct] = useState(null);

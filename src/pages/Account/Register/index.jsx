@@ -2,7 +2,7 @@ import { InputLabel } from "components/Input";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, Form, FormGroup, Spinner } from "reactstrap";
-import { registerUser } from "services";
+import { registerUser } from "api";
 
 function Register() {
   const { handleSubmit: handleSubmit2, control: control2, reset } = useForm();

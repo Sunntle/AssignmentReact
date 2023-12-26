@@ -3,7 +3,7 @@ import "./ProductAdminStyle.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { deleteProduct, fetchColorProduct, fetchProduct, fetchSizeProduct, fetchTypeProduct } from "services";
+import { deleteProduct, fetchColorProduct, fetchProduct, fetchSizeProduct, fetchTypeProduct } from "api";
 import PaginationComponent from "components/Pagination";
 import Select from "react-select";
 import ProductManagement from "./ProductManagement";

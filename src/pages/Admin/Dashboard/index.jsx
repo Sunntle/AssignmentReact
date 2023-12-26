@@ -4,8 +4,34 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBurger, faComment, faPenNib, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { fetchOrder, fetchProduct, fetchTypeProduct, fetchUser } from "services";
+import { fetchOrder, fetchProduct, fetchTypeProduct, fetchUser } from "api";
 import moment from "moment";
+const data = {
+  labels: ["Jacket", "Bottoms", "Top", "Sock", "Pants", "Hoodie"],
+  datasets: [
+    {
+      label: "Count",
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: [
+        "rgba(255, 99, 132, 0.2)",
+        "rgba(54, 162, 235, 0.2)",
+        "rgba(255, 206, 86, 0.2)",
+        "rgba(75, 192, 192, 0.2)",
+        "rgba(153, 102, 255, 0.2)",
+        "rgba(255, 159, 64, 0.2)",
+      ],
+      borderColor: [
+        "rgba(255, 99, 132, 1)",
+        "rgba(54, 162, 235, 1)",
+        "rgba(255, 206, 86, 1)",
+        "rgba(75, 192, 192, 1)",
+        "rgba(153, 102, 255, 1)",
+        "rgba(255, 159, 64, 1)",
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
 function Dashboard() {
   const [allData, SetData] = useState(null);
   useEffect(() => {
@@ -24,32 +50,7 @@ function Dashboard() {
     getData();
   }, []);
   ChartJS.register(ArcElement, Tooltip, Legend);
-  const data = {
-    labels: ["Jacket", "Bottoms", "Top", "Sock", "Pants", "Hoodie"],
-    datasets: [
-      {
-        label: "Count",
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
+
   return (
     <>
       <Row className="pt-5 text-white">

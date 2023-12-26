@@ -7,7 +7,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Button, Col, Form, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Row, Spinner } from "reactstrap";
 import { showToast } from "redux/toast/toastSlice";
-import { createNewProduct, deleteImg, updateProduct } from "services";
+import { createNewProduct, deleteImg, updateProduct } from "api";
 import "./ProductManagmentStyle.scss";
 function ProductManagement({ modal, data, toggle, size, color, type }) {
   const [formattedType, SetFormattedType] = useState([]);

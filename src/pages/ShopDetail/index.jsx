@@ -14,7 +14,7 @@ import { faFacebook, faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-
 import { FreeMode, Thumbs } from "swiper/modules";
 import "../Home/QuickView/QuickViewStyle.scss";
 import "./ShopDetailStyle.scss";
-import { fetchProduct } from "services";
+import { fetchProduct } from "api";
 import { useDispatch } from "react-redux";
 import { addToCart } from "redux/cart/cartSlice";
 import { Controller, useForm } from "react-hook-form";

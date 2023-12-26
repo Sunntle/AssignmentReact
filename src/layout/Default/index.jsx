@@ -5,26 +5,31 @@ import ScrollToTop from "components/ScrollToTop";
 
 import "./DefaultLayout.scss";
 import ToastMessage from "components/Toast";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { handleTextCapitalize } from "utils/helper";
 
 function DefaultLayout({ children }) {
-  useEffect(() => {
+  const location = useLocation();
+
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   });
+
   return (
     <div className="wrapper position-relative">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{handleTextCapitalize(location.pathname)}</title>
+      </Helmet>
       <ToastMessage />
-      <header>
-        <Header />
-      </header>
-      <div className="content">
+      <Header />
+      <div className="content min-vh-100">
         <BreadcrumbComponent />
-        {children}
+        <div className="m-3 p-3">{children}</div>
       </div>
-      <footer>
-        {" "}
-        <Footer />
-      </footer>
+      <Footer />
       <ScrollToTop />
     </div>
   );

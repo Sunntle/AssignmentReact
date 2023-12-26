@@ -1,7 +1,7 @@
 import { faCartShopping, faClose, faMinusCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
-import { Button, Col, Container, Form, FormGroup, Input, Row, Table } from "reactstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Col, Container, Form, FormGroup, Input, PopoverBody, PopoverHeader, Row, Table, UncontrolledPopover } from "reactstrap";
 import "./CartStyle.scss";
 import "../Checkout/CheckoutStyle.scss";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import { Controller, useForm } from "react-hook-form";
 import { InputLabel } from "components/Input";
 function Cart() {
   const cart = useSelector((state) => state.cartReducer);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { handleSubmit, control } = useForm();
 
@@ -75,30 +76,82 @@ function Cart() {
               return (
                 <tr key={index}>
                   <td>
-                    <img className="img-fluid" src={el.allImg?.split(";")[0]} alt="img" />
+                    <img
+                      className="img-fluid"
+                      src={el.allImg?.split(";")[0]}
+                      alt="img"
+                    />
                   </td>
                   <td>
                     <div className="d-inline-block">
-                      <Link to="/" className="text-decoration-none text-dark fw-bolder">
+                      <Link
+                        to="/"
+                        className="text-decoration-none text-dark fw-bolder"
+                      >
                         <h5>{el.name}</h5>
                       </Link>
-                      {el.colorSelected && <p className="my-3 text-capitalize">Color: {el.colorSelected}</p>}
-                      {el.sizeSelected && <p className="text-capitalize">Size: {el.sizeSelected}</p>}
+                      {el.colorSelected && (
+                        <p className="my-3 text-capitalize">
+                          Color: {el.colorSelected}
+                        </p>
+                      )}
+                      {el.sizeSelected && (
+                        <p className="text-capitalize">
+                          Size: {el.sizeSelected}
+                        </p>
+                      )}
                     </div>
                   </td>
-                  <td className="price">{el.price.toLocaleString("vi", { style: "currency", currency: "VND" })}</td>
+                  <td className="price">
+                    {el.price.toLocaleString("vi", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </td>
                   <td>
                     <div className="quantityBtn d-flex align-items-center justify-content-center ">
-                      <FontAwesomeIcon icon={faMinusCircle} onClick={() => handleDecrement(el)} />
-                      <Input type="text" value={el.quantity} className="border-0 bg-transparent" disabled></Input>
-                      <FontAwesomeIcon icon={faPlusCircle} onClick={() => handleIncrement(el)} />
+                      <FontAwesomeIcon
+                        icon={faMinusCircle}
+                        onClick={() => handleDecrement(el)}
+                      />
+                      <Input
+                        type="text"
+                        value={el.quantity}
+                        className="border-0 bg-transparent"
+                        disabled
+                      ></Input>
+                      <FontAwesomeIcon
+                        icon={faPlusCircle}
+                        onClick={() => handleIncrement(el)}
+                      />
                     </div>
                   </td>
-                  <td>{(el.price * el.quantity).toLocaleString("vi", { style: "currency", currency: "VND" })}</td>
                   <td>
-                    <Button outline color="transparent" onClick={() => handleRemoveItem(el)}>
+                    {(el.price * el.quantity).toLocaleString("vi", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </td>
+                  <td>
+                    <Button
+                      id="PopoverFocus"
+                      outline
+                      color="transparent"
+                     
+                    >
                       <FontAwesomeIcon icon={faClose} color="black" />
                     </Button>
+                    <UncontrolledPopover
+                      placement="right"
+                      target="PopoverFocus"
+                      trigger="focus"
+                    >
+                      <PopoverHeader style={{fontSize: "0.85rem"}}>Delete this item?</PopoverHeader>
+                      <PopoverBody className="p-2 d-flex align-items-center justify-content-between">
+                        <Button size="sm" className="w-100" onClick={() => handleRemoveItem(el)} outline color="danger">Ok</Button>
+                        <Button size="sm" className="w-100" outline>No</Button>
+                      </PopoverBody>
+                    </UncontrolledPopover>
                   </td>
                 </tr>
               );
@@ -106,10 +159,8 @@ function Cart() {
           </tbody>
         </Table>
         <div className="d-flex align-items-center justify-content-between">
-          <Button color="dark" className="rounded-5 text-uppercase py-2 px-4">
-            <Link to="/shop" className="text-decoration-none text-light">
-              Continue shopping
-            </Link>
+          <Button onClick={()=>navigate("/shop")} color="dark" className="rounded-5 text-uppercase py-2 px-4">
+            Continue shopping
           </Button>
           <Button color="dark" onClick={() => clearCart()} className="rounded-5 text-uppercase py-2 px-4">
             Clear shopping cart

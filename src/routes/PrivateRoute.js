@@ -1,6 +1,6 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { isTokenExpired } from "./auth";
+import { isTokenExpired } from "../utils/auth";
 const PrivateRoute = ({ allowedRoles }) => {
   const idToken = localStorage.getItem("idToken");
   const role = localStorage.getItem("role");

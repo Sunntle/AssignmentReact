@@ -1,14 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Col, Container, Form, FormGroup, Row } from "reactstrap";
 import "./CheckoutStyle.scss";
 import { Controller, useForm } from "react-hook-form";
 import { InputLabel, InputSelect } from "components/Input";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { createOrder, createPayment } from "services";
+import { createOrder, createPayment } from "api";
 import { useNavigate } from "react-router-dom";
 import { removeAll } from "redux/cart/cartSlice";
-
+const optionsPayment = [
+  {
+    value: "COD",
+    label: "Cash on delivery",
+  },
+  {
+    value: "NCB",
+    label: "NCB Bank",
+  },
+  {
+    value: "VNPAYQR",
+    label: "VNPAY QR",
+  },
+  {
+    value: "ATM",
+    label: "ATM CARD",
+  },
+  {
+    value: "VISA",
+    label: "VISA",
+  },
+  {
+    value: "AGRIBANK",
+    label: "AGRIBANK Bank",
+  },
+  {
+    value: "BIDV",
+    label: "BIDV Bank",
+  },
+  {
+    value: "VIETCOMBANK",
+    label: "VIETCOMBANK Bank",
+  },
+];
 function Checkout() {
   const { handleSubmit, control, watch } = useForm();
   const [province, SetProvince] = useState([]);
@@ -16,40 +49,7 @@ function Checkout() {
   const cart = useSelector((state) => state.cartReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const optionsPayment = [
-    {
-      value: "COD",
-      label: "Cash on delivery",
-    },
-    {
-      value: "NCB",
-      label: "NCB Bank",
-    },
-    {
-      value: "VNPAYQR",
-      label: "VNPAY QR",
-    },
-    {
-      value: "ATM",
-      label: "ATM CARD",
-    },
-    {
-      value: "VISA",
-      label: "VISA",
-    },
-    {
-      value: "AGRIBANK",
-      label: "AGRIBANK Bank",
-    },
-    {
-      value: "BIDV",
-      label: "BIDV Bank",
-    },
-    {
-      value: "VIETCOMBANK",
-      label: "VIETCOMBANK Bank",
-    },
-  ];
+
   useEffect(() => {
     const fetchProvince = async () => {
       const response = await axios.get("https://provinces.open-api.vn/api/p/");
@@ -66,7 +66,7 @@ function Checkout() {
     fetchProvince();
   }, []);
 
-  const fetchDistrict = async (code) => {
+  const fetchDistrict = useCallback(async (code) => {
     const response = await axios.get(`https://provinces.open-api.vn/api/p/${code}?depth=2`);
     const data = response.data.districts;
     const optionsDistrict = data.reduce((acc, cur) => {
@@ -78,13 +78,13 @@ function Checkout() {
       return acc;
     }, []);
     SetDistrict(optionsDistrict);
-  };
+  },[]);
   const watchedValue = watch("Province");
   useEffect(() => {
     if (watchedValue) {
       fetchDistrict(watchedValue.value);
     }
-  }, [watchedValue]);
+  }, [fetchDistrict, watchedValue]);
 
   const onSubmit = async (data) => {
     const items = cart.reduce((acc, cur) => {
@@ -122,7 +122,7 @@ function Checkout() {
     }
   };
   return (
-    <Container className="my-5 py-5">
+    <Container className="">
       <Form className="text-start" onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col xs="12" lg="7">

@@ -6,13 +6,13 @@ import Slide from "./Slide";
 
 function Home() {
   return (
-    <div>
+    <>
       <Slide />
       <Feature />
       <NewArrival />
       <Sale />
       <Blog />
-    </div>
+    </>
   );
 }
 

@@ -2,29 +2,36 @@ import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PaginationComponent from "components/Pagination";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
 import { Button, Col, Container, Form, FormGroup, Row, Table } from "reactstrap";
 import { showToast } from "redux/toast/toastSlice";
-import { deleteOrder, fetchOrder, fetchUser, updateStatusTransaction } from "services";
+import { deleteOrder, fetchOrder, fetchUser, updateStatusTransaction } from "api";
 
 import { Controller, useForm } from "react-hook-form";
 import { InputSelect } from "components/Input";
 import DetailOrder from "pages/Orders/Detail";
 import "./OrderStyle.scss";
 import LoadingComponent from "components/Loading";
+const options = [
+  {
+    label: "Default",
+    value: 0,
+  },
+  {
+    label: "Old",
+    value: 1,
+  },
+];
+const limit = 8;
+const optionsStatus = [
+  { label: "Success", value: 0 },
+  { label: "Pending", value: 1 },
+  { label: "Fail", value: 2 },
+];
 function OrdersAdmin() {
-  const options = [
-    {
-      label: "Default",
-      value: 0,
-    },
-    {
-      label: "Old",
-      value: 1,
-    },
-  ];
+
   const [data, setData] = useState([]);
   const [modal, setModal] = useState(false);
   const [item, setItem] = useState({});
@@ -34,17 +41,12 @@ function OrdersAdmin() {
   const [order, setOrder] = useState(options[0]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState([]);
-  const limit = 8;
   const dispatch = useDispatch();
   const { control } = useForm();
-  const optionsStatus = [
-    { label: "Success", value: 0 },
-    { label: "Pending", value: 1 },
-    { label: "Fail", value: 2 },
-  ];
-  const fetchData = async (value = 0) => {
+
+  const fetchData = useCallback(async (value = 0) => {
     try {
-      let response, res, stringResponse, stringRes;
+      let stringResponse, stringRes;
       if (value !== 0 && typeof value == "number") {
         stringResponse = `/idLoai/${value}`;
         stringRes = `/idLoai/${value}?_page=${currentPage}&_limit=${limit}`;
@@ -60,9 +62,10 @@ function OrdersAdmin() {
       } else {
         stringRes += `&_sort=create_at&_order=desc`;
       }
-
-      response = await fetchOrder(stringResponse);
-      res = await fetchOrder(stringRes);
+      const [response, res] = await Promise.all([
+        fetchOrder(stringResponse),
+        fetchOrder(stringRes),
+      ]);
       setTotalPages(Math.ceil(response.length / limit));
       setCountProduct(response.length);
       setData(res);
@@ -71,15 +74,12 @@ function OrdersAdmin() {
     } finally {
       setLoading(false);
     }
-  };
-
-  //handle SetCondition for fetchData
+  },[currentPage, order.value]);
 
   //handleFetchData
   useEffect(() => {
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, order]);
+  }, [currentPage, fetchData, order]);
   const handleSetCurPage = (page) => {
     setCurrentPage(page);
   };
@@ -93,7 +93,7 @@ function OrdersAdmin() {
     fetchAllUser();
   }, []);
 
-  const updateStatus = async (status, id) => {
+  const updateStatus = useCallback(async (status, id) => {
     const res = await updateStatusTransaction(id, {
       status: status.value,
     });
@@ -102,22 +102,23 @@ function OrdersAdmin() {
     } else {
       dispatch(showToast({ type: "danger", message: "Something's wrong" }));
     }
-  };
+  },[dispatch]);
+
   //toggle fetchForm edit Product
-  const toggle = async (id = null) => {
-    if (id != null) {
-      const res = await fetchOrder(`/order_items/${id}`);
-      setItem(res);
-      setModal(true);
-    } else {
-      setModal(false);
-    }
-  };
-  const handleDelete = async (order_id) => {
+  const toggle = useCallback( async (id = null) => {
+    if(id == null) {
+      setModal(false)
+      return;
+    };
+    const res = await fetchOrder(`/order_items/${id}`);
+    setItem(res);
+    setModal(true);
+  },[]);
+  const handleDelete = useCallback(async (order_id) => {
     const res = await deleteOrder(order_id);
     dispatch(showToast({ type: "success", message: res }));
     fetchData();
-  };
+  },[dispatch, fetchData]);
 
   return loading ? (
     <LoadingComponent />

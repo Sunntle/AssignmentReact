@@ -3,23 +3,27 @@ import Header from "components/Header";
 import ScrollToTop from "components/ScrollToTop";
 import "../Default/DefaultLayout.scss";
 import ToastMessage from "components/Toast";
-import { useEffect } from "react";
+import {  useLayoutEffect } from "react";
+import { Helmet } from "react-helmet";
+import { handleTextCapitalize } from "utils/helper";
+import { useLocation } from "react-router-dom";
 
 function NoBreadcrumb({ children }) {
-  useEffect(() => {
+  const location = useLocation()
+
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   });
   return (
     <div className="wrapper position-relative">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{handleTextCapitalize(location.pathname === "/" || location.pathname === "/home" ?"home": "detail")}</title>
+      </Helmet>
       <ToastMessage />
-      <header>
-        <Header />
-      </header>
-      <div className="content position-relative">{children}</div>
-      <footer>
-        {" "}
+      <Header />
+      <div className="content position-relative min-vh-100">{children}</div>
         <Footer />
-      </footer>
       <ScrollToTop />
     </div>
   );

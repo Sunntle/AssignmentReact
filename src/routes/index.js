@@ -1,28 +1,22 @@
 import NotFound from "../pages/NotFound";
 import { lazy } from "react";
 import { DefaultLayout, NoBreadcrumb, NotHeaderLayout } from "../layout";
-import Page from "pages/Page";
-import AboutPage from "pages/About";
-import ContactPage from "pages/Contact";
-import Unauthorized from "pages/Unauthorized";
-import UserAdmin from "pages/Admin/User";
-import ProductAdmin from "pages/Admin/Product";
-import OrdersAdmin from "pages/Admin/Orders";
-
+import { HomePage, ShopPage, Page, AboutPage, ContactPage, Account, Cart, Unauthorized, Checkout, Bill, Orders, Profile } from "pages";
+import { Dashboard, OrdersAdmin, ProductAdmin, UserAdmin } from "pages/Admin";
 const publicRoutes = [
   {
     path: "",
-    component: lazy(() => import("../pages/Home")),
+    component: HomePage,
     layout: NoBreadcrumb,
   },
   {
     path: "home",
-    component: lazy(() => import("../pages/Home")),
+    component: HomePage,
     layout: NoBreadcrumb,
   },
   {
     path: "shop/*",
-    component: lazy(() => import("../pages/Shop")),
+    component: ShopPage,
     layout: DefaultLayout,
     routes: [
       {
@@ -39,12 +33,12 @@ const publicRoutes = [
   },
   {
     path: "cart",
-    component: lazy(() => import("../pages/Cart")),
+    component: Cart,
     layout: DefaultLayout,
   },
   {
     path: "account",
-    component: lazy(() => import("../pages/Account")),
+    component: Account,
     layout: DefaultLayout,
   },
   {
@@ -63,6 +57,11 @@ const publicRoutes = [
     layout: NoBreadcrumb,
   },
   {
+    path: "profile",
+    component: Profile,
+    layout: NoBreadcrumb,
+  },
+  {
     path: "*",
     component: NotFound,
     layout: NoBreadcrumb,
@@ -74,7 +73,7 @@ const privateRoutes = [
     routes: [
       {
         path: "",
-        component: lazy(() => import("../pages/Admin/Dashboard")),
+        component: Dashboard,
         layout: NotHeaderLayout,
       },
       {
@@ -96,17 +95,17 @@ const privateRoutes = [
   },
   {
     path: "checkout",
-    component: lazy(() => import("../pages/Checkout")),
+    component: Checkout,
     layout: DefaultLayout,
   },
   {
     path: "bill",
-    component: lazy(() => import("../pages/Checkout/Bill")),
+    component: Bill,
     layout: NoBreadcrumb,
   },
   {
     path: "orders",
-    component: lazy(() => import("../pages/Orders")),
+    component: Orders,
     layout: DefaultLayout,
   },
 ];

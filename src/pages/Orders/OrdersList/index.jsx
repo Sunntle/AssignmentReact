@@ -1,7 +1,7 @@
 import moment from "moment";
 import React, { useState } from "react";
 import { Button, Table } from "reactstrap";
-import { fetchOrder } from "services";
+import { fetchOrder } from "api";
 import DetailOrder from "../Detail";
 
 function OrderList({ orders, cancleOrders, cancle }) {

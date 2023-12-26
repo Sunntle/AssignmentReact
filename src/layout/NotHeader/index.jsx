@@ -17,7 +17,7 @@ function NotHeaderLayout({ children }) {
             <NavbarAdmin />
           </div>
         </Col>
-        <Col xs="8" lg="10" className="px-5 pb-5">
+        <Col xs="8" lg="10" className="px-5 pb-5 ">
           {children}
         </Col>
       </Row>

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Col, Container, Row, Table } from "reactstrap";
-import { fetchOrder, fetchProduct, updateStatusTransaction } from "services";
+import { fetchOrder, fetchProduct, updateStatusTransaction } from "api";
 import "./BillStyle.scss";
 function Bill() {
   const [dataOrder, SetDataOrder] = useState(null);
@@ -67,7 +67,7 @@ function Bill() {
     fetchOrderData(id);
   }, [id]);
   return (
-    <Container className="my-5 py-5 wrap-bill">
+    <Container className=" wrap-bill">
       <FontAwesomeIcon size="2xl" icon={faCheckCircle} color="green" />
       <h3 className="my-3">Thank you for your order</h3>
       <p className="my-3 text-muted w-50 mx-auto">

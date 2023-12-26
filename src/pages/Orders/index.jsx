@@ -4,7 +4,7 @@ import Select from "react-select";
 
 import "./OrdersStyle.scss";
 import OrderList from "./OrdersList";
-import { fetchOrder, updateStatusTransaction } from "services";
+import { fetchOrder, updateStatusTransaction } from "api";
 import PaginationComponent from "components/Pagination";
 import LoadingComponent from "components/Loading";
 import { useDispatch } from "react-redux";
@@ -102,7 +102,7 @@ function OrdersPage() {
     fetchAllData(activeTab);
   };
   return (
-    <Container className="orders-user-wrap text-start my-5 py-5">
+    <Container className="orders-user-wrap text-start ">
       {loading ? (
         <LoadingComponent />
       ) : (

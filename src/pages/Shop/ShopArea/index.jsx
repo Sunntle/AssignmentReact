@@ -1,22 +1,22 @@
 import { faEye, faHeart, faMagnifyingGlass, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import LoadingComponent from "components/Loading";
+import PaginationComponent from "components/Pagination";
+import "pages/Home/QuickView/QuickViewStyle.scss";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Select from "react-select";
-import { Button, Col, Form, Input, Row } from "reactstrap";
-import "./ShopAreaStyle.scss";
-import "pages/Home/QuickView/QuickViewStyle.scss";
-import PaginationComponent from "components/Pagination";
-import { fetchColorProduct, fetchProduct, fetchSizeProduct, fetchTypeProduct } from "services";
+import { Button, Col, Input, Row } from "reactstrap";
+import { fetchColorProduct, fetchProduct, fetchSizeProduct, fetchTypeProduct } from "api";
 import SideBarAccording from "../SideBar";
-import LoadingComponent from "components/Loading";
-
+import "./ShopAreaStyle.scss";
+const options = [
+  { value: 0, label: "Default" },
+  { value: 1, label: "Low To High" },
+  { value: 2, label: "High To Low" },
+];
+const limit = 6;
 function ShopArea() {
-  const options = [
-    { value: 0, label: "Default" },
-    { value: 1, label: "Low To High" },
-    { value: 2, label: "High To Low" },
-  ];
   const location = useLocation();
   const [open, setOpen] = useState("0");
   const [data, setData] = useState([]);
@@ -30,7 +30,7 @@ function ShopArea() {
   const [inputValue, setInputValue] = useState(location.state?.kw || "");
   const [order, setOrder] = useState(options[0]);
   const [loading, setLoading] = useState(true);
-  const limit = 6;
+
   const accordingSideBar = [
     {
       name: "categories",
@@ -49,9 +49,10 @@ function ShopArea() {
       data: colorProduct,
     },
   ];
-  const fetchData = async (value = 0) => {
+
+  const fetchData = useCallback(async (value = 0) => {
     try {
-      let response, res, stringResponse, stringRes;
+      let stringResponse, stringRes;
       if (value !== 0 && typeof value == "number") {
         stringResponse = `/idLoai/${value}`;
         stringRes = `/idLoai/${value}?_page=${currentPage}&_limit=${limit}`;
@@ -76,11 +77,14 @@ function ShopArea() {
       } else if (order.value === 2) {
         stringRes += `&_sort=price&_order=desc`;
       }
-      response = await fetchProduct(stringResponse);
-      res = await fetchProduct(stringRes);
-      const resTypeProduct = await fetchTypeProduct();
-      const resSizeProduct = await fetchSizeProduct();
-      const resColorProduct = await fetchColorProduct();
+      const [response, res, resTypeProduct, resSizeProduct, resColorProduct] =
+        await Promise.all([
+          fetchProduct(stringResponse),
+          fetchProduct(stringRes),
+          fetchTypeProduct(),
+          fetchSizeProduct(),
+          fetchColorProduct(),
+        ]);
       setColorProduct(resColorProduct);
       setSizeProduct(resSizeProduct);
       setTypeProduct(resTypeProduct);
@@ -92,25 +96,21 @@ function ShopArea() {
     } finally {
       setLoading(false);
     }
-  };
+  },[currentPage, order.value]);
   const handleClicked = (value) => {
     setFilter(value);
   };
   useEffect(() => {
     fetchData(filter);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, filter, order]);
-  const toggle = (id) => {
-    if (open === id) {
-      setOpen("0");
-    } else {
-      setOpen(id);
-    }
-  };
-  const handleSetCurPage = (page) => {
+  }, [currentPage, fetchData, filter, order]);
+  const toggle = useCallback((id) => {
+    if (open === id) setOpen("0");
+    else   setOpen(id);
+  },[open]);
+  const handleSetCurPage = useCallback((page) => {
     setCurrentPage(page);
-  };
+  },[]);
+
   useEffect(() => {
     const delaySearch = setTimeout(() => {
       handleClicked(`?q=${inputValue.trim()}`);
@@ -137,7 +137,7 @@ function ShopArea() {
                 Detail
               </Link>
             </Button>
-            <Button className="position-absolute end-0  rounded-0 ">
+            <Button className="position-absolute end-0 rounded-0">
               <FontAwesomeIcon icon={faEye} />
             </Button>
           </div>
@@ -166,6 +166,7 @@ function ShopArea() {
       </Col>
     );
   };
+
   return loading ? (
     <LoadingComponent />
   ) : (
@@ -173,20 +174,20 @@ function ShopArea() {
       <Col xs="12" lg="3">
         <div className="shop__sidebar">
           <div className="sidebar__search mb-5">
-            <Form className="d-flex position-relative" name="searchFrm" role="search">
+            <div className="d-flex position-relative" name="searchFrm" sub="true" role="search">
               <Input
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                className=" me-2"
+                className="me-2"
                 type="text"
                 placeholder="Search"
                 aria-label="Search"
                 name="searchFrm"
               />
-              <Button className="btn-search position-absolute bg-transparent border-0" type="submit">
+              <Button  className="top-50 end-0 position-absolute bg-transparent p-2 translate-middle border-0" type="submit">
                 <FontAwesomeIcon icon={faMagnifyingGlass} color="#6c757d" />
               </Button>
-            </Form>
+            </div>
           </div>
           <div className="sidebar__accordion">
             {accordingSideBar.map((el, index) => {

@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import publicRoutes, { privateRoutes } from "./routes";
 import "./App.scss";
 import { Fragment, useEffect } from "react";
-import PrivateRoute from "utils/PrivateRoute";
+import PrivateRoute from "routes/PrivateRoute";
 import { useDispatch } from "react-redux";
 import { isTokenExpired } from "utils/auth";
 import { fetchUserByIdToken } from "redux/user/userSlice";

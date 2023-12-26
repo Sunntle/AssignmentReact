@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getUserByIdToken } from "services";
+import { getUserByIdToken } from "api";
 export const fetchUserByIdToken = createAsyncThunk("user/fetchUserByIdToken", async (idToken) => {
   const userData = await getUserByIdToken(idToken);
   return userData;

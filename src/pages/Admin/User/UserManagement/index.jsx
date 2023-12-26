@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Button, Form, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from "reactstrap";
 import { showToast } from "redux/toast/toastSlice";
-import { registerUser, updateUser } from "services";
+import { registerUser, updateUser } from "api";
 
 function UserManagement({ modal, data, toggle }) {
   const optionsRole = [

@@ -7,9 +7,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Images from "assets/images/logo.png";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Col, Container, Input, Nav, Row, UncontrolledTooltip } from "reactstrap";
+import { Button, Col, Container, Input, Nav, Row, UncontrolledTooltip } from "reactstrap";
 import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "redux/user/userSlice";
@@ -21,7 +21,8 @@ const Header = (props, ref) => {
   const user = useSelector((state) => state.userReducer);
   const isLogin = user.isAuthenticated;
   const navigate = useNavigate();
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     const navsub = document.querySelectorAll(".navsub");
     const showNav = document.querySelector(".showNav");
     const handleClick = (e) => {
@@ -35,6 +36,7 @@ const Header = (props, ref) => {
       showNav.removeEventListener("click", handleClick);
     };
   }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("idToken");
     localStorage.removeItem("expiresAt");
@@ -72,7 +74,7 @@ const Header = (props, ref) => {
       );
   };
   return (
-    <div className="bg-light">
+    <header className="bg-light">
       <div className="header__top bg-dark">
         <Container>
           <div className="text-white align-items-center p-2 d-none d-md-flex">
@@ -82,7 +84,6 @@ const Header = (props, ref) => {
             <Col lg="6" md="5">
               <div className="header__top__right text-end">
                 {handleLinkAccount()}
-
                 <Link className="text-decoration-none text-uppercase text-white px-2">FAQs</Link>
               </div>
             </Col>
@@ -141,7 +142,7 @@ const Header = (props, ref) => {
                 About
               </NavLink>
               <div className="menu-lv1 position-relative">
-                <NavLink className=" fs-5 fw-semibold text-black nav-link page" activeclassname="active" to="/account">
+                <NavLink className=" fs-5 fw-semibold text-black nav-link page" activeclassname="active" to={isLogin ? "/profile" :"/account"}>
                   Account
                 </NavLink>
                 <Nav className="menu-lv2 bg-black rounded">
@@ -159,12 +160,12 @@ const Header = (props, ref) => {
           </Col>
           <Col lg="3" className="d-none d-lg-block navsub">
             <div className="header__icon d-flex p-lg-0 px-3 py-2 justify-content-start justify-content-lg-end align-items-center">
+              <div className="position-relative">
               <Input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
-              <FontAwesomeIcon
-                className="text-black fs-5 search-icon"
-                icon={faMagnifyingGlass}
-                onClick={handleSearch}
-              />
+              <Button onClick={handleSearch} className="top-50 end-0 position-absolute p-1 bg-transparent translate-middle border-0" type="submit">
+                <FontAwesomeIcon icon={faMagnifyingGlass} color="#6c757d" />
+              </Button>
+              </div>
               <FontAwesomeIcon className="text-black fs-5" icon={faHeart} />
               <div className="cart d-flex justify-content-center align-items-center">
                 <Link to={"/cart"} className="text-black fs-5 position-relative">
@@ -178,7 +179,7 @@ const Header = (props, ref) => {
           </Col>
         </Row>
       </Container>
-    </div>
+    </header>
   );
 };
 export default Header;

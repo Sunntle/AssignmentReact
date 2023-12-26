@@ -7,7 +7,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button, FormGroup, Form } from "reactstrap";
 import { showToast } from "redux/toast/toastSlice";
 import { loginSuccess } from "redux/user/userSlice";
-import { callLogin } from "services";
+import { callLogin } from "api";
 function LoginComponent({ toggleTab }) {
   const [error, SetError] = useState(false);
   const dispatch = useDispatch();
