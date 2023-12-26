@@ -60,3 +60,5 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F0B89CBDF19D4B6EB0B28897CF03A537 }}
+          appSetting: |
+            REACT_APP_API_URL=https://clothing26.azurewebsites.net/

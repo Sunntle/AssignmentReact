@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar } from "reactstrap";
 import Logo from "assets/images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBurger, faComment, faHouse, faPenNib, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBurger, faComment, faHouse, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 import "./NavbarStyle.scss";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
