@@ -7,21 +7,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Images from "assets/images/logo.png";
-import { useLayoutEffect, useState } from "react";
+import { forwardRef, useCallback, useLayoutEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button, Col, Container, Input, Nav, Row, UncontrolledTooltip } from "reactstrap";
 import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "redux/user/userSlice";
 import { showToast } from "redux/toast/toastSlice";
-const Header = (props, ref) => {
+const Header = forwardRef((props, ref) => {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cartReducer);
   const user = useSelector((state) => state.userReducer);
   const isLogin = user.isAuthenticated;
   const navigate = useNavigate();
-
   useLayoutEffect(() => {
     const navsub = document.querySelectorAll(".navsub");
     const showNav = document.querySelector(".showNav");
@@ -37,18 +36,18 @@ const Header = (props, ref) => {
     };
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.removeItem("idToken");
     localStorage.removeItem("expiresAt");
     dispatch(logOut());
     dispatch(showToast({ type: "success", message: "Log out successfully!" }));
     navigate("/");
-  };
-  const handleSearch = () => {
+  },[dispatch, navigate]);
+  const handleSearch = useCallback(() => {
     navigate("/shop", { state: { kw: search.trim() } });
     setSearch("");
-  };
-  const handleLinkAccount = () => {
+  },[navigate, search]);
+  const handleLinkAccount = useCallback(() => {
     if (isLogin)
       return (
         <>
@@ -72,9 +71,9 @@ const Header = (props, ref) => {
           <span className="logOut-icon">Sign In</span>
         </Link>
       );
-  };
+  },[handleLogout, isLogin, user?.user?.username]);
   return (
-    <header className="bg-light">
+    <header ref={ref} className="bg-light">
       <div className="header__top bg-dark">
         <Container>
           <div className="text-white align-items-center p-2 d-none d-md-flex">
@@ -159,17 +158,17 @@ const Header = (props, ref) => {
             </Nav>
           </Col>
           <Col lg="3" className="d-none d-lg-block navsub">
-            <div className="header__icon d-flex p-lg-0 px-3 py-2 justify-content-start justify-content-lg-end align-items-center">
+            <div className="header__icon d-flex p-lg-0 px-3 py-2 align-items-center">
               <div className="position-relative">
               <Input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
               <Button onClick={handleSearch} className="top-50 end-0 position-absolute p-1 bg-transparent translate-middle border-0" type="submit">
                 <FontAwesomeIcon icon={faMagnifyingGlass} color="#6c757d" />
               </Button>
               </div>
-              <FontAwesomeIcon className="text-black fs-5" icon={faHeart} />
-              <div className="cart d-flex justify-content-center align-items-center">
-                <Link to={"/cart"} className="text-black fs-5 position-relative">
-                  <FontAwesomeIcon icon={faCartShopping} />
+              <FontAwesomeIcon className="text-black" icon={faHeart} />
+              <div className="wrap-cart-icon overflow-visible d-inline-flex justify-content-center align-items-center">
+                <Link to={"/cart"} className="position-relative">
+                  <FontAwesomeIcon className="text-black" icon={faCartShopping} />
                   <div className="position-absolute countProduct fs-6 fw-bolder">
                     {cart.reduce((acc, cur) => acc + cur.quantity, 0)}
                   </div>
@@ -181,5 +180,5 @@ const Header = (props, ref) => {
       </Container>
     </header>
   );
-};
+});
 export default Header;

@@ -39,6 +39,7 @@ function Dashboard() {
       try {
         const request = [fetchProduct("?_sort=sold"), fetchOrder("?_sort=create_at"), fetchTypeProduct(), fetchUser()];
         const res = await Promise.all(request);
+        console.log(res);
         if (res) {
           const [product, order, typeProduct, user] = res;
           SetData({ product, order, typeProduct, user });
@@ -53,7 +54,7 @@ function Dashboard() {
 
   return (
     <>
-      <Row className="pt-5 text-white">
+      {/* <Row className="pt-5 text-white">
         <Col xs="12" md="6" lg="3" className="border rounded bg-success d-flex align-items-center py-4">
           <FontAwesomeIcon icon={faUser} size="xl" className="border border-4 rounded-circle p-3  m-2" />
           <div className="text-start ps-3">
@@ -110,7 +111,7 @@ function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {allData?.order.map((el, index) => {
+                {allData?.order?.map((el, index) => {
                   return (
                     index < 8 && (
                       <tr key={index}>
@@ -174,7 +175,7 @@ function Dashboard() {
             })}
           </tbody>
         </Table>
-      </Row>
+      </Row> */}
     </>
   );
 }

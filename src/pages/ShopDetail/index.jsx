@@ -66,7 +66,7 @@ function ShopDetail() {
     dispatch(showToast(actionsToast));
   };
   return (
-    <Container className="py-5 wrap-shop-detail">
+    <Container style={{ paddingTop: "0.2rem"}} className="wrap-shop-detail">
       {loading ? (
         <LoadingComponent />
       ) : (

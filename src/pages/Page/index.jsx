@@ -1,5 +1,7 @@
+import NotFound from "pages/NotFound";
+
 function Page() {
-  return <div>2</div>;
+  return <NotFound/>
 }
 
 export default Page;

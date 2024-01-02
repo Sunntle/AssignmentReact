@@ -7,12 +7,12 @@ const publicRoutes = [
   {
     path: "",
     component: HomePage,
-    layout: NoBreadcrumb,
+    layout: DefaultLayout,
   },
   {
     path: "home",
     component: HomePage,
-    layout: NoBreadcrumb,
+    layout: DefaultLayout,
   },
   {
     path: "shop/*",
@@ -22,7 +22,7 @@ const publicRoutes = [
       {
         path: ":id",
         component: lazy(() => import("../pages/ShopDetail")),
-        layout: NoBreadcrumb,
+        layout: DefaultLayout,
       },
     ],
   },

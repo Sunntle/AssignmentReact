@@ -6,12 +6,6 @@ header {
   z-index: 99;
   left: 0;
 }
-.content {
-  margin-top: 120px;
-  @media (max-width: 768px) {
-    margin-top: 93px;
-  }
-}
 .wrapper {
   .fixed-bottom {
     right: 20px;
