@@ -59,7 +59,7 @@ const publicRoutes = [
   {
     path: "profile",
     component: Profile,
-    layout: NoBreadcrumb,
+    layout: DefaultLayout,
   },
   {
     path: "*",
@@ -101,7 +101,7 @@ const privateRoutes = [
   {
     path: "bill",
     component: Bill,
-    layout: NoBreadcrumb,
+    layout: DefaultLayout,
   },
   {
     path: "orders",

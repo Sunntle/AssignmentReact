@@ -9,6 +9,7 @@ import "swiper/css/pagination";
 import Slides from "assets/images//hero-1.jpg";
 import Sildes2 from "assets/images//hero-2.jpg";
 import "./SlideStyle.scss";
+import FadeAnimation from "animations/FadeAnimation";
 function Slide() {
   return (
     <Swiper
@@ -25,6 +26,7 @@ function Slide() {
     >
       <SwiperSlide className="position-relative">
         <img className="img-fluid" src={Slides} alt="" />
+        <FadeAnimation>
         <div className="position-absolute caption">
           <h6>Summer Collection</h6>
           <h2>
@@ -38,6 +40,8 @@ function Slide() {
             <span className="redirectShop">SHOP NOW</span>
           </Link>
         </div>
+        </FadeAnimation>
+       
       </SwiperSlide>
       <SwiperSlide className="position-relative">
         <img className="img-fluid" src={Sildes2} alt="" />

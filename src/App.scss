@@ -1,6 +1,10 @@
 .App {
   text-align: center;
 }
+:root {
+  --swiper-navigation-size: 25px
+}
+
 .fixed-bottom.toast {
   right: 20px;
   left: auto;

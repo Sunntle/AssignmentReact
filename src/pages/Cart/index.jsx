@@ -134,7 +134,7 @@ function Cart() {
                   </td>
                   <td>
                     <Button
-                      id="PopoverFocus"
+                      id={`PopoverFocus${index}`}
                       outline
                       color="transparent"
                      
@@ -143,12 +143,12 @@ function Cart() {
                     </Button>
                     <UncontrolledPopover
                       placement="right"
-                      target="PopoverFocus"
+                      target={`PopoverFocus${index}`}
                       trigger="focus"
                     >
                       <PopoverHeader style={{fontSize: "0.85rem"}}>Delete this item?</PopoverHeader>
                       <PopoverBody className="p-2 d-flex align-items-center justify-content-between">
-                        <Button size="sm" className="w-100" onClick={() => handleRemoveItem(el)} outline color="danger">Ok</Button>
+                        <Button size="sm" className="w-100" onClick={() =>handleRemoveItem(el)} outline color="danger">Ok</Button>
                         <Button size="sm" className="w-100" outline>No</Button>
                       </PopoverBody>
                     </UncontrolledPopover>

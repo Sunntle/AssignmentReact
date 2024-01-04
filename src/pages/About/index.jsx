@@ -1,12 +1,13 @@
-import React from "react";
-import { Col, Container, Row } from "reactstrap";
-import "./AboutStyle.scss";
+import { faBriefcase} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase, faLightbulb, faSmile, faTrophy } from "@fortawesome/free-solid-svg-icons";
-import { SwiperSlide, Swiper } from "swiper/react";
+import { animated, useInView, useSprings } from "@react-spring/web";
+import FadeAnimation from "animations/FadeAnimation";
+import { forwardRef } from "react";
+import { Col, Container, Row } from "reactstrap";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
-import { useSpring, animated, useSprings } from "@react-spring/web";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "./AboutStyle.scss";
 const items = [
   {
     title: "Our Vision",
@@ -27,17 +28,49 @@ const items = [
     delay: 180,
   },
 ];
-function AboutPage() {
-  const useCountAnimation = (targetValue) => {
-    const props = useSpring({
-      from: { count: 0 },
-      to: { count: targetValue },
-      config: { duration: 1000 },
-    });
 
-    return props.count.interpolate((value) => Math.floor(value));
-  };
-  const springs = useSprings(
+const LIST_MEMBER = [
+  {
+    img: "https://res.cloudinary.com/dw6jih4yt/image/upload/e_improve,w_270,h_330,c_thumb,g_auto/v1690184584/ImagesProduct/ceeklyuuw8wfymveagla.png",
+    name: "Tai Le Cong Thanh",
+    position: "Developer",
+    delay: 0,
+  },
+  {
+    img: "https://flone.jamstacktemplates.dev/assets/img/team/team-1.jpg",
+    name: "Mike Tyson",
+    position: "Manager",
+    delay: 300,
+  },
+  {
+    img: "https://flone.jamstacktemplates.dev/assets/img/team/team-2.jpg",
+    name: "Ms.Queen",
+    position: "Manager",
+    delay: 450,
+  },
+  {
+    img: "https://flone.jamstacktemplates.dev/assets/img/team/team-3.jpg",
+    name: "Peter",
+    position: "Chairman",
+    delay: 600,
+  },
+];
+
+const COUNT_NUMBER = [{count: 200, title: "Project Done"}, {count: 360, title: "User Register"}, {count: 1000, title: "Reviews"}, {count: 80, title: "Online"}];
+function AboutPage() {
+  const [ref, inView] = useInView({
+    triggerOnce: false,
+    threshold: 0.5, 
+  });
+  const [ref2, inView2] = useInView({
+    triggerOnce: false,
+    threshold: 0.5, 
+  })
+  const [ref3, inView3] = useInView({
+    triggerOnce: false,
+    threshold: 0.5,
+  })
+  const renderSprings = useSprings(
     items.length,
     items.map((item) => ({
       from: { opacity: 0 },
@@ -46,19 +79,27 @@ function AboutPage() {
       delay: item.delay,
     }))
   );
-  const fade = useSpring({
-    from: {
-      opacity: 0,
-    },
-    to: {
-      opacity: 1,
-    },
-    config: { duration: 500 },
-  });
+  const renderCountNumber = useSprings(
+    COUNT_NUMBER.length,
+    COUNT_NUMBER.map(item=>({
+      from: { opacity: 0, count: 0},
+      to: { opacity: inView ? 1 : 0, count: inView ? item.count : 0 },
+      config: { duration: 600 },
+    }))
+  )
+  const renderListMember = useSprings(
+    LIST_MEMBER.length,
+    LIST_MEMBER.map((item) => ({
+      from: { opacity: 0 },
+      to: { opacity: inView3 ? 1 : 0},
+      config: { duration: 400 },
+      delay: item.delay,
+    }))
+  );
   return (
     <div className="about-wrap">
       <Container className="welcome-content mt-3 mb-4 pb-4">
-        <animated.div style={fade} className="pb-5">
+        <FadeAnimation className="pb-5">
           <h5 className="text-muted m-0">Who we are</h5>
           <h2 className="title position-relative py-3">Welcome To Clothing26</h2>
           <p className="w-50 mx-auto my-4 text-muted">
@@ -66,9 +107,9 @@ function AboutPage() {
             dolor quis repudiandae temporibus vero veniam quaerat dolorem odit porro, et ullam molestiae earum
             voluptates.
           </p>
-        </animated.div>
+        </FadeAnimation>
         <Row className="text-start ">
-          {springs.map((el, index) => {
+          {renderSprings.map((el, index) => {
             return (
               <Col md="4" lg="4" key={index}>
                 <animated.div style={el} className="mb-3">
@@ -80,40 +121,21 @@ function AboutPage() {
           })}
         </Row>
       </Container>
-      <div className="pt-5 pb-4 funfact-content">
+      <animated.div className="pt-5 pb-4 funfact-content" ref={ref} style={{inView}}>
         <Container className="py-5">
           <Row>
-            <Col sm="6" md="6" lg="3">
+            {renderCountNumber.map((style, index)=>{
+              return <Col sm="6" md="6" lg="3" key={index}>
               <div>
                 <FontAwesomeIcon size="2xl" icon={faBriefcase} />
               </div>
-              <animated.h2 className="count my-3">{useCountAnimation(360)}</animated.h2>
-              <p className="fs-5">Project Done</p>
+              <animated.h2 className="count my-3" style={style}>{style.count.interpolate((value) => Math.floor(value))}</animated.h2>
+              <p className="fs-5">{COUNT_NUMBER[index].title}</p>
             </Col>
-            <Col sm="6" md="6" lg="3">
-              <div>
-                <FontAwesomeIcon size="2xl" icon={faTrophy} />
-              </div>
-              <animated.h2 className="count my-3">{useCountAnimation(1000)}</animated.h2>
-              <p className="fs-5">User Register</p>
-            </Col>
-            <Col sm="6" md="6" lg="3">
-              <div>
-                <FontAwesomeIcon size="2xl" icon={faLightbulb} />
-              </div>
-              <animated.h2 className="count my-3">{useCountAnimation(200)}</animated.h2>
-              <p className="fs-5">Project Done</p>
-            </Col>
-            <Col sm="6" md="6" lg="3">
-              <div>
-                <FontAwesomeIcon size="2xl" icon={faSmile} />
-              </div>
-              <animated.h2 className="count my-3">{useCountAnimation(360)}</animated.h2>
-              <p className="fs-5">Project Done</p>
-            </Col>
+            })}
           </Row>
         </Container>
-      </div>
+      </animated.div>
       <Container className=" pt-5 pb-4">
         <Swiper
           id="logoBrand"
@@ -141,149 +163,46 @@ function AboutPage() {
           loop
           className="mySwiper py-5"
         >
-          <SwiperSlide>
+          {[...Array(9)].map((_, index)=>{
+            return <SwiperSlide>
             <img
               className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-5.png"
+              src={`https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-${index}.png`}
               alt=""
             />
           </SwiperSlide>
-          <SwiperSlide>
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-4.png"
-              alt=""
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-3.png"
-              alt=""
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-2.png"
-              alt=""
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-1.png"
-              alt=""
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-3.png"
-              alt=""
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-9.png"
-              alt=""
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-8.png"
-              alt=""
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-7.png"
-              alt=""
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-6.png"
-              alt=""
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              className="img-fluid"
-              src="https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-3.png"
-              alt=""
-            />
-          </SwiperSlide>
+          })}
         </Swiper>
       </Container>
-      <Container className="team-area pt-5 pb-4">
-        <div className="team-header pb-5">
+      <Container className="team-area pt-5 pb-4" >
+        <animated.div ref={ref2} className="team-header pb-5" style={{inView2}}>
           <h2 className="title position-relative py-3">Team member</h2>
           <p className="w-50 mx-auto my-4 text-muted">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi harum necessitatibus pariatur non quasi a
           </p>
-        </div>
-        <Row>
-          <Col sm="6" md="6" lg="3">
-            <div className="team-content">
+        </animated.div>
+       <animated.div ref={ref3} style={{inView3}}>
+       <Row>
+          {renderListMember.map((style, index)=>{
+            return <Col sm="6" md="6" lg="3" key={index}>
+            <animated.div style={style} className="team-content">
               <img
                 className="img-fluid"
-                src="https://res.cloudinary.com/dw6jih4yt/image/upload/e_improve,w_270,h_330,c_thumb,g_auto/v1690184584/ImagesProduct/ceeklyuuw8wfymveagla.png"
+                src={LIST_MEMBER[index].img}
                 alt="team-avt"
               />
               <div className="description py-4">
-                <h4 className="my-2">Tai Le Cong Thanh</h4>
-                <span className="text-muted fw-lighter">Developer</span>
+                <h4 className="my-2">{LIST_MEMBER[index].name}</h4>
+                <span className="text-muted fw-lighter">{LIST_MEMBER[index].position}</span>
               </div>
-            </div>
+            </animated.div>
           </Col>
-          <Col sm="6" md="6" lg="3">
-            <div className="team-content">
-              <img
-                className="img-fluid"
-                src="https://flone.jamstacktemplates.dev/assets/img/team/team-1.jpg"
-                alt="team-avt"
-              />
-              <div className="description py-4">
-                <h4 className="my-2">Mr.Mike</h4>
-                <span className="text-muted fw-lighter">Manager</span>
-              </div>
-            </div>
-          </Col>
-          <Col sm="6" md="6" lg="3">
-            <div className="team-content">
-              <img
-                className="img-fluid"
-                src="https://flone.jamstacktemplates.dev/assets/img/team/team-2.jpg"
-                alt="team-avt"
-              />
-              <div className="description py-4">
-                <h4 className="my-2">Ms.Queen</h4>
-                <span className="text-muted fw-lighter">Manager</span>
-              </div>
-            </div>
-          </Col>
-          <Col sm="6" md="6" lg="3">
-            <div className="team-content">
-              <img
-                className="img-fluid"
-                src="https://flone.jamstacktemplates.dev/assets/img/team/team-3.jpg"
-                alt="team-avt"
-              />
-              <div className="description py-4">
-                <h4 className="my-2">Mr.Peter</h4>
-                <span className="text-muted fw-lighter">Chairman</span>
-              </div>
-            </div>
-          </Col>
+          })}
         </Row>
+       </animated.div>
       </Container>
     </div>
   );
 }
 
-export default AboutPage;
+export default forwardRef(AboutPage);

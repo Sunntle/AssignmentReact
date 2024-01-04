@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createOrder, createPayment } from "api";
 import { useNavigate } from "react-router-dom";
 import { removeAll } from "redux/cart/cartSlice";
+import { showToast } from "redux/toast/toastSlice";
 const optionsPayment = [
   {
     value: "COD",
@@ -119,6 +120,8 @@ function Checkout() {
         const paymenResponse = await createPayment(dataPayment);
         window.location.href = paymenResponse;
       }
+    }else{
+      dispatch(showToast({ type: "danger", message: "Something wrong!" }))
     }
   };
   return (
