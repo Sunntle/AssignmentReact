@@ -129,7 +129,7 @@ function AboutPage() {
               <div>
                 <FontAwesomeIcon size="2xl" icon={faBriefcase} />
               </div>
-              <animated.h2 className="count my-3" style={style}>{style.count.interpolate((value) => Math.floor(value))}</animated.h2>
+              <animated.h2 className="count my-3" style={style}>{style.count.to((value) => Math.floor(value))}</animated.h2>
               <p className="fs-5">{COUNT_NUMBER[index].title}</p>
             </Col>
             })}
@@ -164,7 +164,7 @@ function AboutPage() {
           className="mySwiper py-5"
         >
           {[...Array(9)].map((_, index)=>{
-            return <SwiperSlide>
+            return <SwiperSlide key={index}>
             <img
               className="img-fluid"
               src={`https://flone.jamstacktemplates.dev/assets/img/brand-logo/brand-logo-${index}.png`}

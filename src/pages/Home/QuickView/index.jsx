@@ -1,7 +1,6 @@
 import { faMinusCircle, faPlusCircle, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useCallback, useState } from "react";
 import { Button, Col, FormGroup, Input, Modal, ModalBody, ModalFooter, ModalHeader, Row, Form } from "reactstrap";
 import "./QuickViewStyle.scss";
 import { useDispatch } from "react-redux";
@@ -9,6 +8,7 @@ import { addToCart } from "redux/cart/cartSlice";
 import { Controller, useForm } from "react-hook-form";
 import { InputLabel } from "components/Input";
 import { showToast } from "redux/toast/toastSlice";
+import { addToWishlist } from "redux/wishlist/wishlistSlice";
 
 function QuickView(props) {
   const {
@@ -36,6 +36,10 @@ function QuickView(props) {
     dispatch(showToast(actionsToast));
   };
 
+  const handleAddToWishlist = useCallback((el)=>{
+    dispatch(addToWishlist(data))
+  },[data, dispatch])
+  
   return (
     <div>
       <Modal scrollable size="lg" keyboard isOpen={modal} toggle={() => toggle(null)} centered>
@@ -160,7 +164,7 @@ function QuickView(props) {
               </Form>
 
               <div className="wishlist my-3 d-inline-block border-bottom border-dark">
-                <Link className="text-dark text-decoration-none">+ Add to wish list</Link>
+                <div style={{cursor: "pointer"}} className="text-dark text-decoration-none" onClick={handleAddToWishlist}>+ Add to wish list</div>
               </div>
             </Col>
           </Row>

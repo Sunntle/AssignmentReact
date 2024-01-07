@@ -77,12 +77,14 @@
   visibility: visible;
   top: 45px;
 }
-
+.wrap-cart-icon + .wrap-cart-icon {
+  margin-left: 0.3rem;
+}
 .wrap-cart-icon{
   width: fit-content;
   .countProduct {
-    top: -0.9rem;
-    right: -0.9rem;
+    top: -0.8rem;
+    right: -0.7rem;
     color: $primary-color;
   }
 }

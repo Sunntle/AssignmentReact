@@ -10,3 +10,4 @@ export { default as Checkout } from "./Checkout";
 export { default as Bill } from "./Checkout/Bill";
 export { default as Orders } from "./Orders";
 export { default as Profile } from "./Profile";
+export { default as Favorites } from "./Favorites";

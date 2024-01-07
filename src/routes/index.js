@@ -1,7 +1,7 @@
 import NotFound from "../pages/NotFound";
 import { lazy } from "react";
 import { DefaultLayout, NoBreadcrumb, NotHeaderLayout } from "../layout";
-import { HomePage, ShopPage, Page, AboutPage, ContactPage, Account, Cart, Unauthorized, Checkout, Bill, Orders, Profile } from "pages";
+import { HomePage, ShopPage, Page, AboutPage, ContactPage, Account, Cart, Unauthorized, Checkout, Bill, Orders, Profile, Favorites } from "pages";
 import { Dashboard, OrdersAdmin, ProductAdmin, UserAdmin } from "pages/Admin";
 const publicRoutes = [
   {
@@ -29,6 +29,11 @@ const publicRoutes = [
   {
     path: "pages",
     component: Page,
+    layout: DefaultLayout,
+  },
+  {
+    path: "favorites",
+    component: Favorites,
     layout: DefaultLayout,
   },
   {

@@ -1,10 +1,10 @@
 import { faEye, faHeart, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Container } from "reactstrap";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import QuickView from "../QuickView";
 import "./NewArrivalStyle.scss";
@@ -13,6 +13,7 @@ import LoadingComponent from "components/Loading";
 import { useDispatch } from "react-redux";
 import { addToCart } from "redux/cart/cartSlice";
 import { showToast } from "redux/toast/toastSlice";
+import { addToWishlist } from "redux/wishlist/wishlistSlice";
 
 function NewArrival({ setToast }) {
   const [modal, setModal] = useState(false);
@@ -20,6 +21,7 @@ function NewArrival({ setToast }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch()
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,11 +48,15 @@ function NewArrival({ setToast }) {
   },[data]);
   
   const handleAddToCart = useCallback((id) =>{
-    console.log(id);
     const productSelected = data?.find(el => el.id === +id)
     dispatch(addToCart({...productSelected, sizeSelected: productSelected?.allSize[0], colorSelected: productSelected?.allColor[0], quantity: 1}))
     dispatch(showToast({ type: "success", message: "Add to cart successfully" }));
   },[data, dispatch])
+
+  const handleAddToWishlist = useCallback((el)=>{
+    dispatch(addToWishlist(el))
+  },[dispatch])
+
   return (
     <LoadingComponent isLoading={loading}>
       <Container  className="new-arrival">
@@ -66,7 +72,7 @@ function NewArrival({ setToast }) {
           spaceBetween={10}
           navigation
           autoplay={{
-            delay: 2500,
+            delay: 4500,
             disableOnInteraction: false,
           }}
           modules={[Navigation, Autoplay]}
@@ -87,9 +93,9 @@ function NewArrival({ setToast }) {
           className="mySwiper"
         >
           {Array.isArray(data) && data && data.length > 0 &&
-            data?.map((el) => {
+            data?.map((el, index) => {
               return (
-                <SwiperSlide key={el.id} className="shadow-sm">
+                <SwiperSlide key={index} className="shadow-sm">
                   <div className="position-relative shadow-sm">
                     <img className="img-fluid" src={el.allImg?.split(";")[0]} alt="" />
                     <div className="position-absolute badges">
@@ -103,7 +109,7 @@ function NewArrival({ setToast }) {
                         <FontAwesomeIcon icon={faEye} />
                       </Button>
                       <Button color="dark">
-                        <FontAwesomeIcon icon={faHeart} />
+                        <FontAwesomeIcon icon={faHeart} onClick={() => handleAddToWishlist(el)}/>
                       </Button>
                     </div>
                   </div>

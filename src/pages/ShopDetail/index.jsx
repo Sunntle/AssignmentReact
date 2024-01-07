@@ -1,7 +1,7 @@
 import { faMinusCircle, faPlusCircle, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Button, Col, Container, Form, FormGroup, Input, Row } from "reactstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -21,6 +21,7 @@ import { Controller, useForm } from "react-hook-form";
 import { InputLabel } from "components/Input";
 import { showToast } from "redux/toast/toastSlice";
 import LoadingComponent from "components/Loading";
+import { addToWishlist } from "redux/wishlist/wishlistSlice";
 function ShopDetail() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const indexProduct = useParams();
@@ -60,11 +61,14 @@ function ShopDetail() {
   };
 
   const onSubmit = (dataForm) => {
-    const action = addToCart({ ...data, ...dataForm, quantity: value });
-    dispatch(action);
-    const actionsToast = { type: "success", message: "Add to cart successfully!" };
-    dispatch(showToast(actionsToast));
+    dispatch(addToCart({ ...data, ...dataForm, quantity: value }));
+    dispatch(showToast({ type: "success", message: "Add to cart successfully!" }));
   };
+
+  const handleAddToWishlist = useCallback(()=>{
+    dispatch(addToWishlist(data))
+  },[data, dispatch])
+
   return (
     <Container style={{ paddingTop: "0.2rem"}} className="wrap-shop-detail">
       {loading ? (
@@ -215,7 +219,7 @@ function ShopDetail() {
               </div>
             </Form>
             <div className="wishlist my-3 d-inline-block border-bottom border-dark">
-              <Link className="text-dark text-decoration-none">+ Add to wish list</Link>
+              <div style={{cursor: "pointer"}} className="text-dark text-decoration-none" onClick={handleAddToWishlist}>+ Add to wish list</div>
             </div>
             <div className="social d-flex">
               <FontAwesomeIcon icon={faFacebook} className="fs-3" />

@@ -10,6 +10,8 @@ import { Button, Col, Input, Row } from "reactstrap";
 import { fetchColorProduct, fetchProduct, fetchSizeProduct, fetchTypeProduct } from "api";
 import SideBarAccording from "../SideBar";
 import "./ShopAreaStyle.scss";
+import { useDispatch } from "react-redux";
+import { addToWishlist } from "redux/wishlist/wishlistSlice";
 const options = [
   { value: 0, label: "Default" },
   { value: 1, label: "Low To High" },
@@ -21,16 +23,15 @@ function ShopArea() {
   const [open, setOpen] = useState("0");
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [countProduct, setCountProduct] = useState(0);
+  const [totalPages, setTotalPages] = useState({count: 0, total: 0});
   const [typeProduct, setTypeProduct] = useState([]);
   const [sizeProduct, setSizeProduct] = useState([]);
   const [colorProduct, setColorProduct] = useState([]);
   const [filter, setFilter] = useState(0);
-  const [inputValue, setInputValue] = useState(location.state?.kw || "");
+  const [inputValue, setInputValue] = useState({isFirst: true, content: location.state?.kw || ""});
   const [order, setOrder] = useState(options[0]);
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch()
   const accordingSideBar = [
     {
       name: "categories",
@@ -50,7 +51,10 @@ function ShopArea() {
     },
   ];
 
-  const fetchData = useCallback(async (value = 0) => {
+  const fetchData = useCallback(async (props) => {
+    const {filter: value = 0, currentPage, order} = props
+    console.log(props);
+    setLoading(true)
     try {
       let stringResponse, stringRes;
       if (value !== 0 && typeof value == "number") {
@@ -88,36 +92,41 @@ function ShopArea() {
       setColorProduct(resColorProduct);
       setSizeProduct(resSizeProduct);
       setTypeProduct(resTypeProduct);
-      setTotalPages(Math.ceil(response.length / limit));
-      setCountProduct(response.length);
+      setTotalPages({count: response.length, total: Math.ceil(response.length / limit)});
       setData(res);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
-  },[currentPage, order.value]);
-  const handleClicked = (value) => {
+  },[]);
+
+  const handleClicked = useCallback((value) => {
     setFilter(value);
-  };
+  },[]);
+  
   useEffect(() => {
-    fetchData(filter);
+    fetchData({filter, currentPage, order});
   }, [currentPage, fetchData, filter, order]);
+
   const toggle = useCallback((id) => {
     if (open === id) setOpen("0");
-    else   setOpen(id);
+    else  setOpen(id);
   },[open]);
+
   const handleSetCurPage = useCallback((page) => {
     setCurrentPage(page);
   },[]);
 
-  useEffect(() => {
-    const delaySearch = setTimeout(() => {
-      handleClicked(`?q=${inputValue.trim()}`);
-    }, 500);
-    return () => clearTimeout(delaySearch);
-  }, [inputValue]);
+  const handleSearch = useCallback(()=>{
+    if(inputValue.isFirst) return
+    handleClicked(`?q=${inputValue.content.trim()}`);
+  },[handleClicked, inputValue])
 
+  const handleAddToWishlist = useCallback((el)=>{
+    dispatch(addToWishlist(el))
+  },[dispatch])
+  
   const renderContent = (el, index) => {
     return (
       <Col xs="12" sm="6" md="4" className="shop__product__item " key={index}>
@@ -125,7 +134,7 @@ function ShopArea() {
           <img className="img-fluid" src={el.allImg?.split(";")[0]} alt="product" />
           <div className="product-actions">
             <Button className="position-absolute start-0 rounded-0 ">
-              <FontAwesomeIcon icon={faHeart} />
+              <FontAwesomeIcon icon={faHeart} onClick={()=>handleAddToWishlist(el)}/>
             </Button>
             <Button className="position-absolute start-50 rounded-0 seeMore">
               <Link
@@ -167,24 +176,33 @@ function ShopArea() {
     );
   };
 
-  return loading ? (
-    <LoadingComponent />
-  ) : (
+  return (
     <Row>
       <Col xs="12" lg="3">
         <div className="shop__sidebar">
           <div className="sidebar__search mb-5">
-            <div className="d-flex position-relative" name="searchFrm" sub="true" role="search">
+            <div
+              className="d-flex position-relative"
+              name="searchFrm"
+              sub="true"
+              role="search"
+            >
               <Input
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
+                value={inputValue.content}
+                onChange={(e) =>
+                  setInputValue({ isFirst: false, content: e.target.value })
+                }
                 className="me-2"
                 type="text"
                 placeholder="Search"
                 aria-label="Search"
                 name="searchFrm"
               />
-              <Button  className="top-50 end-0 position-absolute bg-transparent p-2 translate-middle border-0" type="submit">
+              <Button
+                onClick={handleSearch}
+                className="top-50 end-0 position-absolute bg-transparent p-2 translate-middle border-0"
+                type="submit"
+              >
                 <FontAwesomeIcon icon={faMagnifyingGlass} color="#6c757d" />
               </Button>
             </div>
@@ -211,7 +229,7 @@ function ShopArea() {
           <Row className="align-items-center justify-content-center">
             <Col xs="6">
               <p className="m-0 text-start">
-                Showing {data.length} of {countProduct} results
+                Showing {data.length} of {totalPages.count} results
               </p>
             </Col>
             <Col xs="6" className="text-end">
@@ -236,15 +254,21 @@ function ShopArea() {
           </Row>
         </div>
         <div className="shop__product">
-          <Row id="shop__product__items">
-            {Array.isArray(data) && data?.length > 0 ? (
-              data?.map((el, index) => renderContent(el, index))
-            ) : (
-              <h5 className="text-center mt-5 pt-5">No products match...</h5>
-            )}
-          </Row>
-          {totalPages > 0 && (
-            <PaginationComponent curPage={currentPage} totalPage={totalPages} onPageChange={handleSetCurPage} />
+          <LoadingComponent isLoading={loading}>
+            <Row id="shop__product__items">
+              {Array.isArray(data) && data?.length > 0 ? (
+                data?.map((el, index) => renderContent(el, index))
+              ) : (
+                <h5 className="text-center mt-5 pt-5">No products match...</h5>
+              )}
+            </Row>
+          </LoadingComponent>
+          {totalPages.total > 0 && (
+            <PaginationComponent
+              curPage={currentPage}
+              totalPage={totalPages.total}
+              onPageChange={handleSetCurPage}
+            />
           )}
         </div>
       </Col>

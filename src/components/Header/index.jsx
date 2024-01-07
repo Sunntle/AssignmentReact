@@ -21,6 +21,8 @@ const Header = forwardRef((props, ref) => {
   const user = useSelector((state) => state.userReducer);
   const isLogin = user.isAuthenticated;
   const navigate = useNavigate();
+  const wishlist = useSelector(state => state.wishlistReducer)
+
   useLayoutEffect(() => {
     const navsub = document.querySelectorAll(".navsub");
     const showNav = document.querySelector(".showNav");
@@ -43,10 +45,12 @@ const Header = forwardRef((props, ref) => {
     dispatch(showToast({ type: "success", message: "Log out successfully!" }));
     navigate("/");
   },[dispatch, navigate]);
+
   const handleSearch = useCallback(() => {
     navigate("/shop", { state: { kw: search.trim() } });
     setSearch("");
   },[navigate, search]);
+
   const handleLinkAccount = useCallback(() => {
     if (isLogin)
       return (
@@ -72,6 +76,7 @@ const Header = forwardRef((props, ref) => {
         </Link>
       );
   },[handleLogout, isLogin, user?.user?.username]);
+
   return (
     <header ref={ref} className="bg-light">
       <div className="header__top bg-dark">
@@ -165,7 +170,14 @@ const Header = forwardRef((props, ref) => {
                 <FontAwesomeIcon icon={faMagnifyingGlass} color="#6c757d" />
               </Button>
               </div>
-              <FontAwesomeIcon className="text-black" icon={faHeart} />
+              <div className="wrap-cart-icon overflow-visible d-inline-flex justify-content-center align-items-center">
+                <Link to="/favorites" className="position-relative">
+                  <FontAwesomeIcon className="text-black" icon={faHeart} />
+                  <div className="position-absolute countProduct fs-6 fw-bolder">
+                    {wishlist.list.length}
+                  </div>
+                </Link>
+              </div>
               <div className="wrap-cart-icon overflow-visible d-inline-flex justify-content-center align-items-center">
                 <Link to={"/cart"} className="position-relative">
                   <FontAwesomeIcon className="text-black" icon={faCartShopping} />
