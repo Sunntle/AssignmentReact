@@ -61,6 +61,10 @@ function ShopDetail() {
   };
 
   const onSubmit = (dataForm) => {
+    if(value > data.count) {
+      dispatch(showToast({ type: "warning", message: `The item only has ${data.count} left` }));
+      return
+    }
     dispatch(addToCart({ ...data, ...dataForm, quantity: value }));
     dispatch(showToast({ type: "success", message: "Add to cart successfully!" }));
   };
@@ -130,6 +134,12 @@ function ShopDetail() {
             <div className="description text-muted py-3">
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis cupiditate laborum odio? Fugit dolorem
               iste ipsum ipsam obcaecati nihil sint autem sit, numquam et dolores? Odio totam quidem obcaecati corporis.
+            </div>
+            <div className="description mb-3">
+              Quantity: <span className="text-muted">{data.count}</span>
+            </div>
+            <div className="description mb-3">
+              Sold: <span className="text-muted">{data.sold}</span>
             </div>
             <Form onSubmit={handleSubmit(onSubmit)}>
               {data.allColor && (

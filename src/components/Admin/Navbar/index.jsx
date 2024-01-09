@@ -11,23 +11,25 @@ function NavbarAdmin() {
   return (
     <div className="navbar-admin">
       <Navbar className="my-3">
-        <Link to="/" className="  text-decoration-none fs-5">
+        <Link to="/" className="text-decoration-none fs-5">
           <img className="img-fluid" src={Logo} alt="logo" style={{ maxHeight: "50px" }} />
         </Link>
       </Navbar>
-      <Navbar className="my-3">
+      <Navbar className="my-3 ">
+        <div className="d-flex w-100 flex-column align-items-center justify-content-center">
         <img
           src="https://themedesigner.in/demo/admin-press/assets/images/users/4.jpg"
           className="img-fluid rounded-circle"
           style={{ maxWidth: "80px" }}
           alt="img"
         />
-        <div className="d-flex flex-column align-items-start me-4">
+        <div className="d-flex flex-column">
           Hi, {user?.user?.name}
           <Link to="/" className="text-decoration-none">
             <FontAwesomeIcon icon={faRightFromBracket} className="pe-2" />
-            Log out
+            Back to shop
           </Link>
+        </div>
         </div>
       </Navbar>
       <Navbar className="my-3">

@@ -1,11 +1,12 @@
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Container, PopoverBody, PopoverHeader, Table, UncontrolledPopover } from 'reactstrap';
 import { showToast } from 'redux/toast/toastSlice';
+import { removeItem } from 'redux/wishlist/wishlistSlice';
 
 function FavoritesPage() {
     const navigate = useNavigate()
@@ -20,11 +21,10 @@ function FavoritesPage() {
         dispatch(showToast({type: "success", message: "Removed from wishlist"}))
     } 
 
-    const clearWishlist = () =>{
-        setWishlist([])
-        localStorage.removeItem("favoritesList")
-        dispatch(showToast({type: "success", message: "Wishlist empty"}))
-    }
+    const clearWishlist = useCallback(() =>{
+      setWishlist([])
+      dispatch(removeItem())
+  },[dispatch])
     if (wishlist.length < 1)
     return (
       <Container className="cart py-5">

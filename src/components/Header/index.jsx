@@ -125,9 +125,9 @@ const Header = forwardRef((props, ref) => {
                 Shop
               </NavLink>
               <div className="menu-lv1 position-relative">
-                <NavLink className=" fs-5 fw-semibold text-black nav-link page" activeclassname="active" to="/pages">
+                <NavLink className="fs-5 fw-semibold text-black nav-link page exclude">
                   Pages
-                </NavLink>
+                </NavLink>          
                 <Nav className="menu-lv2 bg-black rounded">
                   <NavLink className=" text-light nav-link" exact="true" to="/policy">
                     Policy
@@ -149,8 +149,8 @@ const Header = forwardRef((props, ref) => {
                 <NavLink className=" fs-5 fw-semibold text-black nav-link page" activeclassname="active" to={isLogin ? "/profile" :"/account"}>
                   Account
                 </NavLink>
-                <Nav className="menu-lv2 bg-black rounded">
-                  {isLogin && user.user.role === 1 && (
+                {isLogin && <Nav className="menu-lv2 bg-black rounded">
+                  {user.user.role === 1 && (
                     <NavLink className=" text-light nav-link" exact="true" to="/admin">
                       Admin
                     </NavLink>
@@ -158,7 +158,8 @@ const Header = forwardRef((props, ref) => {
                   <NavLink className="text-light nav-link text-nowrap" exact="true" to="/orders">
                     Orders
                   </NavLink>
-                </Nav>
+                </Nav>}
+                
               </div>
             </Nav>
           </Col>

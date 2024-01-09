@@ -1,7 +1,7 @@
 import { faCheckCircle, faCheckSquare, faCreditCard, faTruck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button, Col, Container, Row, Table } from "reactstrap";
 import { fetchOrder, fetchProduct, updateStatusTransaction } from "api";
 import "./BillStyle.scss";
@@ -10,7 +10,7 @@ function Bill() {
   const [dataCart, SetDataCart] = useState(null);
   const [status, SetStatus] = useState(0);
   const location = useLocation();
-
+  const navigate = useNavigate();
   //handleGetDataSearch
   const handleGetDataSearch = useCallback(
     (string) => {
@@ -32,6 +32,25 @@ function Bill() {
   };
   const id = handleIdOrder();
 
+  useEffect(() => {
+    if(!id) navigate("/error")
+    const fetchOrderData = async (id) => {
+      const response = await fetchOrder(`/${id}`);
+      const { order_details, order_items } = response;
+      const productRequests = order_items.map((item) => fetchProduct(`/${item.product_id}`));
+      const productResponses = await Promise.all(productRequests);
+      const dCart = productResponses.map((res, index) => ({
+        product: res,
+        quantity: order_items[index].quantity,
+        size: order_items[index].size,
+        color: order_items[index].color,
+      }));
+      SetDataOrder(order_details);
+      SetDataCart(dCart);
+    };
+    id && fetchOrderData(id);
+  }, [id]);
+
   //update status of transaction
   useEffect(() => {
     const updateStatus = async () => {
@@ -48,24 +67,8 @@ function Bill() {
     updateStatus();
   }, [handleGetDataSearch, id]);
 
-  //fetchdata from idOrder
-  useEffect(() => {
-    const fetchOrderData = async (id) => {
-      const response = await fetchOrder(`/${id}`);
-      const { order_details, order_items } = response;
-      const productRequests = order_items.map((item) => fetchProduct(`/${item.product_id}`));
-      const productResponses = await Promise.all(productRequests);
-      const dCart = productResponses.map((res, index) => ({
-        product: res,
-        quantity: order_items[index].quantity,
-        size: order_items[index].size,
-        color: order_items[index].color,
-      }));
-      SetDataOrder(order_details);
-      SetDataCart(dCart);
-    };
-    fetchOrderData(id);
-  }, [id]);
+ 
+  if(!id) return
   return (
     <Container className=" wrap-bill">
       <FontAwesomeIcon size="2xl" icon={faCheckCircle} color="green" />

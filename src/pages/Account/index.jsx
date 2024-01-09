@@ -15,9 +15,9 @@ function SignIn() {
   };
 
   return (
-    <Container className=" signin">
+    <Container className="signin">
       <Row>
-        <Col xs="12" md="7" className="mx-auto">
+        <Col xs="12" md="7" className="mx-auto mt-3">
           <Nav className="justify-content-center mb-4">
             {activeTab !== "3" ? (
               <>

@@ -104,6 +104,10 @@ function Checkout() {
       payment_id: data.paymentMethod.value,
     };
     const res = await createOrder(infoOrder);
+    if(res?.status === "error"){
+      dispatch(showToast({ type: "danger", message: res?.message }))
+      return
+    }
     if (res) {
       dispatch(removeAll());
       if (data.paymentMethod.value === "COD") {

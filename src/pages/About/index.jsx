@@ -8,6 +8,7 @@ import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./AboutStyle.scss";
+import { useBreakpoints } from "hooks/useBreakpoints";
 const items = [
   {
     title: "Our Vision",
@@ -58,6 +59,7 @@ const LIST_MEMBER = [
 
 const COUNT_NUMBER = [{count: 200, title: "Project Done"}, {count: 360, title: "User Register"}, {count: 1000, title: "Reviews"}, {count: 80, title: "Online"}];
 function AboutPage() {
+  const breakpointsData = useBreakpoints()
   const [ref, inView] = useInView({
     triggerOnce: false,
     threshold: 0.5, 
@@ -91,14 +93,15 @@ function AboutPage() {
     LIST_MEMBER.length,
     LIST_MEMBER.map((item) => ({
       from: { opacity: 0 },
-      to: { opacity: inView3 ? 1 : 0},
+      to: { opacity: inView3 || breakpointsData.isXs ? 1 : 0},
       config: { duration: 400 },
       delay: item.delay,
     }))
   );
+  console.log(inView3);
   return (
     <div className="about-wrap">
-      <Container className="welcome-content mt-3 mb-4 pb-4">
+      <Container className="welcome-content mt-3 mt-xs-5 mb-4 pb-4">
         <FadeAnimation className="pb-5">
           <h5 className="text-muted m-0">Who we are</h5>
           <h2 className="title position-relative py-3">Welcome To Clothing26</h2>

@@ -12,7 +12,7 @@ function ToastMessage() {
     if (toast.isOpen) {
       delay = setTimeout(() => {
         dispatch(hideToast());
-      }, 1000);
+      }, 1500);
     }
     return () => {
       clearTimeout(delay);
@@ -20,7 +20,7 @@ function ToastMessage() {
   }, [dispatch, toast.isOpen]);
 
   return (
-    <Toast isOpen={toast.isOpen} transition={{ timeout: 200 }} className="fixed-bottom">
+    <Toast isOpen={toast.isOpen} transition={{ timeout: 100 }} className="fixed-bottom">
       <ToastHeader icon={toast.type}>{toast?.notification ?? "Notification"}</ToastHeader>
       <ToastBody>{toast.message}</ToastBody>
     </Toast>

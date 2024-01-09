@@ -1,7 +1,6 @@
-import NotFound from "pages/NotFound";
-
+import { ErrorPage } from "pages";
 function Page() {
-  return <NotFound/>
+  return <ErrorPage/>
 }
 
 export default Page;

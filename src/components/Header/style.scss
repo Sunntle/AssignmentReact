@@ -18,7 +18,7 @@
   a {
     position: relative;
   }
-  .active:not(.header__menu .menu-lv2 a):after {
+  .active:not(.header__menu .menu-lv2 a):not(.header__menu .exclude):after {
     position: absolute;
     content: "";
     width: calc(100% - 3rem);
@@ -28,7 +28,7 @@
     bottom: 5px;
     transition: all 0.5s;
   }
-  a:not(.header__menu .active)::after {
+  a:not(.header__menu .active):not(.header__menu .exclude)::after {
     position: absolute;
     content: "";
     width: 0;
@@ -38,7 +38,7 @@
     bottom: 5px;
     transition: all 0.5s;
   }
-  a:not(.header__menu .active):not(.header__menu .menu-lv2 a):hover::after {
+  a:not(.header__menu .active):not(.header__menu .menu-lv2 a):not(.header__menu .exclude):hover::after {
     width: calc(100% - 4rem);
     height: 3px;
     background-color: $primary-color;
@@ -47,10 +47,10 @@
     transition: all 0.5s;
   }
   @media (min-width: 992px) {
-    .active:not(.header__menu .menu-lv2 a)::after {
+    .active:not(.header__menu .menu-lv2 a):not(.header__menu .exclude)::after {
       width: calc(100% - 2rem);
     }
-    a:not(.header__menu .active):not(.header__menu .menu-lv2 a):hover:after {
+    a:not(.header__menu .active):not(.header__menu .menu-lv2 a):not(.header__menu .exclude):hover:after {
       width: calc(100% - 2rem);
     }
   }

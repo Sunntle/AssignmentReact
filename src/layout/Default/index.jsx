@@ -9,13 +9,16 @@ import {  useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { handleTextCapitalize } from "utils/helper";
+import { useBreakpoints } from "hooks/useBreakpoints";
 const regexRouteDetail = /^\/shop\/(\d+)$/
 const ROUTE_NO_BREADCRUMB =  ['bill']
 function DefaultLayout({ children }) {
   const location = useLocation();
   const headerRef = useRef(null);
   const [customizeStyle, SetCustomizeStyle] = useState(0)
+  const breakpointData = useBreakpoints()
 
+  const isLargerMD = useMemo(()=>breakpointData.isMd || breakpointData.isXL || breakpointData.isXXL,[breakpointData])
   useLayoutEffect(() => {
     window.addEventListener("resize",()=>{
       SetCustomizeStyle(headerRef.current?.offsetHeight)
@@ -44,7 +47,7 @@ function DefaultLayout({ children }) {
       <Header ref={headerRef}/>
       <div style={{marginTop: `${customizeStyle}px`}} className="min-vh-100 position-relative">
         {isNoBreadcrumb.status ? <BreadcrumbComponent />: ""}
-        <div className={isNoBreadcrumb.status ? "m-3 p-3" :""}>{children}</div>
+        <div className={isNoBreadcrumb.status && isLargerMD ? "m-3 p-3" :""}>{children}</div>
       </div>
       <Footer />
       <ScrollToTop />

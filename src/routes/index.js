@@ -1,8 +1,8 @@
 import NotFound from "../pages/NotFound";
-import { lazy } from "react";
 import { DefaultLayout, NoBreadcrumb, NotHeaderLayout } from "../layout";
-import { HomePage, ShopPage, Page, AboutPage, ContactPage, Account, Cart, Unauthorized, Checkout, Bill, Orders, Profile, Favorites } from "pages";
+import { HomePage, ShopPage, Page, AboutPage, ContactPage, Account, Cart, Unauthorized, Checkout, Bill, Orders, Profile, Favorites, ErrorPage } from "pages";
 import { Dashboard, OrdersAdmin, ProductAdmin, UserAdmin } from "pages/Admin";
+import ShopDetail from "pages/ShopDetail";
 const publicRoutes = [
   {
     path: "",
@@ -21,7 +21,7 @@ const publicRoutes = [
     routes: [
       {
         path: ":id",
-        component: lazy(() => import("../pages/ShopDetail")),
+        component: ShopDetail,
         layout: DefaultLayout,
       },
     ],
@@ -29,7 +29,7 @@ const publicRoutes = [
   {
     path: "pages",
     component: Page,
-    layout: DefaultLayout,
+    layout: NoBreadcrumb,
   },
   {
     path: "favorites",
@@ -65,6 +65,11 @@ const publicRoutes = [
     path: "profile",
     component: Profile,
     layout: DefaultLayout,
+  },
+  {
+    path: "error",
+    component: ErrorPage,
+    layout: NoBreadcrumb,
   },
   {
     path: "*",

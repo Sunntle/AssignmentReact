@@ -1,6 +1,6 @@
 import { faEye, faHeart, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Container } from "reactstrap";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -49,6 +49,10 @@ function NewArrival({ setToast }) {
   
   const handleAddToCart = useCallback((id) =>{
     const productSelected = data?.find(el => el.id === +id)
+    if(data.count < 1) {
+      dispatch(showToast({ type: "warning", message: `The item only has ${data.count} left` }));
+      return
+    }
     dispatch(addToCart({...productSelected, sizeSelected: productSelected?.allSize[0], colorSelected: productSelected?.allColor[0], quantity: 1}))
     dispatch(showToast({ type: "success", message: "Add to cart successfully" }));
   },[data, dispatch])

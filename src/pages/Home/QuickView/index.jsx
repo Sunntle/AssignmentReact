@@ -31,6 +31,10 @@ function QuickView(props) {
   };
   const onSubmit = (dataForm) => {
     const item = { ...data, ...dataForm, quantity: value };
+    if(value > data.count) {
+      dispatch(showToast({ type: "warning", message: `The item only has ${data.count} left` }));
+      return
+    }
     dispatch(addToCart(item));
     const actionsToast = { type: "success", message: "Add to cart successfully" };
     dispatch(showToast(actionsToast));
@@ -42,16 +46,33 @@ function QuickView(props) {
   
   return (
     <div>
-      <Modal scrollable size="lg" keyboard isOpen={modal} toggle={() => toggle(null)} centered>
+      <Modal
+        scrollable
+        size="lg"
+        keyboard
+        isOpen={modal}
+        toggle={() => toggle(null)}
+        centered
+      >
         <ModalHeader toggle={() => toggle(null)}></ModalHeader>
         <ModalBody>
           <Row>
             <Col xs="12" md="5" className="mb-3">
-              <img src={data.allImg?.split(";")[0]} alt="img" className="img-fluid" />
+              <img
+                src={data.allImg?.split(";")[0]}
+                alt="img"
+                className="img-fluid"
+              />
             </Col>
             <Col xs="12" md="7">
               <h2>{data.name}</h2>
-              <p className="py-3 m-0">{data.price?.toLocaleString("vi", { style: "currency", currency: "VND" })}</p>
+              <p className="py-3 m-0">
+                {data.price?.toLocaleString("vi", {
+                  style: "currency",
+                  currency: "VND",
+                })} - 
+                sold: <span className="text-muted">{data.sold}</span>
+              </p>
               <div className="rating">
                 <span>
                   <FontAwesomeIcon icon={faStar} />
@@ -70,11 +91,14 @@ function QuickView(props) {
                 </span>
               </div>
               <div className="description text-muted py-3">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis cupiditate laborum odio? Fugit dolorem
-                iste ipsum ipsam obcaecati nihil sint autem sit, numquam et dolores? Odio totam quidem obcaecati
-                corporis.
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Debitis cupiditate laborum odio? Fugit dolorem iste ipsum ipsam
+                obcaecati nihil sint autem sit, numquam et dolores? Odio totam
+                quidem obcaecati corporis.
               </div>
-
+              <div className="description mb-3">
+                Quantity: <span className="text-muted">{data.count}</span>
+              </div>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 {data.allColor && (
                   <FormGroup className="colorContainer">
@@ -106,7 +130,9 @@ function QuickView(props) {
                         }
                       />
                       {errors?.colorSelected && (
-                        <p className="text-danger m-0 fw-lighter text fst-italic">{errors.colorSelected.message}</p>
+                        <p className="text-danger m-0 fw-lighter text fst-italic">
+                          {errors.colorSelected.message}
+                        </p>
                       )}
                     </div>
                   </FormGroup>
@@ -127,7 +153,10 @@ function QuickView(props) {
                         }) =>
                           data.allSize?.split(",").map((el, index) => {
                             return (
-                              <div key={el + index} className="d-inline-flex align-items-center">
+                              <div
+                                key={el + index}
+                                className="d-inline-flex align-items-center"
+                              >
                                 <InputLabel
                                   id={el}
                                   value={el}
@@ -143,7 +172,9 @@ function QuickView(props) {
                         }
                       />
                       {errors?.sizeSelected && (
-                        <p className="text-danger m-0 fw-lighter text fst-italic">{errors.sizeSelected.message}</p>
+                        <p className="text-danger m-0 fw-lighter text fst-italic">
+                          {errors.sizeSelected.message}
+                        </p>
                       )}
                     </div>
                   </FormGroup>
@@ -151,12 +182,26 @@ function QuickView(props) {
 
                 <div className="quantity d-flex align-items-center">
                   <div className="quantityBtn d-flex align-items-center justify-content-center ">
-                    <FontAwesomeIcon icon={faMinusCircle} onClick={handleDecrement} />
-                    <Input type="text" value={value} className="border-0 bg-transparent" disabled></Input>
-                    <FontAwesomeIcon icon={faPlusCircle} onClick={handleIncrement} />
+                    <FontAwesomeIcon
+                      icon={faMinusCircle}
+                      onClick={handleDecrement}
+                    />
+                    <Input
+                      type="text"
+                      value={value}
+                      className="border-0 bg-transparent"
+                      disabled
+                    ></Input>
+                    <FontAwesomeIcon
+                      icon={faPlusCircle}
+                      onClick={handleIncrement}
+                    />
                   </div>
                   <div className="cartBtn">
-                    <Button type="submit" className="btn-dark rounded-0 py-2 px-3">
+                    <Button
+                      type="submit"
+                      className="btn-dark rounded-0 py-2 px-3"
+                    >
                       <span className="redirectShop">ADD TO CART</span>
                     </Button>
                   </div>
@@ -164,7 +209,13 @@ function QuickView(props) {
               </Form>
 
               <div className="wishlist my-3 d-inline-block border-bottom border-dark">
-                <div style={{cursor: "pointer"}} className="text-dark text-decoration-none" onClick={handleAddToWishlist}>+ Add to wish list</div>
+                <div
+                  style={{ cursor: "pointer" }}
+                  className="text-dark text-decoration-none"
+                  onClick={handleAddToWishlist}
+                >
+                  + Add to wish list
+                </div>
               </div>
             </Col>
           </Row>

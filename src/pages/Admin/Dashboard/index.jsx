@@ -32,18 +32,14 @@ const data = {
     },
   ],
 };
+
 function Dashboard() {
   const [allData, SetData] = useState(null);
   useEffect(() => {
     const getData = async () => {
       try {
-        const request = [fetchProduct("?_sort=sold"), fetchOrder("?_sort=create_at"), fetchTypeProduct(), fetchUser()];
-        const res = await Promise.all(request);
-        console.log(res);
-        if (res) {
-          const [product, order, typeProduct, user] = res;
-          SetData({ product, order, typeProduct, user });
-        }
+        const [product, order, typeProduct, user] = await Promise.all([fetchProduct("?_sort=sold&_limit=8"), fetchOrder("?_sort=create_at&_limit=8"), fetchTypeProduct(), fetchUser()]);
+        SetData({ product, order, typeProduct, user });
       } catch (err) {
         console.log(`Error: ${err}`);
       }
@@ -54,8 +50,8 @@ function Dashboard() {
 
   return (
     <>
-      {/* <Row className="pt-5 text-white">
-        <Col xs="12" md="6" lg="3" className="border rounded bg-success d-flex align-items-center py-4">
+      <Row className="pt-5 text-white">
+        <Col xs="12" md="6" lg="3" className="border rounded shadow-sm bg-success d-flex align-items-center py-4">
           <FontAwesomeIcon icon={faUser} size="xl" className="border border-4 rounded-circle p-3  m-2" />
           <div className="text-start ps-3">
             <h6>Customer</h6>
@@ -64,7 +60,7 @@ function Dashboard() {
             </span>
           </div>
         </Col>
-        <Col xs="12" md="6" lg="3" className="border rounded bg-danger d-flex align-items-center  ">
+        <Col xs="12" md="6" lg="3" className="border rounded shadow-sm bg-danger d-flex align-items-center  ">
           <FontAwesomeIcon icon={faBurger} size="xl" className="border border-4  rounded-circle p-3 m-2" />
 
           <div className="text-start ps-3">
@@ -74,7 +70,7 @@ function Dashboard() {
             </span>
           </div>
         </Col>
-        <Col xs="12" md="6" lg="3" className="border rounded bg-primary d-flex align-items-center  ">
+        <Col xs="12" md="6" lg="3" className="border rounded shadow-sm bg-primary d-flex align-items-center  ">
           <FontAwesomeIcon icon={faComment} size="xl" className="border border-4 rounded-circle p-3 m-2" />
 
           <div className="text-start ps-3">
@@ -84,7 +80,7 @@ function Dashboard() {
             </span>
           </div>
         </Col>
-        <Col xs="12" md="6" lg="3" className="border rounded d-flex align-items-center   bg-info">
+        <Col xs="12" md="6" lg="3" className="border rounded shadow-sm d-flex align-items-center   bg-info">
           <FontAwesomeIcon icon={faPenNib} size="xl" className="border border-4 rounded-circle p-3 m-2" />
           <div className="text-start ps-3">
             <h6>Type Product</h6>
@@ -94,12 +90,12 @@ function Dashboard() {
           </div>
         </Col>
       </Row>
-      <Row className="align-items-center justify-content-center py-4">
-        <Col xs="5" className="bg-transparent h-100">
+      <Row className="align-items-center justify-content-center py-4 ">
+        <Col xs="5" className="bg-transparent h-100 shadow-sm rounded">
           <Pie data={data} />
         </Col>
-        <Col xs="7" className="col-7 pe-0 ">
-          <div className="p-4 shadow">
+        <Col xs="7" className="col-7 pe-0">
+          <div className="p-4 shadow-sm rounded">
             <h4>Status Order</h4>
             <Table hover bordered responsive>
               <thead className="table-light">
@@ -113,7 +109,6 @@ function Dashboard() {
               <tbody>
                 {allData?.order?.map((el, index) => {
                   return (
-                    index < 8 && (
                       <tr key={index}>
                         <td>{el.id}</td>
                         <td>{el.total}</td>
@@ -126,7 +121,6 @@ function Dashboard() {
                           <td className="text-danger">Cancle</td>
                         )}
                       </tr>
-                    )
                   );
                 })}
               </tbody>
@@ -134,20 +128,19 @@ function Dashboard() {
           </div>
         </Col>
       </Row>
-      <Row className="shadow p-4">
+      <Row className="shadow-sm p-4 rounded">
         <h4 className="fw-semibold">Top Product</h4>
-
         <Table hover responsive>
           <thead className="table-light">
             <tr>
-              <th scope="col">Product</th>
-              <th scope="col">Sales</th>
+              <th scope="col">Product's name</th>
+              <th scope="col">Sold</th>
               <th scope="col">Earning</th>
               <th scope="col">Inventory</th>
             </tr>
           </thead>
           <tbody>
-            {allData?.product.map((el, index) => {
+            {allData?.product?.map((el, index) => {
               const value = Math.ceil(Math.random() * 100);
               return (
                 index < 6 && (
@@ -160,12 +153,12 @@ function Dashboard() {
                         <Col xs="8">
                           <Progress
                             value={value}
-                            color={index % 3 === 0 ? "danger" : index % 2 === 0 ? "success" : "warning"}
+                            color={el.sold % 3 === 0 && el.sold < 10 ? "danger" : el.sold % 2 === 0 && el.sold > 20 ? "success" : "warning"}
                             style={{ height: "3px" }}
                           ></Progress>
                         </Col>
                         <Col xs="4" className="text-center text-muted">
-                          {value}
+                          {el.count}
                         </Col>
                       </div>
                     </td>
@@ -175,7 +168,7 @@ function Dashboard() {
             })}
           </tbody>
         </Table>
-      </Row> */}
+      </Row>
     </>
   );
 }

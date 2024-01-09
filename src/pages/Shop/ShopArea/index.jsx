@@ -53,7 +53,6 @@ function ShopArea() {
 
   const fetchData = useCallback(async (props) => {
     const {filter: value = 0, currentPage, order} = props
-    console.log(props);
     setLoading(true)
     try {
       let stringResponse, stringRes;
@@ -253,7 +252,7 @@ function ShopArea() {
             </Col>
           </Row>
         </div>
-        <div className="shop__product">
+        <div className="shop__product" style={{minHeight: "100vh"}}>
           <LoadingComponent isLoading={loading}>
             <Row id="shop__product__items">
               {Array.isArray(data) && data?.length > 0 ? (

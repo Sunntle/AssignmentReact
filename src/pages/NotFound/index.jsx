@@ -4,7 +4,8 @@ import { Container } from "reactstrap";
 
 function NotFound() {
   return (
-    <Container className="mx-auto py-5 mt-5">
+    <Container style={{ display: "grid", placeItems: "center", minHeight: "100vh" }}>
+      <div>
       <div>
         <img className="img-fluid" src="https://vaxim-ng.envytheme.com/assets/img/error.png" alt="" />
       </div>
@@ -13,6 +14,7 @@ function NotFound() {
       <Link to="/" className="btn btn-dark py-2 px-3 text-decoration text-light">
         Home
       </Link>
+      </div>
     </Container>
   );
 }
