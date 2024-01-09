@@ -98,7 +98,6 @@ function AboutPage() {
       delay: item.delay,
     }))
   );
-  console.log(inView3);
   return (
     <div className="about-wrap">
       <Container className="welcome-content mt-3 mt-xs-5 mb-4 pb-4">

@@ -47,10 +47,9 @@ export const removeItem = createAsyncThunk(
 
 export const removeAll = createAsyncThunk(
   "wishlist/removeAll",
-  async (item, { dispatch, getState }) => {
+  async (_, { dispatch, getState }) => {
     const list = [...getState().wishlistReducer.list];
     list.splice(0, list.length);
-    console.log(list);
     localStorage.setItem("favoritesList", JSON.stringify(list));
     await dispatch(
       showToast({

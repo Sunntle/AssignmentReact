@@ -61,7 +61,6 @@ function ProductManagement({ modal, data, toggle, size, color, type }) {
     } else {
       setValue("name", "");
       setValue("price", "");
-      setValue("sold", "");
       setValue("date", moment().format("YYYY-MM-DD"));
       setValue("TypeProduct", "");
       setValue("SizeProduct", "");
@@ -89,7 +88,7 @@ function ProductManagement({ modal, data, toggle, size, color, type }) {
           toggle();
         }
       } else {
-        //when action is eit
+        //when action is edit
         const dataProductUpdate = {
           ...dataProduct,
           id: data.id,

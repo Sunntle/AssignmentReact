@@ -124,7 +124,6 @@ export const deleteProduct = async (product_id) => {
       axios.delete(`/images`, { params: { idSp: product_id } }),
     ];
     await Promise.all(requests);
-    console.log(2);
     const res = await axios.delete(`/product/${product_id}`);
     if (res) return "All delete requests completed successfully.";
     return;
