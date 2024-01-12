@@ -37,6 +37,7 @@ function ShopDetail() {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("run");
       try {
         const res = await fetchProduct(`/${indexProduct.id}`);
         setData(res);

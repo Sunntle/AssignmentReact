@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Badge, Button, Container, Nav, NavItem, TabContent, TabPane } from "reactstrap";
 import Select from "react-select";
 
@@ -9,22 +9,22 @@ import PaginationComponent from "components/Pagination";
 import LoadingComponent from "components/Loading";
 import { useDispatch } from "react-redux";
 import { showToast } from "redux/toast/toastSlice";
-
+const options = [
+  {
+    label: "Past 1 Week",
+    value: 0,
+  },
+  {
+    label: "Past 1 Month",
+    value: 1,
+  },
+  {
+    label: "Past 3 Month",
+    value: 2,
+  },
+];
 function OrdersPage() {
-  const options = [
-    {
-      label: "Past 1 Week",
-      value: 0,
-    },
-    {
-      label: "Past 1 Month",
-      value: 1,
-    },
-    {
-      label: "Past 3 Month",
-      value: 2,
-    },
-  ];
+
   const [activeTab, setActiveTab] = useState("1");
   const [filter, setFilter] = useState(options[0]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,7 +34,8 @@ function OrdersPage() {
   const [allData, setAllData] = useState([]);
   const dispatch = useDispatch();
   const limit = 3;
-  const fetchAllData = async (value) => {
+
+  const fetchAllData = useCallback(async (value, currentPage, filter) => {
     try {
       let response,
         res,
@@ -80,27 +81,35 @@ function OrdersPage() {
     } finally {
       setLoading(false);
     }
-  };
-  const handleSetCurPage = (page) => {
+  },[]);
+
+  const handleSetCurPage = useCallback((page) => {
     setCurrentPage(page);
-  };
-  const toggleTab = (tab) => {
+  },[]);
+
+  const toggleTab = useCallback((tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
     }
-  };
+  },[activeTab]);
+
   useEffect(() => {
-    fetchAllData(activeTab);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, filter, activeTab]);
-  const cancleOrders = async (id) => {
-    const data = {
-      status: 2,
-    };
-    const res = await updateStatusTransaction(id, data);
-    if (res) dispatch(showToast({ type: "success", message: "Cancle order successfully" }));
-    fetchAllData(activeTab);
-  };
+    fetchAllData(activeTab, currentPage, filter);
+  }, [currentPage, filter, activeTab, fetchAllData]);
+
+  const cancleOrders = useCallback(async (id) => {
+    try{
+      const res = await updateStatusTransaction(id, {
+        status: 2,
+      });
+      if (res) dispatch(showToast({ type: "success", message: "Cancle order successfully" }));
+      fetchAllData(activeTab, currentPage, filter);
+    }catch(err){
+      console.log(err);
+      dispatch(showToast({ type: "danger", message: "Something's wrong" }));
+    }
+  },[activeTab, currentPage, dispatch, fetchAllData, filter]);
+
   return (
     <Container className="orders-user-wrap text-start ">
       {loading ? (
